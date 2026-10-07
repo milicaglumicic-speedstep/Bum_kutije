@@ -346,4 +346,254 @@
           </div>
 
           <!-- 3. X greda -->
-          <div class="style-option" onclick
+          <div class="style-option" onclick="selectStyle('X greda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <line x1="6" y1="6" x2="34" y2="34" />
+                <line x1="34" y1="6" x2="6" y2="34" />
+                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" stroke="none" />
+                <circle cx="31" cy="20" r="2.5" fill="#f59e0b" stroke="none" />
+                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" stroke="none" />
+                <circle cx="9" cy="20" r="2.5" fill="#f59e0b" stroke="none" />
+              </svg>
+            </div>
+            <span class="style-text">X greda (dijagonale)</span>
+          </div>
+
+          <!-- 4. Stepenik -->
+          <div class="style-option" onclick="selectStyle('Stepenik', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M8 32H15V24H23V16H31V8" />
+                <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" stroke="none" />
+                <circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" stroke="none" />
+                <circle cx="27" cy="12" r="2.2" fill="#f59e0b" stroke="none" />
+              </svg>
+            </div>
+            <span class="style-text">Stepenik (cik-cak kaskada)</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Mehanizam sa cenama prema poreklu materijala -->
+      <div class="form-group">
+        <label for="mechanismSelect">Unutrašnji mehanizam sa konfetama:</label>
+        <select id="mechanismSelect" name="mehanizam" onchange="calculatePrice()">
+          <option value="cubes" selected>Iskačuće pop-up kocke (ručni rad od debljeg hamera)</option>
+          <option value="butterflies">Iskačući leteći leptirovi sa oprugom (+400 RSD)</option>
+          <option value="combo">Kombinovano: Kocke + Leptirovi (+700 RSD)</option>
+        </select>
+      </div>
+
+      <!-- Slatkiši (uključujući Lindor i Mozart kugle) -->
+      <div class="form-group" id="sweetsGroup" style="display: none;">
+        <label>Izaberi slatkiše za punjenje i stranice:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Raffaello" checked> Raffaello
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Lindt Lindor"> Lindt Lindor praline
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Mozart kugle"> Mozart kugle
+          </label>
+        </div>
+      </div>
+
+      <!-- Polje za opis - samo za 4. kutiju (Personalizovanu) -->
+      <div class="form-group" id="customNotesGroup" style="display: none;">
+        <label for="customNotes">Opiši temu, povod, poklon ili posebne želje za dizajn:</label>
+        <textarea id="customNotes" name="zelje" rows="3" placeholder="Opiši poklon koji stavljaš, posvetu, tematske detalje..."></textarea>
+      </div>
+
+      <!-- Prikaz cene -->
+      <div class="price-box">
+        <div class="price-title">Okvirna cena konfiguracije</div>
+        <div class="price-val" id="priceDisplay">2.800 RSD</div>
+      </div>
+
+      <button type="button" class="submit-btn" onclick="sendViaWhatsApp()">
+        <span>Pošalji upit na WhatsApp</span> 💬
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let currentPackage = 'empty';
+
+  const packageTitles = {
+    empty: 'Prazna BUM kutija',
+    sweets_gift: 'BUM kutija sa slatkim stranama i mestom za poklon',
+    only_sweets: 'BUM kutija samo sa slatkišima',
+    custom_gift: 'Personalizovana BUM kutija sa poklonom'
+  };
+
+  // Osnovne cene (kocke od hamera su uračunate u bazu)
+  const priceCatalog = {
+    empty: {
+      S: 2400,
+      M: 2800,
+      L: 3400
+    },
+    sweets_gift: {
+      S: 3600,
+      M: 4200,
+      L: 4900
+    },
+    only_sweets: {
+      M_SWEETS: 4300, // Za pakovanja 100g - 150g
+      L_SWEETS: 5200  // Za pakovanja 200g - 250g
+    },
+    custom_gift: {
+      S: 'Na upit (od ~4.800 RSD)',
+      M: 'Na upit (od ~5.800 RSD)',
+      L: 'Na upit (od ~6.800 RSD)'
+    }
+  };
+
+  // Doplate za mehanizme
+  const mechanismSurcharges = {
+    cubes: 0,
+    butterflies: 400,
+    combo: 700
+  };
+
+  function updateSizeOptions() {
+    const sizeSelect = document.getElementById('sizeSelect');
+    sizeSelect.innerHTML = '';
+
+    if (currentPackage === 'only_sweets') {
+      // Tačno 2 veličine proračunate prema gramaži ispod čepa
+      const opt1 = document.createElement('option');
+      opt1.value = 'M_SWEETS';
+      opt1.textContent = 'Midi (15 × 15 × 15 cm) — za pakovanja od 100g do 150g ispod čepa';
+      opt1.selected = true;
+
+      const opt2 = document.createElement('option');
+      opt2.value = 'L_SWEETS';
+      opt2.textContent = 'Maxi (18 × 18 × 18 cm) — za veće bombonjere od 200g do 250g ispod čepa';
+
+      sizeSelect.appendChild(opt1);
+      sizeSelect.appendChild(opt2);
+    } else {
+      // Standardne 3 veličine za ostale pakete
+      const optS = document.createElement('option');
+      optS.value = 'S';
+      optS.textContent = 'S (10 × 10 × 10 cm) — Kompaktna';
+
+      const optM = document.createElement('option');
+      optM.value = 'M';
+      optM.textContent = 'M (15 × 15 × 15 cm) — Standardna';
+      optM.selected = true;
+
+      const optL = document.createElement('option');
+      optL.value = 'L';
+      optL.textContent = 'L (18 × 18 × 18 cm / 20 cm) — Velika';
+
+      sizeSelect.appendChild(optS);
+      sizeSelect.appendChild(optM);
+      sizeSelect.appendChild(optL);
+    }
+  }
+
+  function selectStyle(styleName, el) {
+    document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('sideStyleInput').value = styleName;
+  }
+
+  function switchPackage(pkg) {
+    currentPackage = pkg;
+    
+    // Obeležavanje aktivnog taba
+    const tabs = document.querySelectorAll('.tab-btn');
+    const order = ['empty', 'sweets_gift', 'only_sweets', 'custom_gift'];
+    tabs.forEach((tab, index) => {
+      tab.classList.toggle('active', order[index] === pkg);
+    });
+
+    // Prikaz/sakrivanje slatkiša (paketi 2, 3 i 4)
+    const showSweets = (pkg === 'sweets_gift' || pkg === 'only_sweets' || pkg === 'custom_gift');
+    document.getElementById('sweetsGroup').style.display = showSweets ? 'block' : 'none';
+
+    // Polje za opis se prikazuje SAMO za 4. paket (custom_gift)
+    const showNotes = (pkg === 'custom_gift');
+    document.getElementById('customNotesGroup').style.display = showNotes ? 'block' : 'none';
+
+    // Ažuriranje skrivenog polja naziva
+    document.getElementById('packageInput').value = packageTitles[pkg];
+
+    // Postavljanje odgovarajućih veličina i proračun cene
+    updateSizeOptions();
+    calculatePrice();
+  }
+
+  function calculatePrice() {
+    const size = document.getElementById('sizeSelect').value;
+    const basePrice = priceCatalog[currentPackage][size];
+    const mech = document.getElementById('mechanismSelect').value;
+    const surcharge = mechanismSurcharges[mech] || 0;
+    
+    if (typeof basePrice === 'number') {
+      const total = basePrice + surcharge;
+      document.getElementById('priceDisplay').innerText = total.toLocaleString('sr-RS') + ' RSD';
+    } else {
+      document.getElementById('priceDisplay').innerText = basePrice || 'Na upit';
+    }
+  }
+
+  function sendViaWhatsApp() {
+    const phone = "381644667485"; 
+
+    const pkg = document.getElementById('packageInput').value;
+    const sizeSelect = document.getElementById('sizeSelect');
+    const sizeText = sizeSelect.options[sizeSelect.selectedIndex].text;
+    const color = document.getElementById('colorInput').value.trim() || 'Nije navedena (po dogovoru)';
+    const sideStyle = document.getElementById('sideStyleInput').value;
+    const mechSelect = document.getElementById('mechanismSelect');
+    const mechanismText = mechSelect.options[mechSelect.selectedIndex].text;
+    const price = document.getElementById('priceDisplay').innerText;
+    const notes = document.getElementById('customNotes').value.trim();
+
+    // Sakupljanje slatkiša
+    let sweetsList = [];
+    if (currentPackage !== 'empty') {
+      document.querySelectorAll('input[name="slatkisi"]:checked').forEach(el => {
+        sweetsList.push(el.value);
+      });
+    }
+
+    let text = `Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n` +
+               `*Paket:* ${pkg}\n` +
+               `*Veličina:* ${sizeText}\n` +
+               `*Željena boja:* ${color}\n` +
+               `*Stil bočnih ivica:* ${sideStyle}\n` +
+               `*Mehanizam:* ${mechanismText}\n` +
+               `*Okvirna cena:* ${price}`;
+
+    if (sweetsList.length > 0) {
+      text += `\n*Izabrani slatkiši:* ${sweetsList.join(', ')}`;
+    }
+
+    if (currentPackage === 'custom_gift' && notes !== '') {
+      text += `\n*Opis i posebne želje za dizajn:* ${notes}`;
+    }
+
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
+
+  // Inicijalno postavljanje
+  updateSizeOptions();
+  calculatePrice();
+</script>
+</body>
+</html>
