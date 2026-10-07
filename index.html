@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bespoke Explosion Boxes | Custom Pokloni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0914;
+      --card-bg: #151124;
+      --card-border: #2b2244;
+      --accent: #9333ea;
+      --accent-light: #c084fc;
+      --accent-hover: #7e22ce;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --silver: #cbd5e1;
+      --input-bg: #0e0a1a;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+      background-image: radial-gradient(circle at top, rgba(147, 51, 234, 0.15) 0%, transparent 60%);
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0 25px;
+    }
+
+    .badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent-light);
+      background: rgba(147, 51, 234, 0.12);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      display: inline-block;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 25px 0 20px;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 12px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent-light);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(147, 51, 234, 0.35);
+    }
+
+    .box-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--silver);
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      border-color: var(--accent-light);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--input-bg);
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .checkbox-item input {
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .price-box {
+      background: rgba(147, 51, 234, 0.08);
+      border: 1px dashed var(--accent-light);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin: 25px 0 20px;
+    }
+
+    .price-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .price-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .wa-btn {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      color: #4ade80;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+
+    .wa-btn:hover {
+      opacity: 0.85;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+      .box-card {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">&lt;bespoke_engineering /&gt;</div>
+    <h1>Explosion Box Studio</h1>
+    <p class="subtitle">Izaberi konfiguraciju, prilagodi detalje i pošalji upit.</p>
+  </header>
+
+  <div class="tabs">
+    <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna kutija</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('sweets')">2. Sa slatkišima</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('full')">3. Full paket (Custom)</button>
+  </div>
+
+  <div class="box-card">
+    <!-- Unesi svoj Formspree kod umesto 'TVOJ_FORMSPREE_ID' kada ga otvoriš -->
+    <form id="orderForm" action="https://formspree.io/f/TVOJ_FORMSPREE_ID" method="POST">
+      <input type="hidden" name="paket" id="packageInput" value="Prazna kutija">
+
+      <!-- Veličina -->
+      <div class="form-group">
+        <label for="sizeSelect">Veličina kutije:</label>
+        <select id="sizeSelect" name="velicina" onchange="calculatePrice()">
+          <option value="S">S (8 × 8 × 8 cm) — Kompaktna</option>
+          <option value="M" selected>M (10 × 10 × 10 cm) — Standardna</option>
+          <option value="L">L (12 × 12 × 12 cm) — Velika</option>
+        </select>
+      </div>
+
+      <!-- Boja -->
+      <div class="form-group">
+        <label for="colorSelect">Boja hamera i detalja:</label>
+        <select id="colorSelect" name="boja">
+          <option value="Ljubičasta + Srebrna traka">Kraljevski ljubičasta + Srebrna traka</option>
+          <option value="Mat crna + Zlatni akcenti">Mat crna + Zlatni akcenti (Tech/Cyber)</option>
+          <option value="Puder roze + Bela traka">Puder roze + Bela saten traka</option>
+          <option value="Midnight Blue + Srebrna">Midnight Blue + Srebrna traka</option>
+        </select>
+      </div>
+
+      <!-- Izgled bočnih stranica -->
+      <div class="form-group">
+        <label for="sidesSelect">Stil bočnih stranica:</label>
+        <select id="sidesSelect" name="bocne_stranice">
+          <option value="Origami ojačani džepovi">Origami ojačani džepovi za slatkiše</option>
+          <option value="Foto-okviri i poruke">Okviri za fotografije i posvete</option>
+          <option value="Minimalističke ravne stranice">Minimalističke ravne stranice (C# akcenti)</option>
+        </select>
+      </div>
+
+      <!-- Mehanizam -->
+      <div class="form-group">
+        <label for="mechanismSelect">Unutrašnji mehanizam:</label>
+        <select id="mechanismSelect" name="mehanizam">
+          <option value="6 iskačućih pop-up kocki">6 iskačućih pop-up kocki (sa elastičnim mehanizmom)</option>
+          <option value="Iskačući leptirovi">Iskačući origami leptirovi</option>
+          <option value="Kombinovano (Kocke + Leptiri)">Kombinovano (Kocke + Leptiri)</option>
+        </select>
+      </div>
+
+      <!-- Slatkiši -->
+      <div class="form-group" id="sweetsGroup" style="display: none;">
+        <label>Izaberi slatkiše za punjenje džepova:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Raffaello" checked> Raffaello
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="slatkisi" value="Kinder Bueno"> Kinder Bueno Mini
+          </label>
+        </div>
+      </div>
+
+      <!-- Personalizovani unos -->
+      <div class="form-group" id="customNotesGroup" style="display: none;">
+        <label for="customNotes">Opiši temu, povod ili posebne želje za dizajn:</label>
+        <textarea id="customNotes" name="zelje" rows="3" placeholder="npr. 30. rođendan za drugaricu programerku, C# kodovi i lambda simboli, ljubičasti tonovi..."></textarea>
+      </div>
+
+      <!-- Kontakt polje -->
+      <div class="form-group">
+        <label for="contactInput">Tvoj kontakt (E-mail, Broj telefona ili Instagram @handle):</label>
+        <input type="text" id="contactInput" name="kontakt" placeholder="npr. email@domen.rs ili 0601234567" required>
+      </div>
+
+      <!-- Prikaz cene -->
+      <div class="price-box">
+        <div class="price-title">Okvirna cena konfiguracije</div>
+        <div class="price-val" id="priceDisplay">2.800 RSD</div>
+      </div>
+
+      <button type="submit" class="submit-btn">Pošalji upit za izradu 🚀</button>
+      <a href="javascript:void(0)" class="wa-btn" onclick="sendViaWhatsApp()">Ili pošalji upit direktno na WhatsApp →</a>
+    </form>
+  </div>
+</div>
+
+<script>
+  let currentPackage = 'empty';
+
+  // Matrica cena po veličinama i paketima
+  const priceCatalog = {
+    empty: {
+      S: 2400,
+      M: 2800,
+      L: 3400
+    },
+    sweets: {
+      S: 3800,
+      M: 4500,
+      L: 5200
+    },
+    full: {
+      S: 'Na upit (od ~5.000 RSD)',
+      M: 'Na upit (od ~5.800 RSD)',
+      L: 'Na upit (od ~6.500 RSD)'
+    }
+  };
+
+  function switchPackage(pkg) {
+    currentPackage = pkg;
+    
+    // Vizuelna promena aktivnog taba
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach((tab, index) => {
+      tab.classList.toggle('active', 
+        (pkg === 'empty' && index === 0) || 
+        (pkg === 'sweets' && index === 1) || 
+        (pkg === 'full' && index === 2)
+      );
+    });
+
+    // Prikaz/sakrivanje specifičnih polja
+    document.getElementById('sweetsGroup').style.display = (pkg === 'sweets' || pkg === 'full') ? 'block' : 'none';
+    document.getElementById('customNotesGroup').style.display = (pkg === 'full') ? 'block' : 'none';
+
+    // Ažuriranje naziva paketa u skrivenom inputu
+    const names = {
+      empty: 'Prazna kutija',
+      sweets: 'Kutija sa slatkišima',
+      full: 'Personalizovani full paket'
+    };
+    document.getElementById('packageInput').value = names[pkg];
+
+    calculatePrice();
+  }
+
+  function calculatePrice() {
+    const size = document.getElementById('sizeSelect').value;
+    const price = priceCatalog[currentPackage][size];
+    
+    if (typeof price === 'number') {
+      document.getElementById('priceDisplay').innerText = price.toLocaleString('sr-RS') + ' RSD';
+    } else {
+      document.getElementById('priceDisplay').innerText = price;
+    }
+  }
+
+  function sendViaWhatsApp() {
+    // Ovde upiši svoj broj sa pozivnim brojem države bez '+' i razmaka (npr. 381601234567)
+    const phone = "381600000000"; 
+    
+    const pkg = document.getElementById('packageInput').value;
+    const size = document.getElementById('sizeSelect').value;
+    const color = document.getElementById('colorSelect').value;
+    const mechanism = document.getElementById('mechanismSelect').value;
+    const contact = document.getElementById('contactInput').value;
+    const notes = document.getElementById('customNotes').value;
+
+    let text = `Pozdrav! Šaljem upit za kutiju:%0A` +
+               `*Paket:* ${pkg}%0A` +
+               `*Veličina:* ${size}%0A` +
+               `*Boja:* ${color}%0A` +
+               `*Mehanizam:* ${mechanism}%0A` +
+               `*Kontakt:* ${contact}`;
+
+    if (currentPackage === 'full' && notes.trim() !== '') {
+      text += `%0A*Želje/Detalji:* ${encodeURIComponent(notes)}`;
+    }
+
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+  }
+
+  // Inicijalni proračun na učitavanju
+  calculatePrice();
+</script>
+</body>
+</html>
