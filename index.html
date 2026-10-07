@@ -334,10 +334,11 @@
         <div class="price-title">Okvirna cena konfiguracije</div>
         <div class="price-val" id="priceDisplay">2.800 RSD</div>
       </div>
-
-      <button type="submit" class="submit-btn">Pošalji upit za izradu 🚀</button>
-      <a href="javascript:void(0)" class="wa-btn" onclick="sendViaWhatsApp()">Ili pošalji upit direktno na WhatsApp →</a>
-    </form>
+      <!-- NOVO JEDINSTVENO DUGME: -->
+      <button type="button" class="submit-btn" style="background: #25d366; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="sendViaWhatsApp()">
+        <span>Pošalji upit na WhatsApp</span> 💬
+      </button>
+ </form>
   </div>
 </div>
 
@@ -402,27 +403,57 @@
     }
   }
 
-  function sendViaWhatsApp() {
-    // Ovde upiši svoj broj sa pozivnim brojem države bez '+' i razmaka (npr. 381601234567)
-    const phone = "381600000000"; 
-    
+      function sendViaWhatsApp() {
+    // Tvoj broj telefona s međunarodnim kodom (bez znaka + i razmaka)
+    const phone = "381644667485"; 
+
     const pkg = document.getElementById('packageInput').value;
     const size = document.getElementById('sizeSelect').value;
     const color = document.getElementById('colorSelect').value;
+    const sides = document.getElementById('sidesSelect').value;
     const mechanism = document.getElementById('mechanismSelect').value;
     const contact = document.getElementById('contactInput').value;
+    const price = document.getElementById('priceDisplay').innerText;
     const notes = document.getElementById('customNotes').value;
 
-    let text = `Pozdrav! Šaljem upit za kutiju:%0A` +
-               `*Paket:* ${pkg}%0A` +
-               `*Veličina:* ${size}%0A` +
-               `*Boja:* ${color}%0A` +
-               `*Mehanizam:* ${mechanism}%0A` +
-               `*Kontakt:* ${contact}`;
+    // Provjera unosa kontakta
+    if (!contact.trim()) {
+      alert("Molimo unesite vaš kontakt (ime ili broj) prije slanja.");
+      document.getElementById('contactInput').focus();
+      return;
+    }
+
+    // Prikupljanje označenih slatkiša ako je odabran taj paket
+    let sweetsList = [];
+    if (currentPackage === 'sweets' || currentPackage === 'full') {
+      document.querySelectorAll('input[name="slatkisi"]:checked').forEach(el => {
+        sweetsList.push(el.value);
+      });
+    }
+
+    // Formatiranje poruke za WhatsApp
+    let text = `Pozdrav! Želim poslati upit za Explosion Box 🎁\n\n` +
+               `*Paket:* ${pkg}\n` +
+               `*Veličina:* ${size}\n` +
+               `*Boja:* ${color}\n` +
+               `*Stranice:* ${sides}\n` +
+               `*Mehanizam:* ${mechanism}\n` +
+               `*Okvirna cijena:* ${price}\n` +
+               `*Kontakt kupca:* ${contact}`;
+
+    if (sweetsList.length > 0) {
+      text += `\n*Odabrani slatkiši:* ${sweetsList.join(', ')}`;
+    }
 
     if (currentPackage === 'full' && notes.trim() !== '') {
-      text += `%0A*Želje/Detalji:* ${encodeURIComponent(notes)}`;
+      text += `\n*Posebne želje / tema:* ${notes.trim()}`;
     }
+
+    // Otvaranje WhatsApp poveznice
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
+
 
     window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
   }
