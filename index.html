@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bespoke Explosion Boxes | Custom Pokloni</title>
+  <title>BUM KUTIJE | Custom Pokloni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
       --text-muted: #94a3b8;
       --silver: #cbd5e1;
       --input-bg: #0e0a1a;
-      --success: #22c55e;
+      --success: #25d366;
     }
 
     * {
@@ -38,13 +38,13 @@
     }
 
     .container {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
     }
 
     header {
       text-align: center;
-      padding: 30px 0 25px;
+      padding: 30px 0 20px;
     }
 
     .badge {
@@ -75,8 +75,8 @@
 
     .tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
       margin: 25px 0 20px;
     }
 
@@ -84,7 +84,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 12px 10px;
+      padding: 12px 14px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: 600;
@@ -192,39 +192,27 @@
 
     .submit-btn {
       width: 100%;
-      background: var(--accent);
+      background: #25d366;
       color: #ffffff;
       border: none;
-      padding: 14px;
+      padding: 15px;
       border-radius: 10px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       transition: background 0.2s ease, transform 0.1s ease;
     }
 
     .submit-btn:hover {
-      background: var(--accent-hover);
+      background: #20ba59;
     }
 
     .submit-btn:active {
       transform: scale(0.99);
-    }
-
-    .wa-btn {
-      display: block;
-      text-align: center;
-      margin-top: 14px;
-      color: #4ade80;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: opacity 0.2s ease;
-    }
-
-    .wa-btn:hover {
-      opacity: 0.85;
-      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
@@ -244,41 +232,37 @@
 
 <div class="container">
   <header>
-    <div class="badge">&lt;bespoke_engineering /&gt;</div>
-    <h1>Explosion Box Studio</h1>
-    <p class="subtitle">Izaberi konfiguraciju, prilagodi detalje i pošalji upit.</p>
+    <div class="badge">GIFT SHOP</div>
+    <h1>BUM KUTIJA</h1>
+    <p class="subtitle">Izaberi svoju konfiguraciju, prilagodi detalje i pošalji upit.</p>
   </header>
 
+  <!-- 4 opcije kutija -->
   <div class="tabs">
-    <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna kutija</button>
-    <button type="button" class="tab-btn" onclick="switchPackage('sweets')">2. Sa slatkišima</button>
-    <button type="button" class="tab-btn" onclick="switchPackage('full')">3. Full paket (Custom)</button>
+    <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna BUM kutija</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('sweets_gift')">2. Slatkiši + mesto za poklon</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('only_sweets')">3. Samo sa slatkišima</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('custom_gift')">4. Personalizovana sa poklonom</button>
   </div>
 
   <div class="box-card">
-    <!-- Unesi svoj Formspree kod umesto 'TVOJ_FORMSPREE_ID' kada ga otvoriš -->
-    <form id="orderForm" action="https://formspree.io/f/TVOJ_FORMSPREE_ID" method="POST">
-      <input type="hidden" name="paket" id="packageInput" value="Prazna kutija">
+    <form id="orderForm" onsubmit="event.preventDefault(); sendViaWhatsApp();">
+      <input type="hidden" name="paket" id="packageInput" value="Prazna BUM kutija">
 
       <!-- Veličina -->
       <div class="form-group">
         <label for="sizeSelect">Veličina kutije:</label>
         <select id="sizeSelect" name="velicina" onchange="calculatePrice()">
-          <option value="S">S (8 × 8 × 8 cm) — Kompaktna</option>
-          <option value="M" selected>M (10 × 10 × 10 cm) — Standardna</option>
-          <option value="L">L (12 × 12 × 12 cm) — Velika</option>
+          <option value="S">S (10 × 10 × 10 cm) — Kompaktna</option>
+          <option value="M" selected>M (15 × 15 × 15 cm) — Standardna</option>
+          <option value="L">L (20 × 20 × 20 cm) — Velika</option>
         </select>
       </div>
 
-      <!-- Boja -->
+      <!-- Boja kao tekstualno polje -->
       <div class="form-group">
-        <label for="colorSelect">Boja hamera i detalja:</label>
-        <select id="colorSelect" name="boja">
-          <option value="Ljubičasta + Srebrna traka">Kraljevski ljubičasta + Srebrna traka</option>
-          <option value="Mat crna + Zlatni akcenti">Mat crna + Zlatni akcenti (Tech/Cyber)</option>
-          <option value="Puder roze + Bela traka">Puder roze + Bela saten traka</option>
-          <option value="Midnight Blue + Srebrna">Midnight Blue + Srebrna traka</option>
-        </select>
+        <label for="colorInput">Željena boja hamera i detalja:</label>
+        <input type="text" id="colorInput" name="boja" placeholder="npr. Kraljevski ljubičasta sa srebrnom trakom, crno-zlatna..." value="Kraljevski ljubičasta sa srebrnom trakom">
       </div>
 
       <!-- Izgled bočnih stranica -->
@@ -287,7 +271,7 @@
         <select id="sidesSelect" name="bocne_stranice">
           <option value="Origami ojačani džepovi">Origami ojačani džepovi za slatkiše</option>
           <option value="Foto-okviri i poruke">Okviri za fotografije i posvete</option>
-          <option value="Minimalističke ravne stranice">Minimalističke ravne stranice (C# akcenti)</option>
+          <option value="Minimalističke ravne stranice">Minimalističke ravne stranice</option>
         </select>
       </div>
 
@@ -301,9 +285,9 @@
         </select>
       </div>
 
-      <!-- Slatkiši -->
+      <!-- Slatkiši (prikazano za pakete sa slatkišima) -->
       <div class="form-group" id="sweetsGroup" style="display: none;">
-        <label>Izaberi slatkiše za punjenje džepova:</label>
+        <label>Izaberi slatkiše za punjenje:</label>
         <div class="checkbox-group">
           <label class="checkbox-item">
             <input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher
@@ -317,16 +301,10 @@
         </div>
       </div>
 
-      <!-- Personalizovani unos -->
+      <!-- Personalizovani unos / Detalji o poklonu -->
       <div class="form-group" id="customNotesGroup" style="display: none;">
-        <label for="customNotes">Opiši temu, povod ili posebne želje za dizajn:</label>
-        <textarea id="customNotes" name="zelje" rows="3" placeholder="npr. 30. rođendan za drugaricu programerku, C# kodovi i lambda simboli, ljubičasti tonovi..."></textarea>
-      </div>
-
-      <!-- Kontakt polje -->
-      <div class="form-group">
-        <label for="contactInput">Tvoj kontakt (E-mail, Broj telefona ili Instagram @handle):</label>
-        <input type="text" id="contactInput" name="kontakt" placeholder="npr. email@domen.rs ili 0601234567" required>
+        <label for="customNotes">Opiši temu, povod, poklon ili posebne želje za dizajn:</label>
+        <textarea id="customNotes" name="zelje" rows="3" placeholder="npr. Šta planirate da stavite na mesto za poklon, posebna posveta, stil..."></textarea>
       </div>
 
       <!-- Prikaz cene -->
@@ -334,60 +312,69 @@
         <div class="price-title">Okvirna cena konfiguracije</div>
         <div class="price-val" id="priceDisplay">2.800 RSD</div>
       </div>
-      <!-- NOVO JEDINSTVENO DUGME: -->
-      <button type="button" class="submit-btn" style="background: #25d366; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="sendViaWhatsApp()">
+
+      <button type="button" class="submit-btn" onclick="sendViaWhatsApp()">
         <span>Pošalji upit na WhatsApp</span> 💬
       </button>
- </form>
+    </form>
   </div>
 </div>
 
 <script>
   let currentPackage = 'empty';
 
-  // Matrica cena po veličinama i paketima
+  // Nazivi paketa
+  const packageTitles = {
+    empty: 'Prazna BUM kutija',
+    sweets_gift: 'BUM kutija sa slatkišima i mestom za poklon',
+    only_sweets: 'BUM kutija samo sa slatkišima',
+    custom_gift: 'Personalizovana kutija sa poklonom'
+  };
+
+  // Matrica cena po veličinama (S, M, L)
   const priceCatalog = {
     empty: {
       S: 2400,
       M: 2800,
       L: 3400
     },
-    sweets: {
+    sweets_gift: {
+      S: 3600,
+      M: 4200,
+      L: 4900
+    },
+    only_sweets: {
       S: 3800,
       M: 4500,
       L: 5200
     },
-    full: {
-      S: 'Na upit (od ~5.000 RSD)',
+    custom_gift: {
+      S: 'Na upit (od ~4.800 RSD)',
       M: 'Na upit (od ~5.800 RSD)',
-      L: 'Na upit (od ~6.500 RSD)'
+      L: 'Na upit (od ~6.800 RSD)'
     }
   };
 
   function switchPackage(pkg) {
     currentPackage = pkg;
     
-    // Vizuelna promena aktivnog taba
+    // Vizuelno označavanje aktivnog taba
     const tabs = document.querySelectorAll('.tab-btn');
+    const order = ['empty', 'sweets_gift', 'only_sweets', 'custom_gift'];
     tabs.forEach((tab, index) => {
-      tab.classList.toggle('active', 
-        (pkg === 'empty' && index === 0) || 
-        (pkg === 'sweets' && index === 1) || 
-        (pkg === 'full' && index === 2)
-      );
+      tab.classList.toggle('active', order[index] === pkg);
     });
 
-    // Prikaz/sakrivanje specifičnih polja
-    document.getElementById('sweetsGroup').style.display = (pkg === 'sweets' || pkg === 'full') ? 'block' : 'none';
-    document.getElementById('customNotesGroup').style.display = (pkg === 'full') ? 'block' : 'none';
+    // Prikaz/sakrivanje opcija za slatkiše
+    const showSweets = (pkg === 'sweets_gift' || pkg === 'only_sweets' || pkg === 'custom_gift');
+    document.getElementById('sweetsGroup').style.display = showSweets ? 'block' : 'none';
 
-    // Ažuriranje naziva paketa u skrivenom inputu
-    const names = {
-      empty: 'Prazna kutija',
-      sweets: 'Kutija sa slatkišima',
-      full: 'Personalizovani full paket'
-    };
-    document.getElementById('packageInput').value = names[pkg];
+    // Prikaz/sakrivanje polja za želje i poklon
+    const showNotes = (pkg === 'sweets_gift' || pkg === 'custom_gift');
+    document.getElementById('customNotesGroup').style.display = showNotes ? 'block' : 'none';
+
+    // Ažuriranje naziva
+    document.getElementById('packageInput').value = packageTitles[pkg];
 
     calculatePrice();
   }
@@ -403,59 +390,46 @@
     }
   }
 
-      function sendViaWhatsApp() {
-    // Tvoj broj telefona s međunarodnim kodom (bez znaka + i razmaka)
+  function sendViaWhatsApp() {
+    // Broj telefona s međunarodnim kodom (bez znaka + i razmaka)
     const phone = "381644667485"; 
 
     const pkg = document.getElementById('packageInput').value;
     const size = document.getElementById('sizeSelect').value;
-    const color = document.getElementById('colorSelect').value;
+    const color = document.getElementById('colorInput').value.trim() || 'Po dogovoru';
     const sides = document.getElementById('sidesSelect').value;
     const mechanism = document.getElementById('mechanismSelect').value;
-    const contact = document.getElementById('contactInput').value;
     const price = document.getElementById('priceDisplay').innerText;
-    const notes = document.getElementById('customNotes').value;
+    const notes = document.getElementById('customNotes').value.trim();
 
-    // Provjera unosa kontakta
-    if (!contact.trim()) {
-      alert("Molimo unesite vaš kontakt (ime ili broj) prije slanja.");
-      document.getElementById('contactInput').focus();
-      return;
-    }
-
-    // Prikupljanje označenih slatkiša ako je odabran taj paket
+    // Sakupljanje odabranih slatkiša
     let sweetsList = [];
-    if (currentPackage === 'sweets' || currentPackage === 'full') {
+    if (currentPackage !== 'empty') {
       document.querySelectorAll('input[name="slatkisi"]:checked').forEach(el => {
         sweetsList.push(el.value);
       });
     }
 
     // Formatiranje poruke za WhatsApp
-    let text = `Pozdrav! Želim poslati upit za Explosion Box 🎁\n\n` +
+    let text = `Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n` +
                `*Paket:* ${pkg}\n` +
                `*Veličina:* ${size}\n` +
-               `*Boja:* ${color}\n` +
-               `*Stranice:* ${sides}\n` +
+               `*Željena boja:* ${color}\n` +
+               `*Stil stranica:* ${sides}\n` +
                `*Mehanizam:* ${mechanism}\n` +
-               `*Okvirna cijena:* ${price}\n` +
-               `*Kontakt kupca:* ${contact}`;
+               `*Okvirna cena:* ${price}`;
 
     if (sweetsList.length > 0) {
-      text += `\n*Odabrani slatkiši:* ${sweetsList.join(', ')}`;
+      text += `\n*Izabrani slatkiši:* ${sweetsList.join(', ')}`;
     }
 
-    if (currentPackage === 'full' && notes.trim() !== '') {
-      text += `\n*Posebne želje / tema:* ${notes.trim()}`;
+    if (notes !== '') {
+      text += `\n*Posebne želje / Poklon:* ${notes}`;
     }
 
-    // Otvaranje WhatsApp poveznice
+    // Otvaranje WhatsApp-a
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
-  }
-
-
-    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
   }
 
   // Inicijalni proračun na učitavanju
