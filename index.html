@@ -1,326 +1,349 @@
-```html
 <!DOCTYPE html>
 <html lang="sr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM Box - Eksplodirajuće Kutije Iznenađenja</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>BUM KUTIJE | Custom Pokloni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .gold-gradient { background: linear-gradient(135deg, #f59e0b, #d97706); }
-    .card-shadow { box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); }
+    :root {
+      --bg: #0b0914;
+      --card-bg: #151124;
+      --card-border: #2b2244;
+      --accent: #9333ea;
+      --accent-light: #c084fc;
+      --accent-hover: #7e22ce;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --silver: #cbd5e1;
+      --input-bg: #0e0a1a;
+      --success: #25d366;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+      background-image: radial-gradient(circle at top, rgba(147, 51, 234, 0.15) 0%, transparent 60%);
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+
+    .badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent-light);
+      background: rgba(147, 51, 234, 0.12);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      display: inline-block;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 25px 0 20px;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent-light);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(147, 51, 234, 0.35);
+    }
+
+    .box-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--silver);
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      border-color: var(--accent-light);
+    }
+
+    /* Kartice za izbor stila stranica sa crtežima */
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .style-option {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .style-option:hover {
+      border-color: var(--accent-light);
+    }
+
+    .style-option.selected {
+      border-color: var(--accent-light);
+      background: rgba(147, 51, 234, 0.18);
+      box-shadow: 0 0 0 1px var(--accent-light);
+    }
+
+    .style-preview {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .style-preview svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .style-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      background: var(--input-bg);
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .checkbox-item input {
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .price-box {
+      background: rgba(147, 51, 234, 0.08);
+      border: 1px dashed var(--accent-light);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin: 25px 0 20px;
+    }
+
+    .price-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .price-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #25d366;
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .submit-btn:hover {
+      background: #20ba59;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    @media (max-width: 600px) {
+      .tabs, .style-grid, .checkbox-group {
+        grid-template-columns: 1fr;
+      }
+      .box-card {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+<body>
 
-  <div class="max-w-3xl mx-auto bg-white rounded-3xl card-shadow border border-slate-100 overflow-hidden">
-    
-    <!-- Hero / Header -->
-    <div class="bg-slate-900 text-white p-6 sm:p-10 relative overflow-hidden">
-      <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="inline-block px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
-        Ručna Izrada • BUM Efekat
-      </div>
-      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Konfiguriši svoj BUM Box</h1>
-      <p class="text-slate-300 mt-2 text-sm sm:text-base max-w-xl">
-        Izaberi tip kutije, ojačanja padajućih stranica sa slatkišima i pošalji direktan upit na WhatsApp bez posrednika.
-      </p>
-    </div>
+<div class="container">
+  <header>
+    <div class="badge">GIFT SHOP</div>
+    <h1>BUM KUTIJA</h1>
+    <p class="subtitle">Izaberi svoju konfiguraciju, prilagodi detalje i pošalji upit.</p>
+  </header>
 
-    <!-- Forma -->
-    <form id="orderForm" class="p-6 sm:p-10 space-y-8" onsubmit="sendToWhatsApp(event)">
-      
-      <!-- 1. Izbor modela kutije -->
-      <section class="space-y-4">
-        <label class="block text-base font-bold text-slate-900">
-          1. Izaberi tip BUM Box kutije
-        </label>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="boxTypeGrid">
-          
-          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-amber-400 transition-all bg-white has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
-            <input type="radio" name="boxType" value="Kutija sa Slatkišima" checked onchange="toggleBoxTypeOptions()" class="sr-only">
-            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Najpopularnije</span>
-            <span class="font-bold text-slate-900 text-base">Kutija sa Slatkišima</span>
-            <span class="text-xs text-slate-500 mt-1">4 slatkiša na stranicama + unutrašnji čep sa skrivenom bombonjerom</span>
-          </label>
-
-          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-amber-400 transition-all bg-white has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
-            <input type="radio" name="boxType" value="Serum & Kozmetika Box" onchange="toggleBoxTypeOptions()" class="sr-only">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Elegancija</span>
-            <span class="font-bold text-slate-900 text-base">Serum & Kozmetika Box</span>
-            <span class="text-xs text-slate-500 mt-1">Čep platforma prilagođena za parfem ili bočicu seruma</span>
-          </label>
-
-          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-amber-400 transition-all bg-white has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
-            <input type="radio" name="boxType" value="Pop-Up Leptirovi & Kocke" onchange="toggleBoxTypeOptions()" class="sr-only">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Eksplozija</span>
-            <span class="font-bold text-slate-900 text-base">Pop-Up Leptirovi & Kocke</span>
-            <span class="text-xs text-slate-500 mt-1">Mehanizam sa skočnim kockama i letećim leptirovima</span>
-          </label>
-
-          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-amber-400 transition-all bg-white has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/30">
-            <input type="radio" name="boxType" value="Personalizovana Kutija (Posebna želja)" onchange="toggleBoxTypeOptions()" class="sr-only">
-            <span class="text-xs font-bold uppercase tracking-wider text-purple-600 mb-1">Unikatno</span>
-            <span class="font-bold text-slate-900 text-base">Personalizovana Kutija</span>
-            <span class="text-xs text-slate-500 mt-1">Poseban poklon po vašem opisu, poruke i fotografije</span>
-          </label>
-
-        </div>
-      </section>
-
-      <!-- 2. Veličina za kutiju sa slatkišima (2 gramaže/kapaciteta ispod čepa) -->
-      <section id="sweetBoxSizes" class="space-y-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
-        <div>
-          <label class="block text-sm font-bold text-slate-900">
-            Veličina kutije i gramaža ispod čepa
-          </label>
-          <p class="text-xs text-slate-500 mt-0.5">Ispod skrivenog čepa staje bombonjera/slatkiši u sledećim dimenzijama:</p>
-        </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label class="p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:ring-1 has-[:checked]:ring-amber-500 flex flex-col">
-            <input type="radio" name="sweetSize" value="Midi (15x15x15 cm) - za ~100g do 150g" checked class="sr-only">
-            <span class="font-bold text-slate-800 text-sm">Midi BUM (15 × 15 × 15 cm)</span>
-            <span class="text-xs text-slate-500 mt-1">Čep: 9×9×6 cm • Za pakovanja ~100g do 150g (npr. Raffaello T15, Ferrero T8)</span>
-          </label>
-
-          <label class="p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:ring-1 has-[:checked]:ring-amber-500 flex flex-col">
-            <input type="radio" name="sweetSize" value="Maxi (18x18x18 cm) - za ~200g do 250g" class="sr-only">
-            <span class="font-bold text-slate-800 text-sm">Maxi BUM (18 × 18 × 18 cm)</span>
-            <span class="text-xs text-slate-500 mt-1">Čep: 11×11×8 cm • Za veće bombonjere ~200g do 250g (npr. Ferrero T16, Lindt Lindor)</span>
-          </label>
-        </div>
-      </section>
-
-      <!-- 3. Željena boja -->
-      <section class="space-y-2">
-        <label for="boxColor" class="block text-sm font-bold text-slate-900">
-          Željena boja
-        </label>
-        <div class="relative">
-          <input 
-            type="text" 
-            id="boxColor" 
-            name="boxColor" 
-            required 
-            placeholder="crna, crvena, ljubičasta, kraljevsko plava, smaragd zelena..."
-            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm placeholder:text-slate-400"
-          >
-        </div>
-      </section>
-
-      <!-- 4. Stil bočnih ivica (4 opcije sa vizuelnim SVG prikazom) -->
-      <section class="space-y-4">
-        <div>
-          <label class="block text-sm font-bold text-slate-900">
-            Stil bočnih ojačanja za 4 slatkiša
-          </label>
-          <p class="text-xs text-slate-500 mt-0.5">Sva ojačanja čuvaju stranicu od uvijanja i obezbeđuju jednaku debljinu:</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          
-          <!-- Opcija 1: Pismo -->
-          <label class="flex items-center gap-3.5 p-3.5 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-300 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/20 transition-all">
-            <input type="radio" name="edgeStyle" value="Pismo (Klasičan koverat preklop)" checked class="sr-only">
-            <div class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
-              <svg viewBox="0 0 48 48" class="w-9 h-9 stroke-amber-600 fill-none stroke-[2.2]">
-                <rect x="6" y="6" width="36" height="36" rx="4" />
-                <path d="M6 6 L24 24 L42 6" />
-                <circle cx="24" cy="14" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="14" cy="28" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="34" cy="28" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="24" cy="36" r="2.5" class="fill-amber-500 stroke-none" />
-              </svg>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-800 text-sm">Pismo</span>
-              <span class="block text-xs text-slate-500">Klasični trouglasti koverat preklop sa 4 pozicije</span>
-            </div>
-          </label>
-
-          <!-- Opcija 2: Zvezda (Dijagonalno pismo) -->
-          <label class="flex items-center gap-3.5 p-3.5 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-300 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/20 transition-all">
-            <input type="radio" name="edgeStyle" value="Zvezda (Dijagonalno pismo sa 4 trougla)" class="sr-only">
-            <div class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
-              <svg viewBox="0 0 48 48" class="w-9 h-9 stroke-amber-600 fill-none stroke-[2.2]">
-                <rect x="6" y="6" width="36" height="36" rx="4" />
-                <path d="M6 6 L24 24 L42 6" />
-                <path d="M6 42 L24 24 L42 42" />
-                <path d="M6 6 L24 24 L6 42" />
-                <path d="M42 6 L24 24 L42 42" />
-                <circle cx="24" cy="12" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="24" cy="36" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="12" cy="24" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="36" cy="24" r="2.2" class="fill-amber-500 stroke-none" />
-              </svg>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-800 text-sm">Zvezda</span>
-              <span class="block text-xs text-slate-500">Dijagonalno pismo od 4 zategnuta trougla</span>
-            </div>
-          </label>
-
-          <!-- Opcija 3: X Greda -->
-          <label class="flex items-center gap-3.5 p-3.5 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-300 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/20 transition-all">
-            <input type="radio" name="edgeStyle" value="X Greda (Dijagonalni ukršteni profil)" class="sr-only">
-            <div class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
-              <svg viewBox="0 0 48 48" class="w-9 h-9 stroke-amber-600 fill-none stroke-[2.2]">
-                <rect x="6" y="6" width="36" height="36" rx="4" />
-                <line x1="8" y1="8" x2="40" y2="40" />
-                <line x1="40" y1="8" x2="8" y2="40" />
-                <circle cx="24" cy="11" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="11" cy="24" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="37" cy="24" r="2.5" class="fill-amber-500 stroke-none" />
-                <circle cx="24" cy="37" r="2.5" class="fill-amber-500 stroke-none" />
-              </svg>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-800 text-sm">X Greda</span>
-              <span class="block text-xs text-slate-500">Dijagonalna ukrštena rebra u uglovima</span>
-            </div>
-          </label>
-
-          <!-- Opcija 4: Stepenik -->
-          <label class="flex items-center gap-3.5 p-3.5 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-300 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/20 transition-all">
-            <input type="radio" name="edgeStyle" value="Stepenik (Dijagonalni cik-cak raster)" class="sr-only">
-            <div class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200">
-              <svg viewBox="0 0 48 48" class="w-9 h-9 stroke-amber-600 fill-none stroke-[2.2]">
-                <rect x="6" y="6" width="36" height="36" rx="4" />
-                <path d="M10 38 L18 38 L18 30 L26 30 L26 22 L34 22 L34 14 L40 14" />
-                <circle cx="14" cy="34" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="22" cy="26" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="30" cy="18" r="2.2" class="fill-amber-500 stroke-none" />
-                <circle cx="37" cy="10" r="2.2" class="fill-amber-500 stroke-none" />
-              </svg>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-800 text-sm">Stepenik</span>
-              <span class="block text-xs text-slate-500">Dijagonalni cik-cak profil koji uokviruje kuglice</span>
-            </div>
-          </label>
-
-        </div>
-      </section>
-
-      <!-- 5. Izbor komadnih slatkiša (Dostupni u Maxi ponudi) -->
-      <section class="space-y-3">
-        <label for="candyChoice" class="block text-sm font-bold text-slate-900">
-          Izbor luksuznih komadnih slatkiša za stranice
-        </label>
-        <select 
-          id="candyChoice" 
-          name="candyChoice"
-          class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm bg-white"
-        >
-          <option value="Ferrero Rocher (Zlatna lešnik kugla)">Ferrero Rocher (Zlatne lešnik kugle)</option>
-          <option value="Raffaello (Kokos i badem)">Raffaello (Hrskavi kokos i badem)</option>
-          <option value="Kombinacija (2x Ferrero + 2x Raffaello)">Kombinacija (2x Ferrero + 2x Raffaello)</option>
-          <option value="Lindt Lindor (Švajcarske praline)">Lindt Lindor (Praline od fine švajcarske čokolade)</option>
-          <option value="Manner Mozart Kugle (Crna čokolada i marcipan)">Manner Mozart Kugle (Crna čokolada & marcipan)</option>
-        </select>
-      </section>
-
-      <!-- 6. Polje za opis (Vidljivo SAMO za 4. opciju - Personalizovanu kutiju) -->
-      <section id="customNotesSection" class="hidden space-y-2 p-5 rounded-2xl bg-purple-50/50 border border-purple-200">
-        <label for="customNotes" class="block text-sm font-bold text-purple-950">
-          Detaljan opis vaše personalizovane kutije
-        </label>
-        <p class="text-xs text-purple-700 mb-2">
-          Opišite detalje povoda, tekst posveta, broj fotografija koje želite da ugradimo ili posebne želje za unutrašnjost.
-        </p>
-        <textarea 
-          id="customNotes" 
-          name="customNotes" 
-          rows="3" 
-          placeholder="Npr. Rođendanski poklon za devojku, želim da unutra bude mesto za 4 slike i crvenu mašnu..."
-          class="w-full px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white placeholder:text-purple-300"
-        ></textarea>
-      </section>
-
-      <!-- Dugme za slanje preko WhatsApp-a -->
-      <div class="pt-4">
-        <button 
-          type="submit" 
-          class="w-full gold-gradient hover:opacity-95 text-slate-950 font-bold py-4 px-6 rounded-2xl text-base shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2.5 transition-all transform active:scale-[0.99]"
-        >
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-          </svg>
-          Pošalji porudžbinu na WhatsApp
-        </button>
-      </div>
-
-    </form>
+  <!-- 4 opcije kutija -->
+  <div class="tabs">
+    <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna BUM kutija</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('sweets_gift')">2. BUM kutija sa slatkim stranama i mestom za poklon</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('only_sweets')">3. BUM kutija samo sa slatkišima</button>
+    <button type="button" class="tab-btn" onclick="switchPackage('custom_gift')">4. Personalizovana BUM kutija sa poklonom</button>
   </div>
 
-  <script>
-    // Dinamički prikaz polja u zavisnosti od tipa kutije
-    function toggleBoxTypeOptions() {
-      const selectedType = document.querySelector('input[name="boxType"]:checked').value;
-      const customNotesSection = document.getElementById('customNotesSection');
-      const customNotesField = document.getElementById('customNotes');
-      const sweetBoxSizes = document.getElementById('sweetBoxSizes');
+  <div class="box-card">
+    <form id="orderForm" onsubmit="event.preventDefault(); sendViaWhatsApp();">
+      <input type="hidden" name="paket" id="packageInput" value="Prazna BUM kutija">
+      <input type="hidden" name="stil_stranice" id="sideStyleInput" value="Zvezda">
 
-      // Polje za opis se prikazuje ISKLJUČIVO za 4. personalizovanu kutiju
-      if (selectedType.includes("Personalizovana")) {
-        customNotesSection.classList.remove('hidden');
-        customNotesField.setAttribute('required', 'required');
-      } else {
-        customNotesSection.classList.add('hidden');
-        customNotesField.removeAttribute('required');
-      }
+      <!-- Veličina kutije -->
+      <div class="form-group">
+        <label for="sizeSelect">Veličina kutije:</label>
+        <select id="sizeSelect" name="velicina" onchange="calculatePrice()">
+          <!-- Opcije se dinamički menjaju u zavisnosti od paketa -->
+        </select>
+      </div>
 
-      // Veličine sa gramažom za kutiju sa slatkišima
-      if (selectedType === "Kutija sa Slatkišima") {
-        sweetBoxSizes.classList.remove('hidden');
-      } else {
-        sweetBoxSizes.classList.add('hidden');
-      }
-    }
+      <!-- Željena boja -->
+      <div class="form-group">
+        <label for="colorInput">Željena boja:</label>
+        <input type="text" id="colorInput" name="boja" placeholder="crna, crvena, ljubicasta...">
+      </div>
 
-    // Generisanje strukturisane WhatsApp poruke
-    function sendToWhatsApp(event) {
-      event.preventDefault();
+      <!-- Stil bočnih ivica sa vizuelnim prikazom -->
+      <div class="form-group">
+        <label>Stil bočnih ivica (za slatkiše):</label>
+        <div class="style-grid">
+          
+          <!-- 1. Zvezda -->
+          <div class="style-option selected" onclick="selectStyle('Zvezda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M4 4L36 36M36 4L4 36" />
+                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Zvezda (koverat u centar)</span>
+          </div>
 
-      const boxType = document.querySelector('input[name="boxType"]:checked').value;
-      const boxColor = document.getElementById('boxColor').value.trim();
-      const edgeStyle = document.querySelector('input[name="edgeStyle"]:checked').value;
-      const candyChoice = document.getElementById('candyChoice').value;
-      
-      let message = `*Nova BUM Box Porudžbina* 🎁%0A%0A`;
-      message += `• *Tip kutije:* ${encodeURIComponent(boxType)}%0A`;
-      
-      if (boxType === "Kutija sa Slatkišima") {
-        const sweetSize = document.querySelector('input[name="sweetSize"]:checked').value;
-        message += `• *Veličina & gramaža:* ${encodeURIComponent(sweetSize)}%0A`;
-      }
+          <!-- 2. Dijagonalna zvezda -->
+          <div class="style-option" onclick="selectStyle('Dijagonalna zvezda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M20 4L36 20L20 36L4 20Z" />
+                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Dijagonalna zvezda</span>
+          </div>
 
-      message += `• *Željena boja:* ${encodeURIComponent(boxColor)}%0A`;
-      message += `• *Stil bočnih ojačanja:* ${encodeURIComponent(edgeStyle)}%0A`;
-      message += `• *Komadni slatkiši na stranicama:* ${encodeURIComponent(candyChoice)}%0A`;
-
-      if (boxType.includes("Personalizovana")) {
-        const customNotes = document.getElementById('customNotes').value.trim();
-        message += `• *Opis / Detalji:* ${encodeURIComponent(customNotes)}%0A`;
-      }
-
-      message += `%0A_Porudžbina generisana putem sajta._`;
-
-      // Vaš WhatsApp broj telefona (u formatu 3816XXXXXXXX bez + ili nula na početku)
-      const phoneNumber = "381600000000"; 
-      const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
-
-      window.open(whatsappURL, '_blank');
-    }
-
-    // Inicijalno pokretanje
-    toggleBoxTypeOptions();
-  </script>
-</body>
-</html>
-```
+          <!-- 3. X greda -->
+          <div class="style-option" onclick
