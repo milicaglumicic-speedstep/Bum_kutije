@@ -333,16 +333,23 @@
             <span class="style-text">Zvezda (koverat u centar)</span>
           </div>
 
-          <!-- 2. Dijagonalna zvezda -->
-          <div class="style-option" onclick="selectStyle('Dijagonalna zvezda', this)">
+          <!-- 2. Šestougao (pismo sa 6 trouglova) -->
+          <div class="style-option" onclick="selectStyle('Šestougao', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <path d="M20 4L36 20L20 36L4 20Z" />
-                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+                <!-- Šestougao sa 6 trouglova koji idu u centar -->
+                <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
+                <line x1="20" y1="20" x2="20" y2="6" />
+                <line x1="20" y1="20" x2="33" y2="13" />
+                <line x1="20" y1="20" x2="33" y2="27" />
+                <line x1="20" y1="20" x2="20" y2="34" />
+                <line x1="20" y1="20" x2="7" y2="27" />
+                <line x1="20" y1="20" x2="7" y2="13" />
+                <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
               </svg>
             </div>
-            <span class="style-text">Dijagonalna zvezda</span>
+            <span class="style-text">Šestougao (6 trouglova)</span>
           </div>
 
           <!-- 3. X greda -->
@@ -378,19 +385,19 @@
         </div>
       </div>
 
-      <!-- Mehanizam sa cenama prema poreklu materijala -->
+      <!-- Unutrašnji mehanizam - originalni nazivi -->
       <div class="form-group">
-        <label for="mechanismSelect">Unutrašnji mehanizam sa konfetama:</label>
+        <label for="mechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
         <select id="mechanismSelect" name="mehanizam" onchange="calculatePrice()">
-          <option value="cubes" selected>Iskačuće pop-up kocke (ručni rad od debljeg hamera)</option>
-          <option value="butterflies">Iskačući leteći leptirovi sa oprugom (+400 RSD)</option>
-          <option value="combo">Kombinovano: Kocke + Leptirovi (+700 RSD)</option>
+          <option value="cubes" selected>6 iskačućih pop-up kocki</option>
+          <option value="butterflies">6 iskačućih lestećih leteći leptirovi/option>
+          <option value="combo">Kombinovano (Kocke + Leptiri)</option>
         </select>
       </div>
 
       <!-- Slatkiši (uključujući Lindor i Mozart kugle) -->
       <div class="form-group" id="sweetsGroup" style="display: none;">
-        <label>Izaberi slatkiše za punjenje i stranice:</label>
+        <label>Izaberi slatkiše za punjenje i stranice (16 komada na stranicama):</label>
         <div class="checkbox-group">
           <label class="checkbox-item">
             <input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher
@@ -436,7 +443,10 @@
     custom_gift: 'Personalizovana BUM kutija sa poklonom'
   };
 
-  // Osnovne cene (kocke od hamera su uračunate u bazu)
+  // Osnovne cene:
+  // - Paket 1 (prazna): samo kutija i mehanizam kocki
+  // - Paket 2: kutija + 16 luksuznih slatkiša na bočnim stranicama (~1.200 RSD slatkiši) + mesto za tvoj poklon
+  // - Paket 3: kutija + 16 bočnih slatkiša + punjenje ispod čepa (100g-150g za Midi / 200g-250g za Maxi)
   const priceCatalog = {
     empty: {
       S: 2400,
@@ -444,13 +454,13 @@
       L: 3400
     },
     sweets_gift: {
-      S: 3600,
+      S: 3600, // Uračunato 16 slatkiša na stranicama
       M: 4200,
       L: 4900
     },
     only_sweets: {
-      M_SWEETS: 4300, // Za pakovanja 100g - 150g
-      L_SWEETS: 5200  // Za pakovanja 200g - 250g
+      M_SWEETS: 4800, // 16 slatkiša na stranama + 100-150g ispod čepa
+      L_SWEETS: 5800  // 16 slatkiša na stranama + 200-250g ispod čepa
     },
     custom_gift: {
       S: 'Na upit (od ~4.800 RSD)',
@@ -459,7 +469,7 @@
     }
   };
 
-  // Doplate za mehanizme
+  // Doplate za uvozne mehanizme sa AliExpressa
   const mechanismSurcharges = {
     cubes: 0,
     butterflies: 400,
@@ -471,7 +481,6 @@
     sizeSelect.innerHTML = '';
 
     if (currentPackage === 'only_sweets') {
-      // Tačno 2 veličine proračunate prema gramaži ispod čepa
       const opt1 = document.createElement('option');
       opt1.value = 'M_SWEETS';
       opt1.textContent = 'Midi (15 × 15 × 15 cm) — za pakovanja od 100g do 150g ispod čepa';
@@ -484,7 +493,6 @@
       sizeSelect.appendChild(opt1);
       sizeSelect.appendChild(opt2);
     } else {
-      // Standardne 3 veličine za ostale pakete
       const optS = document.createElement('option');
       optS.value = 'S';
       optS.textContent = 'S (10 × 10 × 10 cm) — Kompaktna';
