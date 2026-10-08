@@ -12,11 +12,258 @@
 <body>
 
 <div class="container">
-  <!-- Modularni SPA kontejner -->
-  <main id="appRoot"></main>
+
+  <!-- ==================== POČETNI EKRAN (HUB) ==================== -->
+  <div id="homeScreen">
+    <h1 class="main-title">KREATIVNA RADIONICA POKLONA</h1>
+    <p class="main-subtitle">Izaberi šta želiš da prilagodiš i poručiš:</p>
+
+    <div class="hub-grid">
+      <!-- Kartica 1: BUM KUTIJA (Eksplodirajući poklon sa satenskom mašnom) -->
+      <div class="hub-card bum" id="cardBum" onclick="showSection('bumView')">
+        <div class="gift-scene">
+          <div class="exploding-box">
+            <div class="box-lid">
+              <svg class="lid-bow" viewBox="0 0 60 42" fill="none">
+                <!-- Prava satenska mašna -->
+                <path d="M30 18 C18 6, 4 8, 7 20 C10 27, 22 22, 30 18 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1.2"/>
+                <path d="M26 18 C18 10, 8 11, 10 19 C12 23, 20 20, 26 18 Z" fill="#fef08a" opacity="0.6"/>
+                <path d="M30 18 C42 6, 56 8, 53 20 C50 27, 38 22, 30 18 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1.2"/>
+                <path d="M34 18 C42 10, 52 11, 50 19 C48 23, 40 20, 34 18 Z" fill="#fef08a" opacity="0.6"/>
+                <path d="M27 21 Q18 30 12 38 L19 36 Q25 29 28 22 Z" fill="#f59e0b"/>
+                <path d="M33 21 Q42 30 48 38 L41 36 Q35 29 32 22 Z" fill="#f59e0b"/>
+                <ellipse cx="30" cy="19" rx="5" ry="4" fill="#fde047" stroke="#b45309" stroke-width="1.2"/>
+              </svg>
+            </div>
+            <div class="box-base"></div>
+            <div class="box-wall wall-front"></div>
+            <div class="box-wall wall-back"></div>
+            <div class="box-wall wall-left"></div>
+            <div class="box-wall wall-right"></div>
+            <div class="box-pop-burst">
+              <div class="mini-cube"></div>
+              <div class="spark c-gold"></div>
+              <div class="spark c-blue"></div>
+              <div class="spark c-pink"></div>
+              <div class="spark c-green"></div>
+            </div>
+          </div>
+        </div>
+        <h2>BUM KUTIJA</h2>
+        <p class="hub-card-desc">Interaktivna eksplodirajuća poklon kutija ili ful paket</p>
+        <div class="hub-btn">Sklopi svoju BUM poklon kutiju →</div>
+      </div>
+
+      <!-- Kartica 2: PUNCH TORTA (Animirane svećice) -->
+      <div class="hub-card punch" id="cardPunch" onclick="showSection('punchView')">
+        <div class="cake-animated-box">
+          <div class="candles-row">
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+          </div>
+          <div class="cake-tier-top-neutral"></div>
+          <div class="cake-tier-bottom-neutral"></div>
+        </div>
+        <h2>PUNCH TORTA</h2>
+        <p class="hub-card-desc">Rođendanska interaktivna torta sa slatkišima i iznenađenjem</p>
+        <div class="hub-btn">Kreiraj Punch tortu →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STRANA 1: BUM KUTIJA ==================== -->
+  <div id="bumView" class="view-section">
+    <button class="back-nav" onclick="showSection('homeScreen')">← Nazad na izbor poklona</button>
+
+    <div class="box-card">
+      <h2 style="margin-bottom:12px;">BUM KUTIJA KONFIGURATOR</h2>
+      <div class="tabs" id="bumTabs">
+        <button class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
+        <button class="tab-btn" data-pkg="sweets_gift">2. Sa slatkim stranama</button>
+        <button class="tab-btn" data-pkg="only_sweets">3. Samo sa slatkišima</button>
+        <button class="tab-btn" data-pkg="custom_gift">4. Personalizovana (Bambu 3D)</button>
+      </div>
+
+      <div class="form-group">
+        <label for="bumSizeSelect">Veličina kutije:</label>
+        <select id="bumSizeSelect"></select>
+        <div id="bumGiftDimInfo" class="gift-info-box"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="bumColorInput">Željena boja hamera i detalja:</label>
+        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, teget...">
+      </div>
+
+      <div class="form-group">
+        <label>Stil bočnih ivica (za slatkiše):</label>
+        <div class="style-grid">
+          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M4 4L36 36M36 4L4 36" />
+                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Zvezda (koverat u centar)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('Šestougaonik', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
+                <line x1="20" y1="20" x2="20" y2="6" /><line x1="20" y1="20" x2="33" y2="13" />
+                <line x1="20" y1="20" x2="33" y2="27" /><line x1="20" y1="20" x2="20" y2="34" />
+                <line x1="20" y1="20" x2="7" y2="27" /><line x1="20" y1="20" x2="7" y2="13" />
+                <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Šestougaonik (6 trouglova)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
+                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
+                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">X greda (dijagonale)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('Stepenik', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M8 32H15V24H23V16H31V8" />
+                <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" /><circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" /><circle cx="27" cy="12" r="2.2" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">Stepenik (cik-cak kaskada)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
+        <select id="bumMechanismSelect">
+          <option value="cubes">6 iskačućih pop-up kocki</option>
+          <option value="butterflies">6 iskačućih letećih leptirova</option>
+          <option value="combo">Kombinovano (Kocke + Leptiri)</option>
+        </select>
+      </div>
+
+      <!-- Bambu Lab 3D print (Paket 4) -->
+      <div class="form-group" id="bambu3DSection" style="display:none; background:rgba(147,51,234,0.08); padding:16px; border-radius:10px; border:1px solid rgba(192,132,252,0.3);">
+        <div id="bambu3DContainer"></div>
+      </div>
+
+      <div class="form-group" id="bumSweetsGroup" style="display:none;">
+        <label>Izaberi slatkiše za stranice:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
+          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
+          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
+          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="customNotesGroup" style="display:none;">
+        <label for="bumNotes">Opis i posveta za 3D poklon / temu:</label>
+        <textarea id="bumNotes" rows="3" placeholder="Ime za privezak, natpis ili opis vašeg poklona..."></textarea>
+      </div>
+
+      <div class="price-box">
+        <div class="price-title">Kalkulisana cena BUM kutije</div>
+        <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
+      </div>
+
+      <button class="submit-btn" onclick="window.bumBox.sendWhatsApp()">Naruči BUM kutiju na WhatsApp 💬</button>
+    </div>
+  </div>
+
+  <!-- ==================== STRANA 2: PUNCH TORTA ==================== -->
+  <div id="punchView" class="view-section punch-theme">
+    <button class="back-nav" onclick="showSection('homeScreen')">← Nazad na izbor poklona</button>
+
+    <div class="box-card">
+      <h2 style="margin-bottom:12px;">PUNCH ROĐENDANSKA TORTA</h2>
+
+      <div class="form-group">
+        <label for="punchColorInput">Željena paleta / boja torte:</label>
+        <input type="text" id="punchColorInput" placeholder="npr. tirkizna, vanila-zlatna, menta zelena...">
+      </div>
+
+      <div class="form-group">
+        <label for="punchThemeInput">Tema i motiv torte (crtani lik / interesovanja):</label>
+        <input type="text" id="punchThemeInput" placeholder="npr. Bluey, Pepa Prase, Cars / Autići, Jednorozi, Paw Patrol...">
+      </div>
+
+      <div class="form-group">
+        <label for="punchHolesInput">Željeni broj pregrada za bušenje (krugova):</label>
+        <input type="number" id="punchHolesInput" value="16" min="6" max="50">
+        <div id="tierInfoBox" class="punch-info-box"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="sweetsPerHoleSelect">Broj slatkiša po jednoj pregradi:</label>
+        <select id="sweetsPerHoleSelect">
+          <option value="1">1 slatkiš po rupi (standardno)</option>
+          <option value="2" selected>2 slatkiša po rupi (bogatije)</option>
+          <option value="3">3 slatkiša po rupi (maksimalno)</option>
+        </select>
+      </div>
+
+      <!-- 7 slatkiša sa ograničenjem 1 do 4 -->
+      <div class="form-group">
+        <label>Izaberi 1 do 4 vrste slatkiša za punjenje:</label>
+        <div class="checkbox-group" id="punchSweetsGroup">
+          <label class="checkbox-item"><input type="checkbox" value="kinder_bueno" checked> Kinder Bueno (mini)</label>
+          <label class="checkbox-item"><input type="checkbox" value="kinder_cokoladica" checked> Kinder čokoladica</label>
+          <label class="checkbox-item"><input type="checkbox" value="lizalica" checked> Chupa Chups lizalica</label>
+          <label class="checkbox-item"><input type="checkbox" value="bananica"> Krem bananica</label>
+          <label class="checkbox-item"><input type="checkbox" value="sokic"> Sokić tetrapak (200ml)</label>
+          <label class="checkbox-item"><input type="checkbox" value="euroblokic"> Euroblokić</label>
+          <label class="checkbox-item"><input type="checkbox" value="najlepse_zeljice"> Najlepše željice</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Dodaci u pregradama:</label>
+        <div class="radio-card-group">
+          <div class="radio-card selected" id="fillOptSlatkisi" onclick="window.punchCake.setWithToys(false)">
+            <div style="font-weight:600; color:#fff;">🍬 Samo slatkiši</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Samo izabrani slatkiši u svakoj pregradi.</div>
+          </div>
+          <div class="radio-card" id="fillOptMix" onclick="window.punchCake.setWithToys(true)">
+            <div style="font-weight:600; color:#fff;">🎁 Slatkiši + Igračkice</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Slatkiš + tematski privezak, figurica ili narukvica (+70 RSD/rupi).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="punchNotes">Ime slavljenika i broj godina:</label>
+        <textarea id="punchNotes" rows="3" placeholder="npr. Luka, 6 godina. Zlatne zvezdice na vrhu..."></textarea>
+      </div>
+
+      <div class="price-box">
+        <div class="price-title">Kalkulisana cena Punch torte</div>
+        <div class="price-val" id="punchPriceDisplay">3.800 RSD</div>
+      </div>
+
+      <button class="submit-btn" onclick="window.punchCake.sendWhatsApp()">Naruči Punch tortu na WhatsApp 💬</button>
+    </div>
+  </div>
+
 </div>
 
-<!-- Učitavanje skripti -->
+<!-- Učitavanje skripti (radi pouzdano i lokalno i na GitHub Pages) -->
 <script src="js/database.js"></script>
 <script src="js/pricing-engine.js"></script>
 <script src="js/bum-box.js"></script>
