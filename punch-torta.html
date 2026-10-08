@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUNCH TORTA | Konfigurator</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="punch-theme">
+
+<div class="container">
+  <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
+
+  <div class="box-card">
+    <header class="section-title-wrap">
+      <h2>PUNCH ROĐENDANSKA TORTA</h2>
+      <p class="subtitle">Izaberi temu, boje, broj pregrada i 1 do 4 vrste omiljenih slatkiša.</p>
+    </header>
+
+    <form id="punchForm" onsubmit="event.preventDefault(); window.punchCake.sendWhatsApp();">
+      <!-- Željena paleta -->
+      <div class="form-group">
+        <label for="punchColorInput">Željena paleta / boja torte:</label>
+        <input type="text" id="punchColorInput" placeholder="npr. tirkizna, kraljevsko plava, vanila-zlatna, menta zelena...">
+      </div>
+
+      <!-- Tema i motiv -->
+      <div class="form-group">
+        <label for="punchThemeInput">Tema i motiv torte (crtani lik / interesovanja):</label>
+        <input type="text" id="punchThemeInput" placeholder="npr. Bluey, Pepa Prase, Cars / Autići, Jednorozi, Paw Patrol, Spiderman...">
+      </div>
+
+      <!-- Slobodan unos broja pregrada -->
+      <div class="form-group">
+        <label for="punchHolesInput">Željeni broj pregrada za bušenje (krugova):</label>
+        <input type="number" id="punchHolesInput" value="16" min="6" max="50">
+        <div id="tierInfoBox" class="punch-info-box"></div>
+      </div>
+
+      <!-- Broj slatkiša po rupi -->
+      <div class="form-group">
+        <label for="sweetsPerHoleSelect">Broj slatkiša po jednoj pregradi:</label>
+        <select id="sweetsPerHoleSelect">
+          <option value="1">1 slatkiš po rupi (standardno)</option>
+          <option value="2" selected>2 slatkiša po rupi (bogatije)</option>
+          <option value="3">3 slatkiša po rupi (maksimalno)</option>
+        </select>
+      </div>
+
+      <!-- Bira se 1 do 4 slatkiša -->
+      <div class="form-group">
+        <label>Izaberi 1 do 4 vrste slatkiša za punjenje:</label>
+        <div class="checkbox-group" id="punchSweetsGroup">
+          <label class="checkbox-item"><input type="checkbox" value="kinder_bueno" checked> Kinder Bueno (mini)</label>
+          <label class="checkbox-item"><input type="checkbox" value="kinder_cokoladica" checked> Kinder čokoladica</label>
+          <label class="checkbox-item"><input type="checkbox" value="lizalica" checked> Chupa Chups lizalica</label>
+          <label class="checkbox-item"><input type="checkbox" value="bananica"> Krem bananica</label>
+          <label class="checkbox-item"><input type="checkbox" value="sokic"> Sokić tetrapak (200ml)</label>
+          <label class="checkbox-item"><input type="checkbox" value="euroblokic"> Euroblokić</label>
+          <label class="checkbox-item"><input type="checkbox" value="najlepse_zeljice"> Najlepše željice</label>
+        </div>
+      </div>
+
+      <!-- Dodaci u pregradama -->
+      <div class="form-group">
+        <label>Dodaci u pregradama:</label>
+        <div class="radio-card-group">
+          <div class="radio-card selected" id="fillOptSlatkisi" onclick="window.punchCake.setWithToys(false)">
+            <div style="font-weight:600; color:#fff;">🍬 Samo slatkiši</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Samo izabrani slatkiši u svakoj pregradi.</div>
+          </div>
+          <div class="radio-card" id="fillOptMix" onclick="window.punchCake.setWithToys(true)">
+            <div style="font-weight:600; color:#fff;">🎁 Slatkiši + Igračkice</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Slatkiš + tematski privezak, figurica ili narukvica (+70 RSD/rupi).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Podaci o slavljeniku -->
+      <div class="form-group">
+        <label for="punchNotes">Ime slavljenika i broj godina:</label>
+        <textarea id="punchNotes" rows="3" placeholder="npr. Luka, 6 godina. Zlatne zvezdice na vrhu..."></textarea>
+      </div>
+
+      <!-- Cena -->
+      <div class="price-box">
+        <div class="price-title">Kalkulisana cena Punch torte</div>
+        <div class="price-val" id="punchPriceDisplay">3.800 RSD</div>
+      </div>
+
+      <button type="submit" class="submit-btn">Naruči Punch tortu na WhatsApp 💬</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/database.js"></script>
+<script src="js/pricing-engine.js"></script>
+<script src="js/punch-cake.js"></script>
+</body>
+</html>

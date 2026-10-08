@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUM KUTIJA | Konfigurator</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
+
+  <div class="box-card">
+    <header class="section-title-wrap">
+      <h2>BUM KUTIJA KONFIGURATOR</h2>
+      <p class="subtitle">Izaberi veličinu, mehanizam, stranice i slatkiše ili Bambu Lab 3D poklon.</p>
+    </header>
+
+    <div class="tabs" id="bumTabs">
+      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
+      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. Sa slatkim stranama</button>
+      <button type="button" class="tab-btn" data-pkg="only_sweets">3. Samo sa slatkišima</button>
+      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovana (Bambu 3D)</button>
+    </div>
+
+    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox.sendWhatsApp();">
+      <!-- Veličina kutije -->
+      <div class="form-group">
+        <label for="bumSizeSelect">Veličina kutije:</label>
+        <select id="bumSizeSelect"></select>
+        <div id="bumGiftDimInfo" class="gift-info-box"></div>
+      </div>
+
+      <!-- Željena boja -->
+      <div class="form-group">
+        <label for="bumColorInput">Željena boja hamera i detalja:</label>
+        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, kraljevsko plava...">
+      </div>
+
+      <!-- Stil bočnih ivica -->
+      <div class="form-group">
+        <label>Stil bočnih ivica (za slatkiše):</label>
+        <div class="style-grid">
+          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M4 4L36 36M36 4L4 36" />
+                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Zvezda (koverat u centar)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('Šestougaonik', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
+                <line x1="20" y1="20" x2="20" y2="6" /><line x1="20" y1="20" x2="33" y2="13" /><line x1="20" y1="20" x2="33" y2="27" /><line x1="20" y1="20" x2="20" y2="34" /><line x1="20" y1="20" x2="7" y2="27" /><line x1="20" y1="20" x2="7" y2="13" />
+                <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Šestougaonik (6 trouglova)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
+                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
+                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">X greda (dijagonale)</span>
+          </div>
+
+          <div class="style-option" onclick="window.bumBox.selectStyle('Stepenik', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M8 32H15V24H23V16H31V8" />
+                <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" /><circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" /><circle cx="27" cy="12" r="2.2" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">Stepenik (cik-cak kaskada)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mehanizam -->
+      <div class="form-group">
+        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
+        <select id="bumMechanismSelect">
+          <option value="cubes">6 iskačućih pop-up kocki</option>
+          <option value="butterflies">6 iskačućih letećih leptirova</option>
+          <option value="combo">Kombinovano (Kocke + Leptiri)</option>
+        </select>
+      </div>
+
+      <!-- Bambu Lab 3D print sekcija (samo za 4. paket) -->
+      <div class="form-group" id="bambu3DSection" style="display:none; background:rgba(147,51,234,0.08); padding:16px; border-radius:10px; border:1px solid rgba(192,132,252,0.3);">
+        <div id="bambu3DContainer"></div>
+      </div>
+
+      <!-- Slatkiši za stranice -->
+      <div class="form-group" id="bumSweetsGroup" style="display:none;">
+        <label>Izaberi slatkiše za stranice:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
+          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
+          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
+          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
+        </div>
+      </div>
+
+      <!-- Polje za opis i posvetu (Paket 4) -->
+      <div class="form-group" id="customNotesGroup" style="display:none;">
+        <label for="bumNotes">Opis i posveta za 3D poklon / temu:</label>
+        <textarea id="bumNotes" rows="3" placeholder="Ime za privezak, natpis ili opis vašeg poklona..."></textarea>
+      </div>
+
+      <!-- Prikaz cene -->
+      <div class="price-box">
+        <div class="price-title">Kalkulisana cena BUM kutije</div>
+        <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
+      </div>
+
+      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/database.js"></script>
+<script src="js/pricing-engine.js"></script>
+<script src="js/bum-box.js"></script>
+</body>
+</html>
