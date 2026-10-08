@@ -12,26 +12,44 @@
 <body>
 
 <div class="container">
+        <!-- POČETNI EKRAN (HUB) -->
+    <div id="homeScreen">
+      <h1 class="main-title">KREATIVNA RADIONICA POKLONA</h1>
+      <p class="main-subtitle">Izaberi šta želiš da konfigurišeš i prilagodiš:</p>
 
-  <!-- POČETNI EKRAN (HUB) -->
-  <div id="homeScreen">
-    <h1 class="main-title">KREATIVNA RADIONICA POKLONA</h1>
-    <p class="main-subtitle">Izaberi šta želiš da konfigurišeš i prilagodiš:</p>
-
-    <div class="hub-grid">
-      <div class="hub-card bum" onclick="showSection('bumView')">
-        <div class="gift-scene">
-          <div class="gift-cube">
-            <div class="cube-face face-front"></div><div class="cube-face face-back"></div>
-            <div class="cube-face face-right"></div><div class="cube-face face-left"></div>
-            <div class="cube-face face-top"></div><div class="cube-face face-bottom"></div>
-            <div class="bow"></div>
+      <div class="hub-grid">
+        <!-- Kartica 1: BUM KUTIJA -->
+        <div class="hub-card bum" id="cardBum" onclick="showSection('bumView')">
+          <div class="gift-scene">
+            <div class="gift-cube">
+              <div class="cube-face face-front"></div><div class="cube-face face-back"></div>
+              <div class="cube-face face-right"></div><div class="cube-face face-left"></div>
+              <div class="cube-face face-top"></div><div class="cube-face face-bottom"></div>
+              <div class="bow"></div>
+            </div>
           </div>
+          <h2>BUM KUTIJA</h2>
+          <p class="hub-card-desc">Interaktivna eksplodirajuća poklon kutija ili ful paket</p>
+          <div class="hub-btn">Sklopi BUM kutiju →</div>
         </div>
-        <h2>BUM KUTIJA</h2>
-        <p>Eksplodirajuća kutija sa Bambu Lab 3D poklonima, slatkišima i mehanizmima.</p>
-        <div class="hub-btn">Sklopi BUM kutiju →</div>
+
+        <!-- Kartica 2: PUNCH TORTA -->
+        <div class="hub-card punch" id="cardPunch" onclick="showSection('punchView')">
+          <div class="cake-animated-box">
+            <div class="candles-row">
+              <div class="cake-candle"><div class="cake-flame"></div></div>
+              <div class="cake-candle"><div class="cake-flame"></div></div>
+              <div class="cake-candle"><div class="cake-flame"></div></div>
+            </div>
+            <div class="cake-tier-top-neutral"></div>
+            <div class="cake-tier-bottom-neutral"></div>
+          </div>
+          <h2>PUNCH TORTA</h2>
+          <p class="hub-card-desc">Rođendanska interaktivna torta sa slatkišima i iznenađenjem</p>
+          <div class="hub-btn">Kreiraj Punch tortu →</div>
+        </div>
       </div>
+    </div>
 
       <div class="hub-card punch" onclick="showSection('punchView')">
         <div class="cake-animated-box">
@@ -237,7 +255,13 @@
   </div>
 
 </div>
-
-<script type="module" src="js/app.js"></script>
+<!-- Modularne skripte bez CORS blokade na računaru i GitHub Pages -->
+<script src="js/database.js"></script>
+<script src="js/pricing-engine.js"></script>
+<script src="js/bum-box.js"></script>
+<script src="js/punch-cake.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
 </body>
 </html>
