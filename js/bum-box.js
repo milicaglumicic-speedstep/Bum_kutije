@@ -2,10 +2,10 @@ window.bumBox = {
   currentPackage: 'empty',
   selectedStyle: 'Zvezda',
   giftDimensions: {
-    Kompaktna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~6 × 6 cm (visina do 4.5 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se po 1 čokoladica (ukupno 4).</small>',
-    Standardna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~9 × 9 cm (visina do 8 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
-    Velika: '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 cm (visina do 10 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
-    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se tačno po meri vašeg 3D printovanog modela ili poklona (do 20 × 20 × 20 cm).'
+     '📏 <strong>Dimenzije mesta za poklon:</strong> ~6 × 6 cm (visina do 4.5 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se po 1 čokoladica (ukupno 4).</small>',
+    '📏 <strong>Dimenzije mesta za poklon:</strong> ~9 × 9 cm (visina do 8 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
+    '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 cm (visina do 10 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
+    '✨ <strong>Mesto za poklon:</strong> Izrađuje se tačno po meri vašeg poklona (do 20 × 20 × 20 cm).'
   },
   init() {
     this.render3DOptions();
@@ -59,11 +59,11 @@ window.bumBox = {
     if (!select) return;
     select.innerHTML = '';
     if (this.currentPackage === 'custom_gift') {
-      select.innerHTML = '<option value="CUSTOM">Prilagođava se 3D poklonu (do 20 × 20 × 20 cm)</option>';
+      select.innerHTML = '<option value="CUSTOM">Prilagođava se poklonu (do 20 × 20 × 20 cm)</option>';
     } else if (this.currentPackage === 'only_sweets') {
-      select.innerHTML = '<option value="Standardna">Midi (15 × 15 × 15 cm) — 150g ispod čepa</option><option value="Velika">Maxi (18 × 18 × 18 cm) — 250g ispod čepa</option>';
+      select.innerHTML = '<option value="Standardna">15 × 15 × 15 cm oko 150g ispod čepa</option><option value="Velika">18 × 18 × 18 cm oko.250g ispod čepa</option>';
     } else {
-      select.innerHTML = '<option value="Kompaktna">Kompaktna (10 × 10 × 10 cm)</option><option value="Standardna" selected>Standardna (15 × 15 × 15 cm)</option><option value="Velika">Velika (18 × 18 × 18 cm)</option>';
+      select.innerHTML = '<option value="Kompaktna">10 × 10 × 10 cm</option><option value="Standardna" selected>15 × 15 × 15 cm</option><option value="Velika">18 × 18 × 18 cm</option>';
     }
     this.updateGiftInfo();
   },
