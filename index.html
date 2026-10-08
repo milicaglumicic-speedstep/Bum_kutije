@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM KUTIJE | Sklopi Svoju Kutiju</title>
+  <title>BUM KUTIJE & PUNCH TORTE | Kreativni Pokloni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,6 +15,8 @@
       --accent: #9333ea;
       --accent-light: #c084fc;
       --accent-hover: #7e22ce;
+      --punch-accent: #ec4899;
+      --punch-light: #f472b6;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --silver: #cbd5e1;
@@ -35,55 +37,278 @@
       line-height: 1.6;
       padding: 24px 16px 60px;
       background-image: radial-gradient(circle at top, rgba(147, 51, 234, 0.15) 0%, transparent 60%);
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 760px;
+      max-width: 820px;
       margin: 0 auto;
     }
 
-    header {
+    /* Dugme za povratak na početni izbor */
+    .back-nav {
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      color: var(--silver);
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .back-nav:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: var(--accent-light);
+    }
+
+    /* POČETNI EKRAN (HUB) */
+    #homeScreen {
       text-align: center;
       padding: 30px 0 20px;
     }
 
-    /* Novi interaktivni bedž */
-    .badge-interactive {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.82rem;
+    .main-title {
+      font-size: 2.6rem;
+      font-weight: 800;
       color: #ffffff;
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.35), rgba(192, 132, 252, 0.15));
-      padding: 8px 18px;
-      border-radius: 9999px;
-      border: 1px solid var(--accent-light);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 0 16px rgba(192, 132, 252, 0.25);
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background: #25d366;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #25d366;
-      display: inline-block;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       letter-spacing: -0.5px;
     }
 
-    p.subtitle {
+    .main-subtitle {
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: 1.1rem;
+      max-width: 580px;
+      margin: 0 auto 35px;
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .hub-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 35px 24px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: transparent;
+      transition: background 0.3s ease;
+    }
+
+    .hub-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .hub-card.bum:hover {
+      border-color: var(--accent-light);
+    }
+    .hub-card.bum:hover::before {
+      background: var(--accent-light);
+    }
+
+    .hub-card.punch:hover {
+      border-color: var(--punch-light);
+    }
+    .hub-card.punch:hover::before {
+      background: var(--punch-light);
+    }
+
+    .hub-card h2 {
+      font-size: 1.5rem;
+      margin: 18px 0 8px;
+      color: #fff;
+    }
+
+    .hub-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .hub-btn {
+      margin-top: auto;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .hub-card.bum .hub-btn {
+      background: rgba(147, 51, 234, 0.25);
+      border: 1px solid var(--accent-light);
+    }
+    .hub-card.bum:hover .hub-btn {
+      background: var(--accent);
+    }
+
+    .hub-card.punch .hub-btn {
+      background: rgba(236, 72, 153, 0.25);
+      border: 1px solid var(--punch-light);
+    }
+    .hub-card.punch:hover .hub-btn {
+      background: var(--punch-accent);
+    }
+
+    /* 3D Animacija poklona za BUM */
+    .gift-scene {
+      width: 64px;
+      height: 64px;
+      perspective: 350px;
+    }
+
+    .gift-cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateGift 6s infinite linear;
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #9333ea, #7e22ce);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .cube-face::before, .cube-face::after {
+      content: '';
+      position: absolute;
+      background: #f59e0b;
+      box-shadow: 0 0 4px rgba(245, 158, 11, 0.8);
+    }
+
+    .cube-face::before {
+      top: 0;
+      left: 22px;
+      width: 12px;
+      height: 100%;
+    }
+
+    .cube-face::after {
+      top: 22px;
+      left: 0;
+      width: 100%;
+      height: 12px;
+    }
+
+    .face-front  { transform: rotateY(0deg) translateZ(28px); }
+    .face-back   { transform: rotateY(180deg) translateZ(28px); }
+    .face-right  { transform: rotateY(90deg) translateZ(28px); }
+    .face-left   { transform: rotateY(-90deg) translateZ(28px); }
+    .face-top    { transform: rotateX(90deg) translateZ(28px); background: #a855f7; }
+    .face-bottom { transform: rotateX(-90deg) translateZ(28px); background: #581c87; }
+
+    .bow {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 28px;
+      height: 28px;
+      background: #fbbf24;
+      border-radius: 50%;
+      transform: translateZ(34px);
+      box-shadow: 0 0 10px #f59e0b;
+    }
+
+    @keyframes rotateGift {
+      0% { transform: rotateX(-20deg) rotateY(0deg); }
+      100% { transform: rotateX(-20deg) rotateY(360deg); }
+    }
+
+    /* Animacija torte za Punch */
+    .cake-anim {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .candle {
+      width: 6px;
+      height: 16px;
+      background: #fef08a;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .flame {
+      width: 10px;
+      height: 14px;
+      background: #f97316;
+      border-radius: 50% 50% 20% 20%;
+      position: absolute;
+      top: -12px;
+      left: -2px;
+      box-shadow: 0 0 10px #f97316;
+      animation: flicker 0.8s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-2deg); }
+      100% { transform: scale(1.15) rotate(3deg); }
+    }
+
+    .cake-tier-top {
+      width: 44px;
+      height: 16px;
+      background: #f472b6;
+      border-radius: 6px 6px 0 0;
+      border-bottom: 2px solid #db2777;
+    }
+
+    .cake-tier-bottom {
+      width: 60px;
+      height: 20px;
+      background: #ec4899;
+      border-radius: 4px 4px 6px 6px;
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+    }
+
+    /* ZAJEDNIČKI STILOVI ZA FORME */
+    .view-section {
+      display: none;
+    }
+
+    header.section-header {
+      text-align: center;
+      padding: 10px 0 20px;
     }
 
     .tabs {
@@ -154,6 +379,10 @@
       border-color: var(--accent-light);
     }
 
+    .punch-theme select:focus, .punch-theme input[type="text"]:focus, .punch-theme textarea:focus {
+      border-color: var(--punch-light);
+    }
+
     .gift-info-box {
       margin-top: 10px;
       padding: 12px 14px;
@@ -165,8 +394,15 @@
       line-height: 1.5;
     }
 
-    .gift-info-box strong {
-      color: #ffffff;
+    .punch-info-box {
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: rgba(236, 72, 153, 0.09);
+      border-left: 3px solid var(--punch-light);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: var(--silver);
+      line-height: 1.5;
     }
 
     .style-grid {
@@ -245,6 +481,45 @@
       height: 16px;
     }
 
+    .punch-theme .checkbox-item input {
+      accent-color: var(--punch-accent);
+    }
+
+    .radio-card-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .radio-card {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .radio-card.selected {
+      border-color: var(--punch-light);
+      background: rgba(236, 72, 153, 0.14);
+      box-shadow: 0 0 0 1px var(--punch-light);
+    }
+
+    .radio-card-title {
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .radio-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
     .price-box {
       background: rgba(147, 51, 234, 0.08);
       border: 1px dashed var(--accent-light);
@@ -252,6 +527,11 @@
       padding: 18px;
       text-align: center;
       margin: 25px 0 20px;
+    }
+
+    .punch-theme .price-box {
+      background: rgba(236, 72, 153, 0.08);
+      border-color: var(--punch-light);
     }
 
     .price-title {
@@ -294,15 +574,15 @@
       transform: scale(0.99);
     }
 
-    @media (max-width: 600px) {
-      .tabs, .style-grid, .checkbox-group {
+    @media (max-width: 650px) {
+      .hub-grid, .tabs, .style-grid, .checkbox-group, .radio-card-group {
         grid-template-columns: 1fr;
       }
       .box-card {
         padding: 20px;
       }
-      h1 {
-        font-size: 1.8rem;
+      .main-title {
+        font-size: 2rem;
       }
     }
   </style>
@@ -310,163 +590,275 @@
 <body>
 
 <div class="container">
-  <header>
-    <!-- Interaktivniji bedž umesto običnog Gift shop teksta -->
-    <div class="badge-interactive">
-      <span class="pulse-dot"></span>
-      <span>SKLOPI SVOJU BUM KUTIJU</span>
-      <span>🎁</span>
+
+  <!-- ==================== POČETNI EKRAN (HUB) ==================== -->
+  <div id="homeScreen">
+    <h1 class="main-title">KREATIVNA RADIONICA POKLONA</h1>
+    <p class="main-subtitle">Izaberi šta želiš da konfigurišeš i prilagodiš:</p>
+
+    <div class="hub-grid">
+      <!-- Bira BUM kutiju -->
+      <div class="hub-card bum" onclick="showSection('bumView')">
+        <div class="gift-scene">
+          <div class="gift-cube">
+            <div class="cube-face face-front"></div>
+            <div class="cube-face face-back"></div>
+            <div class="cube-face face-right"></div>
+            <div class="cube-face face-left"></div>
+            <div class="cube-face face-top"></div>
+            <div class="cube-face face-bottom"></div>
+            <div class="bow"></div>
+          </div>
+        </div>
+        <h2>BUM KUTIJA</h2>
+        <p>Eksplodirajuća kutija sa iskačućim kockama, leptirima, slatkišima i mestom za poklon.</p>
+        <div class="hub-btn">Sklopi BUM kutiju →</div>
+      </div>
+
+      <!-- Bira PUNCH tortu -->
+      <div class="hub-card punch" onclick="showSection('punchView')">
+        <div class="cake-anim">
+          <div class="candle"><div class="flame"></div></div>
+          <div class="cake-tier-top"></div>
+          <div class="cake-tier-bottom"></div>
+        </div>
+        <h2>PUNCH TORTA</h2>
+        <p>Hit rođendanska torta sa pregradama za bušenje punjenim slatkišima i igračkicama.</p>
+        <div class="hub-btn">Kreiraj Punch tortu →</div>
+      </div>
     </div>
-    <h1>BUM KUTIJA</h1>
-    <p class="subtitle">Izaberi svoju konfiguraciju, prilagodi detalje i pošalji upit.</p>
-  </header>
-
-  <!-- 4 opcije kutija -->
-  <div class="tabs">
-    <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna BUM kutija</button>
-    <button type="button" class="tab-btn" onclick="switchPackage('sweets_gift')">2. BUM kutija sa slatkim stranama i mestom za poklon</button>
-    <button type="button" class="tab-btn" onclick="switchPackage('only_sweets')">3. BUM kutija samo sa slatkišima</button>
-    <button type="button" class="tab-btn" onclick="switchPackage('custom_gift')">4. Personalizovana BUM kutija sa poklonom</button>
   </div>
 
-  <div class="box-card">
-    <form id="orderForm" onsubmit="event.preventDefault(); sendViaWhatsApp();">
-      <input type="hidden" name="paket" id="packageInput" value="Prazna BUM kutija">
-      <input type="hidden" name="stil_stranice" id="sideStyleInput" value="Zvezda">
 
-      <!-- Veličina kutije -->
-      <div class="form-group">
-        <label for="sizeSelect">Veličina kutije:</label>
-        <select id="sizeSelect" name="velicina" onchange="handleSizeChange()">
-          <!-- Menja se dinamički -->
-        </select>
-        <!-- Dinamički podaci o mestu za poklon -->
-        <div id="giftDimInfo" class="gift-info-box"></div>
-      </div>
+  <!-- ==================== STRANA 1: BUM KUTIJE ==================== -->
+  <div id="bumView" class="view-section">
+    <button class="back-nav" onclick="showSection('homeScreen')">← Nazad na izbor poklona</button>
 
-      <!-- Željena boja -->
-      <div class="form-group">
-        <label for="colorInput">Željena boja:</label>
-        <input type="text" id="colorInput" name="boja" placeholder="crna, crvena, ljubicasta...">
-      </div>
-
-      <!-- Stil bočnih ivica -->
-      <div class="form-group">
-        <label>Stil bočnih ivica (za slatkiše):</label>
-        <div class="style-grid">
-          
-          <!-- 1. Zvezda -->
-          <div class="style-option selected" onclick="selectStyle('Zvezda', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <path d="M4 4L36 36M36 4L4 36" />
-                <circle cx="20" cy="20" r="3" fill="#c084fc" />
-              </svg>
-            </div>
-            <span class="style-text">Zvezda (koverat u centar)</span>
-          </div>
-
-          <!-- 2. Šestougaonik -->
-          <div class="style-option" onclick="selectStyle('Šestougaonik', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
-                <line x1="20" y1="20" x2="20" y2="6" />
-                <line x1="20" y1="20" x2="33" y2="13" />
-                <line x1="20" y1="20" x2="33" y2="27" />
-                <line x1="20" y1="20" x2="20" y2="34" />
-                <line x1="20" y1="20" x2="7" y2="27" />
-                <line x1="20" y1="20" x2="7" y2="13" />
-                <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
-              </svg>
-            </div>
-            <span class="style-text">Šestougaonik (6 trouglova)</span>
-          </div>
-
-          <!-- 3. X greda -->
-          <div class="style-option" onclick="selectStyle('X greda', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <line x1="6" y1="6" x2="34" y2="34" />
-                <line x1="34" y1="6" x2="6" y2="34" />
-                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" stroke="none" />
-                <circle cx="31" cy="20" r="2.5" fill="#f59e0b" stroke="none" />
-                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" stroke="none" />
-                <circle cx="9" cy="20" r="2.5" fill="#f59e0b" stroke="none" />
-              </svg>
-            </div>
-            <span class="style-text">X greda (dijagonale)</span>
-          </div>
-
-          <!-- 4. Stepenik -->
-          <div class="style-option" onclick="selectStyle('Stepenik', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <path d="M8 32H15V24H23V16H31V8" />
-                <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" stroke="none" />
-                <circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" stroke="none" />
-                <circle cx="27" cy="12" r="2.2" fill="#f59e0b" stroke="none" />
-              </svg>
-            </div>
-            <span class="style-text">Stepenik (cik-cak kaskada)</span>
-          </div>
-
+    <header class="section-header">
+      <div class="gift-scene" style="margin: 0 auto 10px;">
+        <div class="gift-cube">
+          <div class="cube-face face-front"></div>
+          <div class="cube-face face-back"></div>
+          <div class="cube-face face-right"></div>
+          <div class="cube-face face-left"></div>
+          <div class="cube-face face-top"></div>
+          <div class="cube-face face-bottom"></div>
+          <div class="bow"></div>
         </div>
       </div>
+      <h1 style="font-size:2rem; font-weight:700;">BUM KUTIJA</h1>
+      <p class="subtitle">Izaberi svoju konfiguraciju, prilagodi detalje i pošalji upit.</p>
+    </header>
 
-      <!-- Unutrašnji mehanizam -->
-      <div class="form-group">
-        <label for="mechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
-        <select id="mechanismSelect" name="mehanizam" onchange="calculatePrice()">
-          <option value="cubes" selected>6 iskačućih pop-up kocki</option>
-          <option value="butterflies">6 iskačućih letećih leptirova (+400 RSD)</option>
-          <option value="combo">Kombinovano (Kocke + Leptiri) (+700 RSD)</option>
-        </select>
-      </div>
+    <div class="tabs">
+      <button type="button" class="tab-btn active" onclick="switchPackage('empty')">1. Prazna BUM kutija</button>
+      <button type="button" class="tab-btn" onclick="switchPackage('sweets_gift')">2. BUM kutija sa slatkim stranama i mestom za poklon</button>
+      <button type="button" class="tab-btn" onclick="switchPackage('only_sweets')">3. BUM kutija samo sa slatkišima</button>
+      <button type="button" class="tab-btn" onclick="switchPackage('custom_gift')">4. Personalizovana BUM kutija sa poklonom</button>
+    </div>
 
-      <!-- Slatkiši -->
-      <div class="form-group" id="sweetsGroup" style="display: none;">
-        <label id="sweetsLabel">Izaberi vrstu slatkiša:</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="slatkisi" value="Raffaello" checked> Raffaello
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="slatkisi" value="Lindt Lindor"> Lindt Lindor praline
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="slatkisi" value="Mozart kugle"> Mozart kugle
-          </label>
+    <div class="box-card">
+      <form id="bumForm" onsubmit="event.preventDefault(); sendBumViaWhatsApp();">
+        <input type="hidden" name="paket" id="packageInput" value="Prazna BUM kutija">
+        <input type="hidden" name="stil_stranice" id="sideStyleInput" value="Zvezda">
+
+        <!-- Veličina kutije -->
+        <div class="form-group">
+          <label for="sizeSelect">Veličina kutije:</label>
+          <select id="sizeSelect" name="velicina" onchange="handleSizeChange()">
+            <!-- Dinamičke opcije -->
+          </select>
+          <div id="giftDimInfo" class="gift-info-box"></div>
         </div>
-      </div>
 
-      <!-- Polje za opis - samo za 4. kutiju (Personalizovanu) -->
-      <div class="form-group" id="customNotesGroup" style="display: none;">
-        <label for="customNotes">Opiši temu, povod, poklon ili posebne želje za dizajn:</label>
-        <textarea id="customNotes" name="zelje" rows="3" placeholder="Opiši poklon koji stavljaš, posvetu, tematske detalje..."></textarea>
-      </div>
+        <!-- Željena boja -->
+        <div class="form-group">
+          <label for="colorInput">Željena boja:</label>
+          <input type="text" id="colorInput" name="boja" placeholder="crna, crvena, ljubicasta...">
+        </div>
 
-      <!-- Prikaz cene -->
-      <div class="price-box">
-        <div class="price-title">Okvirna cena konfiguracije</div>
-        <div class="price-val" id="priceDisplay">2.800 RSD</div>
-      </div>
+        <!-- Stil bočnih ivica -->
+        <div class="form-group">
+          <label>Stil bočnih ivica (za slatkiše):</label>
+          <div class="style-grid">
+            <div class="style-option selected" onclick="selectStyle('Zvezda', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <path d="M4 4L36 36M36 4L4 36" />
+                  <circle cx="20" cy="20" r="3" fill="#c084fc" />
+                </svg>
+              </div>
+              <span class="style-text">Zvezda (koverat u centar)</span>
+            </div>
 
-      <button type="button" class="submit-btn" onclick="sendViaWhatsApp()">
-        <span>Pošalji upit na WhatsApp</span> 💬
-      </button>
-    </form>
+            <div class="style-option" onclick="selectStyle('Šestougaonik', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
+                  <line x1="20" y1="20" x2="20" y2="6" /><line x1="20" y1="20" x2="33" y2="13" /><line x1="20" y1="20" x2="33" y2="27" /><line x1="20" y1="20" x2="20" y2="34" /><line x1="20" y1="20" x2="7" y2="27" /><line x1="20" y1="20" x2="7" y2="13" />
+                  <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
+                </svg>
+              </div>
+              <span class="style-text">Šestougaonik (6 trouglova)</span>
+            </div>
+
+            <div class="style-option" onclick="selectStyle('X greda', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
+                  <circle cx="20" cy="9" r="2.5" fill="#f59e0b" stroke="none" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" stroke="none" /><circle cx="20" cy="31" r="2.5" fill="#f59e0b" stroke="none" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" stroke="none" />
+                </svg>
+              </div>
+              <span class="style-text">X greda (dijagonale)</span>
+            </div>
+
+            <div class="style-option" onclick="selectStyle('Stepenik', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <path d="M8 32H15V24H23V16H31V8" />
+                  <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" stroke="none" /><circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" stroke="none" /><circle cx="27" cy="12" r="2.2" fill="#f59e0b" stroke="none" />
+                </svg>
+              </div>
+              <span class="style-text">Stepenik (cik-cak kaskada)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mehanizam -->
+        <div class="form-group">
+          <label for="mechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
+          <select id="mechanismSelect" name="mehanizam" onchange="calculateBumPrice()">
+            <option value="cubes" selected>6 iskačućih pop-up kocki</option>
+            <option value="butterflies">6 iskačućih letećih leptirova</option>
+            <option value="combo">Kombinovano (Kocke + Leptiri)</option>
+          </select>
+        </div>
+
+        <!-- Slatkiši -->
+        <div class="form-group" id="sweetsGroup" style="display: none;">
+          <label id="sweetsLabel">Izaberi vrstu slatkiša:</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="slatkisi" value="Ferrero Rocher" checked> Ferrero Rocher</label>
+            <label class="checkbox-item"><input type="checkbox" name="slatkisi" value="Raffaello" checked> Raffaello</label>
+            <label class="checkbox-item"><input type="checkbox" name="slatkisi" value="Lindt Lindor"> Lindt Lindor praline</label>
+            <label class="checkbox-item"><input type="checkbox" name="slatkisi" value="Mozart kugle"> Mozart kugle</label>
+          </div>
+        </div>
+
+        <!-- Opis samo za 4. paket -->
+        <div class="form-group" id="customNotesGroup" style="display: none;">
+          <label for="customNotes">Opiši temu, povod, poklon ili posebne želje za dizajn:</label>
+          <textarea id="customNotes" name="zelje" rows="3" placeholder="Opiši poklon koji stavljaš, posvetu, tematske detalje..."></textarea>
+        </div>
+
+        <!-- Prikaz cene -->
+        <div class="price-box">
+          <div class="price-title">Okvirna cena konfiguracije</div>
+          <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="sendBumViaWhatsApp()">
+          <span>Pošalji upit na WhatsApp</span> 💬
+        </button>
+      </form>
+    </div>
   </div>
+
+
+  <!-- ==================== STRANA 2: PUNCH TORTA ==================== -->
+  <div id="punchView" class="view-section punch-theme">
+    <button class="back-nav" onclick="showSection('homeScreen')">← Nazad na izbor poklona</button>
+
+    <header class="section-header">
+      <div class="cake-anim" style="margin: 0 auto 10px;">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="cake-tier-top"></div>
+        <div class="cake-tier-bottom"></div>
+      </div>
+      <h1 style="font-size:2rem; font-weight:700;">PUNCH ROĐENDANSKA TORTA</h1>
+      <p class="subtitle">Interaktivna torta za probijanje sa iznenađenjima u svakoj pregradi.</p>
+    </header>
+
+    <div class="box-card">
+      <form id="punchForm" onsubmit="event.preventDefault(); sendPunchViaWhatsApp();">
+        <input type="hidden" name="tip_punjenja" id="punchFillInput" value="slatkisi">
+
+        <!-- Boja torte -->
+        <div class="form-group">
+          <label for="punchColor">Željena boja / paleta torte:</label>
+          <input type="text" id="punchColor" name="boja_torte" placeholder="npr. pastelno roze, nebo plava, tirkizna, lila, mint...">
+        </div>
+
+        <!-- Motiv / Tema -->
+        <div class="form-group">
+          <label for="punchThemeInput">Tema i motiv torte (crtani lik, interesovanja):</label>
+          <input type="text" id="punchThemeInput" name="tema" placeholder="npr. Bluey, Pepa Prase, Cars (Autići), Jednorozi, Paw Patrol, Spiderman...">
+        </div>
+
+        <!-- Broj pregrada sa spratnošću -->
+        <div class="form-group">
+          <label for="punchHoles">Broj pregrada za bušenje (krugova):</label>
+          <select id="punchHoles" name="broj_pregrada" onchange="handlePunchHolesChange()">
+            <option value="12">12 pregrada</option>
+            <option value="16" selected>16 pregrada</option>
+            <option value="20">20 pregrada</option>
+            <option value="24">24 pregrade</option>
+            <option value="30">30 pregrada</option>
+          </select>
+          <!-- Automatski prikaz spratnosti -->
+          <div id="tierInfoBox" class="punch-info-box"></div>
+        </div>
+
+        <!-- Tip punjenja pregrada -->
+        <div class="form-group">
+          <label>Čime želiš da se napune pregrade?</label>
+          <div class="radio-card-group">
+            <div class="radio-card selected" id="fillOptSlatkisi" onclick="selectPunchFill('slatkisi')">
+              <div class="radio-card-title">🍬 Samo slatkiši</div>
+              <div class="radio-card-desc">Kvalitetne čokoladice, lizalice, voćne karamele i gumene bombonice u svakoj rupi.</div>
+            </div>
+            <div class="radio-card" id="fillOptMix" onclick="selectPunchFill('mix')">
+              <div class="radio-card-title">🎁 Slatkiši + Igračkice</div>
+              <div class="radio-card-desc">Slatkiš + tematski privezak, figurica, mini narukvica, stikeri ili prstenčić.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Posebne napomene (ime slavljenika, godine) -->
+        <div class="form-group">
+          <label for="punchNotes">Ime slavljenika, broj godina i posebne želje:</label>
+          <textarea id="punchNotes" name="dodatne_zelje" rows="3" placeholder="npr. Mila, puni 5 godina. Dodati zlatne zvezdice i broj 5 na vrh torte..."></textarea>
+        </div>
+
+        <!-- Cena za Punch tortu -->
+        <div class="price-box">
+          <div class="price-title">Cena izrade Punch torte</div>
+          <div class="price-val" id="punchPriceDisplay">3.800 RSD</div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="sendPunchViaWhatsApp()">
+          <span>Naruči Punch tortu na WhatsApp</span> 💬
+        </button>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <script>
+  // NAVIGACIJA IZMEĐU EKRANA
+  function showSection(sectionId) {
+    document.getElementById('homeScreen').style.display = (sectionId === 'homeScreen') ? 'block' : 'none';
+    document.getElementById('bumView').style.display = (sectionId === 'bumView') ? 'block' : 'none';
+    document.getElementById('punchView').style.display = (sectionId === 'punchView') ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===================== LOGIKA ZA BUM KUTIJE =====================
   let currentPackage = 'empty';
 
   const packageTitles = {
@@ -476,45 +868,22 @@
     custom_gift: 'Personalizovana BUM kutija sa poklonom'
   };
 
-  // Kalkulacija sa cenama iz Maxija + sigurnosni bafer:
-  // Komadni slatkiš (Ferrero/Raffaello/Lindor/Mozart) = 110 RSD/kom
-  // Kompaktna: 4 komada = +440 RSD
-  // Standardna i Velika: 16 komada = +1.760 RSD
-  // Paket 3: 16 komada na stranama + bombonjera ispod čepa sa sigurnosnim baferom (100-150g ~850 RSD / 200-250g ~1.450 RSD)
-  const priceCatalog = {
-    empty: {
-      Kompaktna: 2400,
-      Standardna: 2800,
-      Velika: 3400
-    },
-    sweets_gift: {
-      Kompaktna: 2840, // 2400 + 440 RSD (4 slatkiša)
-      Standardna: 4560, // 2800 + 1760 RSD (16 slatkiša)
-      Velika: 5160     // 3400 + 1760 RSD (16 slatkiša)
-    },
-    only_sweets: {
-      M_SWEETS: 5410, // 2800 baza + 1760 (16 kom) + 850 (punjenje do 150g)
-      L_SWEETS: 6610  // 3400 baza + 1760 (16 kom) + 1450 (punjenje do 250g)
-    },
-    custom_gift: {
-      CUSTOM: 'Na upit (od ~4.800 RSD)'
-    }
+  const bumPriceCatalog = {
+    empty: { Kompaktna: 2400, Standardna: 2800, Velika: 3400 },
+    sweets_gift: { Kompaktna: 2840, Standardna: 4560, Velika: 5160 },
+    only_sweets: { M_SWEETS: 5410, L_SWEETS: 6610 },
+    custom_gift: { CUSTOM: 'Na upit od 4.800 RSD' }
   };
 
-  const mechanismSurcharges = {
-    cubes: 0,
-    butterflies: 400,
-    combo: 700
-  };
+  const bumMechanismSurcharges = { cubes: 0, butterflies: 400, combo: 700 };
 
-  // Isključivo tačne dimenzije bez opisa šta može da stane
   const giftDimensions = {
-    Kompaktna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~6 × 6 cm (visina do 5 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se po 1 čokoladica (ukupno 4).</small>',
-    Standardna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~9 × 9 cm (visina do 7 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
-    Velika: '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 cm (visina do 9 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
+    Kompaktna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~6 × 6 cm (visina do 4.5 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se po 1 čokoladica (ukupno 4).</small>',
+    Standardna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~9 × 9 cm (visina do 8 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
+    Velika: '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 cm (visina do 10 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
     M_SWEETS: '🍬 <strong>Prostor ispod čepa:</strong> Za bombonjeru težine od 100g do 150g.',
     L_SWEETS: '🍬 <strong>Prostor ispod čepa:</strong> Za veću bombonjeru težine od 200g do 250g.',
-    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Dimenzije unutrašnjeg postolja se izrađuju po meri vašeg poklona (maksimalno do 20 × 20 × 20 cm).'
+    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Dimenzije postolja se izrađuju po meri vašeg poklona (do 20 × 20 × 20 cm).'
   };
 
   function updateSizeOptions() {
@@ -565,16 +934,13 @@
     const infoBox = document.getElementById('giftDimInfo');
     infoBox.innerHTML = giftDimensions[sizeVal] || '';
 
-    // Tekst labele za slatkiše u zavisnosti od paketa
     const sweetsLabel = document.getElementById('sweetsLabel');
     if (currentPackage === 'only_sweets') {
       sweetsLabel.innerText = 'Izaberi slatkiše za stranice i unutrašnje punjenje ispod čepa:';
     } else if (currentPackage === 'sweets_gift') {
-      if (sizeVal === 'Kompaktna') {
-        sweetsLabel.innerText = 'Izaberi slatkiše za bočne stranice (4 komada ukupno):';
-      } else {
-        sweetsLabel.innerText = 'Izaberi slatkiše za bočne stranice (16 komada ukupno):';
-      }
+      sweetsLabel.innerText = (sizeVal === 'Kompaktna') 
+        ? 'Izaberi slatkiše za bočne stranice (4 komada ukupno):' 
+        : 'Izaberi slatkiše za bočne stranice (16 komada ukupno):';
     } else {
       sweetsLabel.innerText = 'Izaberi vrstu slatkiša:';
     }
@@ -582,7 +948,7 @@
 
   function handleSizeChange() {
     updateGiftInfo();
-    calculatePrice();
+    calculateBumPrice();
   }
 
   function selectStyle(styleName, el) {
@@ -600,35 +966,33 @@
       tab.classList.toggle('active', order[index] === pkg);
     });
 
-    // Prikaz/sakrivanje opcija za slatkiše
     const showSweets = (pkg === 'sweets_gift' || pkg === 'only_sweets' || pkg === 'custom_gift');
     document.getElementById('sweetsGroup').style.display = showSweets ? 'block' : 'none';
 
-    // Samo 4. paket prikazuje opis
     const showNotes = (pkg === 'custom_gift');
     document.getElementById('customNotesGroup').style.display = showNotes ? 'block' : 'none';
 
     document.getElementById('packageInput').value = packageTitles[pkg];
 
     updateSizeOptions();
-    calculatePrice();
+    calculateBumPrice();
   }
 
-  function calculatePrice() {
+  function calculateBumPrice() {
     const size = document.getElementById('sizeSelect').value;
-    const basePrice = priceCatalog[currentPackage][size];
+    const basePrice = bumPriceCatalog[currentPackage][size];
     const mech = document.getElementById('mechanismSelect').value;
-    const surcharge = mechanismSurcharges[mech] || 0;
+    const surcharge = bumMechanismSurcharges[mech] || 0;
     
     if (typeof basePrice === 'number') {
       const total = basePrice + surcharge;
-      document.getElementById('priceDisplay').innerText = total.toLocaleString('sr-RS') + ' RSD';
+      document.getElementById('bumPriceDisplay').innerText = total.toLocaleString('sr-RS') + ' RSD';
     } else {
-      document.getElementById('priceDisplay').innerText = basePrice || 'Na upit';
+      document.getElementById('bumPriceDisplay').innerText = basePrice || 'Na upit';
     }
   }
 
-  function sendViaWhatsApp() {
+  function sendBumViaWhatsApp() {
     const phone = "381644667485"; 
 
     const pkg = document.getElementById('packageInput').value;
@@ -638,12 +1002,12 @@
     const sideStyle = document.getElementById('sideStyleInput').value;
     const mechSelect = document.getElementById('mechanismSelect');
     const mechanismText = mechSelect.options[mechSelect.selectedIndex].text;
-    const price = document.getElementById('priceDisplay').innerText;
+    const price = document.getElementById('bumPriceDisplay').innerText;
     const notes = document.getElementById('customNotes').value.trim();
 
     let sweetsList = [];
     if (currentPackage !== 'empty') {
-      document.querySelectorAll('input[name="slatkisi"]:checked').forEach(el => {
+      document.querySelectorAll('#bumView input[name="slatkisi"]:checked').forEach(el => {
         sweetsList.push(el.value);
       });
     }
@@ -656,21 +1020,90 @@
                `*Mehanizam:* ${mechanismText}\n` +
                `*Okvirna cena:* ${price}`;
 
-    if (sweetsList.length > 0) {
-      text += `\n*Izabrani slatkiši:* ${sweetsList.join(', ')}`;
-    }
+    if (sweetsList.length > 0) text += `\n*Izabrani slatkiši:* ${sweetsList.join(', ')}`;
+    if (currentPackage === 'custom_gift' && notes !== '') text += `\n*Opis i posebne želje za dizajn:* ${notes}`;
 
-    if (currentPackage === 'custom_gift' && notes !== '') {
-      text += `\n*Opis i posebne želje za dizajn:* ${notes}`;
-    }
-
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
   }
 
-  // Inicijalizacija
+
+  // ===================== LOGIKA ZA PUNCH TORTU =====================
+  let currentPunchFill = 'slatkisi';
+
+  // Matrica cena za Punch tortu: [baza po rupama] + [doplata za igračkice]
+  const punchBasePrices = {
+    "12": 3200,
+    "16": 3800,
+    "20": 4600,
+    "24": 5200,
+    "30": 6200
+  };
+
+  const toySurchargePerHole = 60; // Doplata po rupi za sitne igračkice/priveske
+
+  function handlePunchHolesChange() {
+    const holes = parseInt(document.getElementById('punchHoles').value, 10);
+    const tierBox = document.getElementById('tierInfoBox');
+
+    if (holes <= 16) {
+      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 1 SPRAT (Jednospratna torta)</strong><br>Kompaktna kružna torta sa prečnikom ~26 cm. Idealno za manje proslave do ${holes} dece.`;
+    } else {
+      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 2 SPRATA (Dvospratna raskošna torta)</strong><br>Velika torta na dva nivoa (donji i gornji sprat) sa raspoređenih ${holes} pregrada za bušenje.`;
+    }
+
+    calculatePunchPrice();
+  }
+
+  function selectPunchFill(fillType) {
+    currentPunchFill = fillType;
+    document.getElementById('punchFillInput').value = fillType;
+
+    document.getElementById('fillOptSlatkisi').classList.toggle('selected', fillType === 'slatkisi');
+    document.getElementById('fillOptMix').classList.toggle('selected', fillType === 'mix');
+
+    calculatePunchPrice();
+  }
+
+  function calculatePunchPrice() {
+    const holes = document.getElementById('punchHoles').value;
+    let price = punchBasePrices[holes] || 3800;
+
+    if (currentPunchFill === 'mix') {
+      price += (parseInt(holes, 10) * toySurchargePerHole);
+    }
+
+    document.getElementById('punchPriceDisplay').innerText = price.toLocaleString('sr-RS') + ' RSD';
+  }
+
+  function sendPunchViaWhatsApp() {
+    const phone = "381644667485"; 
+
+    const color = document.getElementById('punchColor').value.trim() || 'Po dogovoru';
+    const theme = document.getElementById('punchThemeInput').value.trim() || 'Nije specificirano';
+    const holes = document.getElementById('punchHoles').value;
+    const tierText = (parseInt(holes, 10) <= 16) ? '1 sprat' : '2 sprata';
+    const fillText = (currentPunchFill === 'slatkisi') ? 'Samo slatkiši' : 'Slatkiši + igračkice (privesci, narukvice...)';
+    const notes = document.getElementById('punchNotes').value.trim();
+    const price = document.getElementById('punchPriceDisplay').innerText;
+
+    let text = `Pozdrav! Šaljem upit za PUNCH ROĐENDANSKU TORTU 🎂🎈\n\n` +
+               `*Tema / Motiv:* ${theme}\n` +
+               `*Željena boja torte:* ${color}\n` +
+               `*Broj pregrada:* ${holes} rupa (${tierText})\n` +
+               `*Punjenje:* ${fillText}\n` +
+               `*Okvirna cena:* ${price}`;
+
+    if (notes !== '') {
+      text += `\n*Slavljenik i posebne želje:* ${notes}`;
+    }
+
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  // Inicijalizacija na startu
   updateSizeOptions();
-  calculatePrice();
+  calculateBumPrice();
+  handlePunchHolesChange();
 </script>
 </body>
 </html>
