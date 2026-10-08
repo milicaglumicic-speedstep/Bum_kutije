@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM KUTIJA | Konfigurator</title>
+  <title>BUM KUTIJA | konfigurator</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,15 +16,15 @@
 
   <div class="box-card">
     <header class="section-title-wrap">
-      <h2>BUM KUTIJA KONFIGURATOR</h2>
-      <p class="subtitle">Izaberi veličinu, mehanizam, stranice i slatkiše ili Bambu Lab 3D poklon.</p>
+      <h2>BUM KUTIJA</h2>
+      <p class="subtitle">Personalizuj interaktivnu bum poklon kutiju</p>
     </header>
 
     <div class="tabs" id="bumTabs">
       <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. Sa slatkim stranama</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets">3. Samo sa slatkišima</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovana (Bambu 3D)</button>
+      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa slatkim stranama</button>
+      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kutija sa poklon slatkišima</button>
+      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovani BUM poklon</button>
     </div>
 
     <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox.sendWhatsApp();">
@@ -37,8 +37,38 @@
 
       <!-- Željena boja -->
       <div class="form-group">
-        <label for="bumColorInput">Željena boja hamera i detalja:</label>
-        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, kraljevsko plava...">
+        <label for="bumColorInput">Željena boja:</label>
+        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
+      </div>
+      <!-- Dekoracija enterijera kutije -->
+      <div class="form-group">
+        <label>Dekoracija enterijera kutije (izaberi stilove/motive):</label>
+        <div class="checkbox-group" id="interiorGroup">
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="Pisani tekst">
+            <span>✍️ Pisani tekst (ručni krasnopis)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="Štampani tekst">
+            <span>🖨️ Štampani tekst (grafička posveta)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="Zvezdice">
+            <span>⭐ Zvezdice</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="Srca">
+            <span>❤️ Srca</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="IT stikeri">
+            <span>💻 IT stikeri (tech, kodiranje, dev)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="enterijer" value="Girl stikeri">
+            <span>💄 Girl stikeri (estetika, fashion, cute)</span>
+          </label>
+        </div>
       </div>
 
       <!-- Stil bočnih ivica -->
@@ -97,9 +127,9 @@
       <div class="form-group">
         <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
         <select id="bumMechanismSelect">
-          <option value="cubes">6 iskačućih pop-up kocki</option>
-          <option value="butterflies">6 iskačućih letećih leptirova</option>
-          <option value="combo">Kombinovano (Kocke + Leptiri)</option>
+          <option value="cubes">Iskačuće pop-up kocke</option>
+          <option value="butterflies">Iskačući leteći leptirovi</option>
+          <option value="combo">Kombo (Kocke + Leptirovi)</option>
         </select>
       </div>
 
@@ -118,11 +148,10 @@
           <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
         </div>
       </div>
-
       <!-- Polje za opis i posvetu (Paket 4) -->
       <div class="form-group" id="customNotesGroup" style="display:none;">
-        <label for="bumNotes">Opis i posveta za 3D poklon / temu:</label>
-        <textarea id="bumNotes" rows="3" placeholder="Ime za privezak, natpis ili opis vašeg poklona..."></textarea>
+        <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
+        <textarea id="bumNotes" rows="3" placeholder=" Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
       </div>
 
       <!-- Prikaz cene -->
