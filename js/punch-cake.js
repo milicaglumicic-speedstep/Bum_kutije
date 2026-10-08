@@ -1,13 +1,45 @@
 window.punchCake = {
   calculatedTiers: 1,
   withToys: false,
+
   init() {
     this.bindEvents();
     this.handleHolesChange();
   },
+
+  // Pomoćna metoda za dobijanje trenutnog broja komada po rupi
+  getSweetsPerHoleCount() {
+    const select = document.getElementById('sweetsPerHoleSelect');
+    if (!select) return 2;
+
+    if (select.value === 'custom') {
+      const customInput = document.getElementById('customSweetsPerHoleInput');
+      const val = parseInt(customInput?.value, 10);
+      return (isNaN(val) || val < 1) ? 1 : val;
+    }
+
+    return parseInt(select.value, 10) || 2;
+  },
+
   bindEvents() {
     document.getElementById('punchHolesInput')?.addEventListener('input', () => this.handleHolesChange());
-    document.getElementById('sweetsPerHoleSelect')?.addEventListener('change', () => this.calculatePrice());
+
+    const sweetsSelect = document.getElementById('sweetsPerHoleSelect');
+    const customWrap = document.getElementById('customSweetsPerHoleWrap');
+    const customInput = document.getElementById('customSweetsPerHoleInput');
+
+    // Prebacivanje između 1, 2, 3 i custom polja
+    sweetsSelect?.addEventListener('change', () => {
+      const isCustom = sweetsSelect.value === 'custom';
+      if (customWrap) customWrap.style.display = isCustom ? 'block' : 'none';
+      this.calculatePrice();
+    });
+
+    customInput?.addEventListener('input', () => {
+      this.calculatePrice();
+    });
+
+    // Validacija 1 do 4 slatkiša
     document.querySelectorAll('#punchSweetsGroup input[type="checkbox"]').forEach(chk => {
       chk.addEventListener('change', (e) => {
         const checked = document.querySelectorAll('#punchSweetsGroup input:checked');
@@ -22,6 +54,7 @@ window.punchCake = {
       });
     });
   },
+
   handleHolesChange() {
     let holes = parseInt(document.getElementById('punchHolesInput')?.value, 10);
     if (isNaN(holes) || holes < 6) holes = 6;
@@ -38,32 +71,42 @@ window.punchCake = {
     }
     this.calculatePrice();
   },
+
   setWithToys(val) {
     this.withToys = val;
     document.getElementById('fillOptSlatkisi')?.classList.toggle('selected', !val);
     document.getElementById('fillOptMix')?.classList.toggle('selected', val);
     this.calculatePrice();
   },
+
   calculatePrice() {
     let holes = parseInt(document.getElementById('punchHolesInput')?.value, 10) || 16;
-    let sweetsPerHole = parseInt(document.getElementById('sweetsPerHoleSelect')?.value, 10) || 2;
+    let sweetsPerHole = this.getSweetsPerHoleCount();
     let selectedSweets = [];
     document.querySelectorAll('#punchSweetsGroup input:checked').forEach(el => selectedSweets.push(el.value));
+
     if (!window.PricingEngine) return;
     const total = window.PricingEngine.calculatePunchCake({
-      holes, tiers: this.calculatedTiers, sweetsPerHole, selectedSweets, withToys: this.withToys
+      holes,
+      tiers: this.calculatedTiers,
+      sweetsPerHole,
+      selectedSweets,
+      withToys: this.withToys
     });
+
     const disp = document.getElementById('punchPriceDisplay');
     if (disp) disp.innerText = total.toLocaleString('sr-RS') + ' RSD';
   },
+
   sendWhatsApp() {
     const phone = "381644667485";
     const color = document.getElementById('punchColorInput')?.value || 'Po dogovoru';
     const theme = document.getElementById('punchThemeInput')?.value || 'Rođendanska';
     const holes = document.getElementById('punchHolesInput')?.value || '16';
-    const sweetsPerHole = document.getElementById('sweetsPerHoleSelect')?.value || '2';
+    const sweetsCount = this.getSweetsPerHoleCount();
     const price = document.getElementById('punchPriceDisplay')?.innerText || '3.800 RSD';
     const notes = document.getElementById('punchNotes')?.value.trim();
+
     let sweets = [];
     document.querySelectorAll('#punchSweetsGroup input:checked').forEach(el => sweets.push(el.value));
 
@@ -71,12 +114,16 @@ window.punchCake = {
                '*Tema:* ' + theme + '\n' +
                '*Boja torte:* ' + color + '\n' +
                '*Broj pregrada:* ' + holes + ' rupa (' + this.calculatedTiers + ' sprat/a)\n' +
-               '*Slatkiša po rupi:* ' + sweetsPerHole + '\n' +
+               '*Slatkiša po rupi:* ' + sweetsCount + ' kom.\n' +
                '*Izabrani slatkiši (1-4):* ' + (sweets.join(', ') || 'Standardni miks') + '\n' +
                '*Dodaci:* ' + (this.withToys ? 'Slatkiši + Igračkice/Privesci' : 'Samo slatkiši') + '\n' +
                '*Cena:* ' + price;
+
     if (notes) text += '\n*Slavljenik i želje:* ' + notes;
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
   }
 };
-document.addEventListener('DOMContentLoaded', () => { if (window.punchCake?.init) window.punchCake.init(); });
+
+document.addEventListener('DOMContentLoaded', () => { 
+  if (window.punchCake?.init) window.punchCake.init(); 
+});
