@@ -1,4 +1,4 @@
-export const DB = {
+window.DB = {
   materials: {
     paper_b1_sheet_rsd: 120,
     ribbon_per_meter_rsd: 45,
