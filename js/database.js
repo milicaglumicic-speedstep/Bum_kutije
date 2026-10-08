@@ -1,12 +1,7 @@
 window.DB = {
   materials: {
-    paper_b1_sheet_rsd: 120,
-    ribbon_per_meter_rsd: 45,
-    ribbon_meters_per_box: 2.2,
-    butterfly_aliexpress_rsd: 90,
-    popup_cube_materials_rsd: 35,
-    glue_dots_and_consumables_rsd: 80,
-    punch_cake_base_per_tier: 650
+    paper_b1_sheet_rsd: 120, ribbon_per_meter_rsd: 45, ribbon_meters_per_box: 2.2,
+    butterfly_aliexpress_rsd: 90, popup_cube_materials_rsd: 35, glue_dots_and_consumables_rsd: 80, punch_cake_base_per_tier: 650
   },
   sweets_database: {
     ferrero: { name: 'Ferrero Rocher', price_per_kg: 3200, weight_g: 12.5 },
@@ -22,9 +17,7 @@ window.DB = {
     najlepse_zeljice: { name: 'Najlepše željice (mini)', price_per_kg: 1900, weight_g: 15 }
   },
   printing_3d: {
-    filament_per_kg_rsd: 2400,
-    electricity_and_wear_per_hour: 40,
-    available_colors: ['Crna', 'Bela', 'Žuta'],
+    filament_per_kg_rsd: 2400, electricity_and_wear_per_hour: 40, available_colors: ['Crna', 'Bela', 'Žuta'],
     catalog: {
       geom_vase: { id: 'geom_vase', name: 'Mini geometrijska vaza / držač', weight_g: 45, print_time_hours: 2.2, base_markup_rsd: 400 },
       lithophane_box: { id: 'lithophane_box', name: 'Litofan foto-kocka (sa LED rasvetom)', weight_g: 65, print_time_hours: 3.5, base_markup_rsd: 650 },
@@ -35,7 +28,6 @@ window.DB = {
   labor: {
     hourly_rate_rsd: 600,
     bum_box_assembly_hours: { Kompaktna: 1.5, Standardna: 2.2, Velika: 2.8, CUSTOM: 3.2 },
-    punch_cake_labor_per_tier: 700,
-    safety_buffer_percent: 15
+    punch_cake_labor_per_tier: 700, safety_buffer_percent: 15
   }
 };
