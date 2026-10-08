@@ -95,14 +95,22 @@ window.bumBox = {
     const print3D = document.getElementById('bambu3DSelect')?.value;
     const printColor = document.getElementById('bambu3DColor')?.value;
     const notes = document.getElementById('bumNotes')?.value.trim();
+    // Učitaj izabrani enterijer
+    let interiorList = [];
+    document.querySelectorAll('input[name="enterijer"]:checked').forEach(el => {
+      interiorList.push(el.value);
+    });
 
     let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
                '*Paket:* ' + this.currentPackage + '\n' +
                '*Veličina:* ' + size + '\n' +
                '*Stil stranica:* ' + this.selectedStyle + '\n' +
+               '*Enterijer:* ' + (interiorList.length > 0 ? interiorList.join(', ') : 'Standardni / bez dodataka') + '\n' +
                '*Boja kutije:* ' + color + '\n' +
                '*Mehanizam:* ' + mech + '\n' +
                '*Cena:* ' + price;
+
+    
     if (this.currentPackage === 'custom_gift' && print3D) {
       text += '\n*Bambu Lab 3D Poklon:* ' + print3D + ' (Boja: ' + printColor + ')';
     }
