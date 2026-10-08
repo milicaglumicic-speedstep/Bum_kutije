@@ -15,8 +15,13 @@
       --accent: #9333ea;
       --accent-light: #c084fc;
       --accent-hover: #7e22ce;
-      --punch-accent: #ec4899;
-      --punch-light: #f472b6;
+      
+      /* Neutralna svečana uniseks paleta za Punch tortu (Zlatno-tirkizna / vanila / amber) */
+      --punch-accent: #0ea5e9;
+      --punch-light: #38bdf8;
+      --gold: #f59e0b;
+      --gold-light: #fde047;
+      
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --silver: #cbd5e1;
@@ -36,7 +41,7 @@
       color: var(--text);
       line-height: 1.6;
       padding: 24px 16px 60px;
-      background-image: radial-gradient(circle at top, rgba(147, 51, 234, 0.15) 0%, transparent 60%);
+      background-image: radial-gradient(circle at top, rgba(14, 165, 233, 0.12) 0%, rgba(147, 51, 234, 0.12) 50%, transparent 80%);
       min-height: 100vh;
     }
 
@@ -45,7 +50,7 @@
       margin: 0 auto;
     }
 
-    /* Dugme za povratak na početni izbor */
+    /* Dugme za povratak */
     .back-nav {
       margin-bottom: 20px;
       display: inline-flex;
@@ -74,7 +79,7 @@
     }
 
     .main-title {
-      font-size: 2.6rem;
+      font-size: 2.5rem;
       font-weight: 800;
       color: #ffffff;
       margin-bottom: 12px;
@@ -83,7 +88,7 @@
 
     .main-subtitle {
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       max-width: 580px;
       margin: 0 auto 35px;
     }
@@ -173,7 +178,7 @@
     }
 
     .hub-card.punch .hub-btn {
-      background: rgba(236, 72, 153, 0.25);
+      background: rgba(14, 165, 233, 0.25);
       border: 1px solid var(--punch-light);
     }
     .hub-card.punch:hover .hub-btn {
@@ -249,59 +254,77 @@
       100% { transform: rotateX(-20deg) rotateY(360deg); }
     }
 
-    /* Animacija torte za Punch */
-    .cake-anim {
-      width: 64px;
-      height: 64px;
+    /* NEUTRALNA ANIMIRANA TORTA SA SVEĆICAMA */
+    .cake-animated-box {
+      width: 80px;
+      height: 75px;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
+    }
+
+    /* 3 animirane svećice sa treperavim plamenom */
+    .candles-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 2px;
+      z-index: 2;
+    }
+
+    .cake-candle {
+      width: 5px;
+      height: 18px;
+      background: repeating-linear-gradient(45deg, #38bdf8, #38bdf8 3px, #ffffff 3px, #ffffff 6px);
+      border-radius: 2px;
       position: relative;
     }
 
-    .candle {
-      width: 6px;
-      height: 16px;
-      background: #fef08a;
-      border-radius: 3px;
-      position: relative;
-    }
-
-    .flame {
-      width: 10px;
-      height: 14px;
-      background: #f97316;
+    .cake-flame {
+      width: 9px;
+      height: 13px;
+      background: radial-gradient(circle, #fef08a 20%, #f97316 70%, transparent 100%);
       border-radius: 50% 50% 20% 20%;
       position: absolute;
       top: -12px;
       left: -2px;
-      box-shadow: 0 0 10px #f97316;
-      animation: flicker 0.8s infinite alternate;
+      box-shadow: 0 0 8px #f59e0b, 0 0 14px rgba(245, 158, 11, 0.6);
+      animation: flameWiggle 0.6s infinite alternate ease-in-out;
+      transform-origin: bottom center;
     }
 
-    @keyframes flicker {
-      0% { transform: scale(1) rotate(-2deg); }
-      100% { transform: scale(1.15) rotate(3deg); }
+    .cake-candle:nth-child(2) .cake-flame {
+      animation-delay: 0.2s;
+    }
+    .cake-candle:nth-child(3) .cake-flame {
+      animation-delay: 0.4s;
     }
 
-    .cake-tier-top {
-      width: 44px;
-      height: 16px;
-      background: #f472b6;
+    @keyframes flameWiggle {
+      0% { transform: scale(1) rotate(-3deg); }
+      50% { transform: scale(1.15, 0.95) rotate(2deg); }
+      100% { transform: scale(0.95, 1.1) rotate(-2deg); }
+    }
+
+    .cake-tier-top-neutral {
+      width: 50px;
+      height: 18px;
+      background: linear-gradient(180deg, #fef3c7 0%, #fde68a 60%, #0284c7 60%, #0369a1 100%);
       border-radius: 6px 6px 0 0;
-      border-bottom: 2px solid #db2777;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);
+      position: relative;
     }
 
-    .cake-tier-bottom {
-      width: 60px;
-      height: 20px;
-      background: #ec4899;
+    .cake-tier-bottom-neutral {
+      width: 72px;
+      height: 22px;
+      background: linear-gradient(180deg, #fde68a 0%, #f59e0b 45%, #0284c7 45%, #075985 100%);
       border-radius: 4px 4px 6px 6px;
-      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255,255,255,0.4);
     }
 
-    /* ZAJEDNIČKI STILOVI ZA FORME */
+    /* ZAJEDNIČKI STILOVI FORMI */
     .view-section {
       display: none;
     }
@@ -363,7 +386,7 @@
       color: var(--silver);
     }
 
-    select, input[type="text"], textarea {
+    select, input[type="text"], input[type="number"], textarea {
       width: 100%;
       padding: 12px 14px;
       border-radius: 8px;
@@ -375,11 +398,14 @@
       transition: border-color 0.2s ease;
     }
 
-    select:focus, input[type="text"]:focus, textarea:focus {
+    select:focus, input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
       border-color: var(--accent-light);
     }
 
-    .punch-theme select:focus, .punch-theme input[type="text"]:focus, .punch-theme textarea:focus {
+    .punch-theme select:focus, 
+    .punch-theme input[type="text"]:focus, 
+    .punch-theme input[type="number"]:focus, 
+    .punch-theme textarea:focus {
       border-color: var(--punch-light);
     }
 
@@ -396,13 +422,17 @@
 
     .punch-info-box {
       margin-top: 10px;
-      padding: 12px 14px;
-      background: rgba(236, 72, 153, 0.09);
+      padding: 14px 16px;
+      background: rgba(14, 165, 233, 0.09);
       border-left: 3px solid var(--punch-light);
       border-radius: 6px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--silver);
       line-height: 1.5;
+    }
+
+    .punch-info-box strong {
+      color: #38bdf8;
     }
 
     .style-grid {
@@ -505,7 +535,7 @@
 
     .radio-card.selected {
       border-color: var(--punch-light);
-      background: rgba(236, 72, 153, 0.14);
+      background: rgba(14, 165, 233, 0.14);
       box-shadow: 0 0 0 1px var(--punch-light);
     }
 
@@ -530,7 +560,7 @@
     }
 
     .punch-theme .price-box {
-      background: rgba(236, 72, 153, 0.08);
+      background: rgba(14, 165, 233, 0.08);
       border-color: var(--punch-light);
     }
 
@@ -615,12 +645,16 @@
         <div class="hub-btn">Sklopi BUM kutiju →</div>
       </div>
 
-      <!-- Bira PUNCH tortu -->
+      <!-- Bira PUNCH tortu sa animiranim svećicama -->
       <div class="hub-card punch" onclick="showSection('punchView')">
-        <div class="cake-anim">
-          <div class="candle"><div class="flame"></div></div>
-          <div class="cake-tier-top"></div>
-          <div class="cake-tier-bottom"></div>
+        <div class="cake-animated-box">
+          <div class="candles-row">
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+            <div class="cake-candle"><div class="cake-flame"></div></div>
+          </div>
+          <div class="cake-tier-top-neutral"></div>
+          <div class="cake-tier-bottom-neutral"></div>
         </div>
         <h2>PUNCH TORTA</h2>
         <p>Hit rođendanska torta sa pregradama za bušenje punjenim slatkišima i igračkicama.</p>
@@ -774,13 +808,17 @@
     <button class="back-nav" onclick="showSection('homeScreen')">← Nazad na izbor poklona</button>
 
     <header class="section-header">
-      <div class="cake-anim" style="margin: 0 auto 10px;">
-        <div class="candle"><div class="flame"></div></div>
-        <div class="cake-tier-top"></div>
-        <div class="cake-tier-bottom"></div>
+      <div class="cake-animated-box" style="margin: 0 auto 12px;">
+        <div class="candles-row">
+          <div class="cake-candle"><div class="cake-flame"></div></div>
+          <div class="cake-candle"><div class="cake-flame"></div></div>
+          <div class="cake-candle"><div class="cake-flame"></div></div>
+        </div>
+        <div class="cake-tier-top-neutral"></div>
+        <div class="cake-tier-bottom-neutral"></div>
       </div>
       <h1 style="font-size:2rem; font-weight:700;">PUNCH ROĐENDANSKA TORTA</h1>
-      <p class="subtitle">Interaktivna torta za probijanje sa iznenađenjima u svakoj pregradi.</p>
+      <p class="subtitle">Interaktivna torta za probijanje sa slatkišima i iznenađenjima u svakoj pregradi.</p>
     </header>
 
     <div class="box-card">
@@ -789,49 +827,64 @@
 
         <!-- Boja torte -->
         <div class="form-group">
-          <label for="punchColor">Željena boja / paleta torte:</label>
-          <input type="text" id="punchColor" name="boja_torte" placeholder="npr. pastelno roze, nebo plava, tirkizna, lila, mint...">
+          <label for="punchColor">Željena boja torte / paleta:</label>
+          <input type="text" id="punchColor" name="boja_torte" placeholder="npr. tirkizna, kraljevsko plava, krem-zlatna, menta zelena, ljubičasta, crno-zlatna...">
         </div>
 
         <!-- Motiv / Tema -->
         <div class="form-group">
           <label for="punchThemeInput">Tema i motiv torte (crtani lik, interesovanja):</label>
-          <input type="text" id="punchThemeInput" name="tema" placeholder="npr. Bluey, Pepa Prase, Cars (Autići), Jednorozi, Paw Patrol, Spiderman...">
+          <input type="text" id="punchThemeInput" name="tema" placeholder="npr. Bluey, Pepa Prase, Cars / Autići, Jednorozi, Paw Patrol, Spiderman, Dinosaurusi...">
         </div>
 
-        <!-- Broj pregrada sa spratnošću -->
+        <!-- Slobodan unos broja pregrada -->
         <div class="form-group">
-          <label for="punchHoles">Broj pregrada za bušenje (krugova):</label>
-          <select id="punchHoles" name="broj_pregrada" onchange="handlePunchHolesChange()">
-            <option value="12">12 pregrada</option>
-            <option value="16" selected>16 pregrada</option>
-            <option value="20">20 pregrada</option>
-            <option value="24">24 pregrade</option>
-            <option value="30">30 pregrada</option>
-          </select>
-          <!-- Automatski prikaz spratnosti -->
+          <label for="punchHolesInput">Željeni broj pregrada za bušenje (krugova):</label>
+          <input type="number" id="punchHolesInput" name="broj_pregrada" min="6" max="50" value="16" oninput="handlePunchHolesInput()">
+          <!-- Automatski proračun spratnosti -->
           <div id="tierInfoBox" class="punch-info-box"></div>
         </div>
 
-        <!-- Tip punjenja pregrada -->
+        <!-- Broj slatkiša po pregradi -->
         <div class="form-group">
-          <label>Čime želiš da se napune pregrade?</label>
+          <label for="sweetsPerHoleSelect">Broj slatkiša po jednoj pregradi:</label>
+          <select id="sweetsPerHoleSelect" name="slatkisa_po_rupi" onchange="calculatePunchPrice()">
+            <option value="1">1 slatkiš po rupi (standardno)</option>
+            <option value="2" selected>2 slatkiša po rupi (bogatije)</option>
+            <option value="3">3 slatkiša po rupi (maksimalno puno)</option>
+          </select>
+        </div>
+
+        <!-- Izbor vrsta slatkiša -->
+        <div class="form-group">
+          <label>Izaberi slatkiše za punjenje pregrada:</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="punch_slatkis" value="Kinder čokoladice" checked> Kinder čokoladice</label>
+            <label class="checkbox-item"><input type="checkbox" name="punch_slatkis" value="KitKat Mini / Milka" checked> KitKat mini / Milka</label>
+            <label class="checkbox-item"><input type="checkbox" name="punch_slatkis" value="Chupa Chups lizalice" checked> Chupa Chups lizalice</label>
+            <label class="checkbox-item"><input type="checkbox" name="punch_slatkis" value="Haribo gumene bombone" checked> Haribo gumene bombone</label>
+          </div>
+        </div>
+
+        <!-- Tip punjenja pregrada (samo slatkiši ili sa igračkicama) -->
+        <div class="form-group">
+          <label>Dodaci u pregradama:</label>
           <div class="radio-card-group">
             <div class="radio-card selected" id="fillOptSlatkisi" onclick="selectPunchFill('slatkisi')">
               <div class="radio-card-title">🍬 Samo slatkiši</div>
-              <div class="radio-card-desc">Kvalitetne čokoladice, lizalice, voćne karamele i gumene bombonice u svakoj rupi.</div>
+              <div class="radio-card-desc">Samo izabrani slatkiši u svakoj pregradi prema odabranom broju komada.</div>
             </div>
             <div class="radio-card" id="fillOptMix" onclick="selectPunchFill('mix')">
               <div class="radio-card-title">🎁 Slatkiši + Igračkice</div>
-              <div class="radio-card-desc">Slatkiš + tematski privezak, figurica, mini narukvica, stikeri ili prstenčić.</div>
+              <div class="radio-card-desc">Uz slatkiše ide i tematski privezak, mini figurica, narukvica, stikeri ili prstenčić u svakoj rupi (+70 RSD/rupi).</div>
             </div>
           </div>
         </div>
 
-        <!-- Posebne napomene (ime slavljenika, godine) -->
+        <!-- Posebne napomene -->
         <div class="form-group">
           <label for="punchNotes">Ime slavljenika, broj godina i posebne želje:</label>
-          <textarea id="punchNotes" name="dodatne_zelje" rows="3" placeholder="npr. Mila, puni 5 godina. Dodati zlatne zvezdice i broj 5 na vrh torte..."></textarea>
+          <textarea id="punchNotes" name="dodatne_zelje" rows="3" placeholder="npr. Luka, puni 6 godina. Dodati zlatne zvezdice i broj 6 na vrh torte..."></textarea>
         </div>
 
         <!-- Cena za Punch tortu -->
@@ -1029,26 +1082,27 @@
 
   // ===================== LOGIKA ZA PUNCH TORTU =====================
   let currentPunchFill = 'slatkisi';
+  let calculatedTiers = 1;
 
-  // Matrica cena za Punch tortu: [baza po rupama] + [doplata za igračkice]
-  const punchBasePrices = {
-    "12": 3200,
-    "16": 3800,
-    "20": 4600,
-    "24": 5200,
-    "30": 6200
-  };
+  function handlePunchHolesInput() {
+    let holes = parseInt(document.getElementById('punchHolesInput').value, 10);
+    if (isNaN(holes) || holes < 1) holes = 12;
 
-  const toySurchargePerHole = 60; // Doplata po rupi za sitne igračkice/priveske
-
-  function handlePunchHolesChange() {
-    const holes = parseInt(document.getElementById('punchHoles').value, 10);
     const tierBox = document.getElementById('tierInfoBox');
 
+    // Automatsko određivanje broja spratova prema unetom broju pregrada
     if (holes <= 16) {
-      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 1 SPRAT (Jednospratna torta)</strong><br>Kompaktna kružna torta sa prečnikom ~26 cm. Idealno za manje proslave do ${holes} dece.`;
+      calculatedTiers = 1;
+      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 1 SPRAT (Jednospratna torta)</strong><br>` +
+                          `Za <strong>${holes} pregrada</strong> dovoljan je 1 nivo (prečnik kruga ~26–28 cm). Savršeno za manje rođendane!`;
+    } else if (holes <= 32) {
+      calculatedTiers = 2;
+      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 2 SPRATA (Dvospratna raskošna torta)</strong><br>` +
+                          `Za <strong>${holes} pregrada</strong> torta se izrađuje na dva nivoa (baza + gornji sprat) radi lakog bušenja i atraktivnog izgleda.`;
     } else {
-      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 2 SPRATA (Dvospratna raskošna torta)</strong><br>Velika torta na dva nivoa (donji i gornji sprat) sa raspoređenih ${holes} pregrada za bušenje.`;
+      calculatedTiers = 3;
+      tierBox.innerHTML = `🎂 <strong>Konstrukcija: 3 SPRATA (Mega trospratna torta)</strong><br>` +
+                          `Za <strong>${holes} pregrada</strong> torta se izrađuje na tri sprata, poput prave svadbene torte, sa raspoređenim krugovima!`;
     }
 
     calculatePunchPrice();
@@ -1065,14 +1119,28 @@
   }
 
   function calculatePunchPrice() {
-    const holes = document.getElementById('punchHoles').value;
-    let price = punchBasePrices[holes] || 3800;
+    let holes = parseInt(document.getElementById('punchHolesInput').value, 10);
+    if (isNaN(holes) || holes < 6) holes = 6;
 
-    if (currentPunchFill === 'mix') {
-      price += (parseInt(holes, 10) * toySurchargePerHole);
-    }
+    const sweetsPerHole = parseInt(document.getElementById('sweetsPerHoleSelect').value, 10);
 
-    document.getElementById('punchPriceDisplay').innerText = price.toLocaleString('sr-RS') + ' RSD';
+    // Proračun cene:
+    // Baza konstrukcije po spratnosti: 1 sprat = 2.000 RSD, 2 sprata = 2.700 RSD, 3 sprata = 3.500 RSD
+    let baseStructurePrice = (calculatedTiers === 1) ? 2000 : ((calculatedTiers === 2) ? 2700 : 3500);
+
+    // Cena slatkiša po komadu (Kinder, KitKat, Chupa Chups, Haribo) sa sigurnosnim baferom = 70 RSD/kom
+    const sweetCostPerUnit = 70;
+    let sweetsTotal = holes * sweetsPerHole * sweetCostPerUnit;
+
+    // Doplata za igračkice/priveske (70 RSD po rupi) ako je izabran miks
+    let toysTotal = (currentPunchFill === 'mix') ? (holes * 70) : 0;
+
+    let totalPrice = baseStructurePrice + sweetsTotal + toysTotal;
+
+    // Zaokruživanje na stotine
+    totalPrice = Math.round(totalPrice / 50) * 50;
+
+    document.getElementById('punchPriceDisplay').innerText = totalPrice.toLocaleString('sr-RS') + ' RSD';
   }
 
   function sendPunchViaWhatsApp() {
@@ -1080,17 +1148,26 @@
 
     const color = document.getElementById('punchColor').value.trim() || 'Po dogovoru';
     const theme = document.getElementById('punchThemeInput').value.trim() || 'Nije specificirano';
-    const holes = document.getElementById('punchHoles').value;
-    const tierText = (parseInt(holes, 10) <= 16) ? '1 sprat' : '2 sprata';
-    const fillText = (currentPunchFill === 'slatkisi') ? 'Samo slatkiši' : 'Slatkiši + igračkice (privesci, narukvice...)';
+    const holes = document.getElementById('punchHolesInput').value;
+    const sweetsPerHole = document.getElementById('sweetsPerHoleSelect').value;
+    const tierText = (calculatedTiers === 1) ? '1 sprat' : ((calculatedTiers === 2) ? '2 sprata' : '3 sprata');
+    const fillType = (currentPunchFill === 'slatkisi') ? 'Samo slatkiši' : 'Slatkiši + igračkice (privesci, narukvice...)';
+    
+    let chosenSweets = [];
+    document.querySelectorAll('input[name="punch_slatkis"]:checked').forEach(el => {
+      chosenSweets.push(el.value);
+    });
+
     const notes = document.getElementById('punchNotes').value.trim();
     const price = document.getElementById('punchPriceDisplay').innerText;
 
     let text = `Pozdrav! Šaljem upit za PUNCH ROĐENDANSKU TORTU 🎂🎈\n\n` +
                `*Tema / Motiv:* ${theme}\n` +
                `*Željena boja torte:* ${color}\n` +
-               `*Broj pregrada:* ${holes} rupa (${tierText})\n` +
-               `*Punjenje:* ${fillText}\n` +
+               `*Broj pregrada za bušenje:* ${holes} rupa (${tierText})\n` +
+               `*Slatkiša po rupi:* ${sweetsPerHole} kom.\n` +
+               `*Izabrani slatkiši:* ${chosenSweets.join(', ') || 'Standardni miks'}\n` +
+               `*Tip punjenja:* ${fillType}\n` +
                `*Okvirna cena:* ${price}`;
 
     if (notes !== '') {
@@ -1103,7 +1180,7 @@
   // Inicijalizacija na startu
   updateSizeOptions();
   calculateBumPrice();
-  handlePunchHolesChange();
+  handlePunchHolesInput();
 </script>
 </body>
 </html>
