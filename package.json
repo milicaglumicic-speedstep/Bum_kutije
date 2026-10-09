@@ -1,0 +1,9 @@
+{
+  "name": "playwright-github-tests",
+  "version": "1.0.0",
+  "description": "Playwright testing on GitHub Actions",
+  "main": "index.js",
+  "dependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
