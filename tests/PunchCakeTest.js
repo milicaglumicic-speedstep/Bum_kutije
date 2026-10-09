@@ -217,5 +217,39 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
 
     await inputPregrade.fill('50');
   });
-  
+    /* ============================================================
+     5. FUNKCIONALNI TEST ZA ČEKIRANJE SLATKIŠA
+     ============================================================ */
+  test('Logicki test: Stikliranje novog slatkisa povecava cenu, a destikliranje smanjuje', async ({ page }) => {
+    const prikazCene = page.locator('#punchPriceDisplay');
+    
+    // Inicijalno imamo 3 čekirana slatkiša. Uzimamo početnu cenu.
+    const pocetnaCenaTekst = await prikazCene.innerText();
+    const pocetnaCenaBroj = parseInt(pocetnaCenaTekst.replace(/\D/g, ''));
+
+    // 1. Pronalazimo četvrti slatkiš (Krem bananica) koji je inicijalno ODČEKIRAN
+    const bananicaCheckbox = page.locator('#punchSweetsGroup input[value="bananica"]');
+    
+    // Štikliramo Krem bananicu i simuliramo promenu na formi
+    await bananicaCheckbox.check();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+
+    // Proveravamo da li je cena uspešno PORASLA
+    const cenaNakonStikliranjaTekst = await prikazCene.innerText();
+    const cenaNakonStikliranjaBroj = parseInt(cenaNakonStikliranjaTekst.replace(/\D/g, ''));
+    expect(cenaNakonStikliranjaBroj).toBeGreaterThan(pocetnaCenaBroj);
+
+    // 2. Sada DEŠTIKLIRAMO isti slatkiš (isključujemo Krem bananicu)
+    await bananicaCheckbox.uncheck();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+
+    // Proveravamo da li se cena uspešno VRATILA na manju, početnu vrednost
+    const krajnjaCenaTekst = await prikazCene.innerText();
+    const krajnjaCenaBroj = parseInt(krajnjaCenaTekst.replace(/\D/g, ''));
+    expect(krajnjaCenaBroj).toBeLessThan(cenaNakonStikliranjaBroj);
+    expect(krajnjaCenaBroj).toBe(pocetnaCenaBroj);
+  });
+
 });
