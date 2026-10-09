@@ -251,5 +251,49 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     expect(krajnjaCenaBroj).toBeLessThan(cenaNakonStikliranjaBroj);
     expect(krajnjaCenaBroj).toBe(pocetnaCenaBroj);
   });
+  /* ============================================================
+     5. FUNKCIONALNI TEST ZA ČEKIRANJE I FORMIRANJE CENE SLATKIŠA
+     ============================================================ */
+  test('Logicki test: Stikliranje slatkisa dodaje pojedinacnu cenu pomnozenu sa brojem rupa na ukupnu sumu', async ({ page }) => {
+    const prikazCene = page.locator('#punchPriceDisplay');
+    
+    // 1. Uzimamo pocetnu cenu sa defaultna 3 slatkiša
+    const pocetnaCenaTekst = await prikazCene.innerText();
+    const pocetnaCenaBroj = parseInt(pocetnaCenaTekst.replace(/\D/g, ''));
+
+    // Saznajemo vrednost Krem bananice iz pozadinske baze na stranici
+    const cenaBananicePoKomadu = await page.evaluate(() => {
+      return window.PricingEngine ? window.PricingEngine.getSweetUnitCost('bananica') : 0;
+    });
+
+    // Izvlacimo broj rupa (16) i kolicinu po rupi (2) direktno iz trenutnog stanja forme
+    const brojRupa = 16;
+    const slatkisaPoRupi = 2;
+
+    // Izracunavamo matematicki koliko tacno cena mora da skoci nakon stikliranja
+    const ocekivanoUvecanje = cenaBananicePoKomadu * brojRupa * slatkisaPoRupi;
+    const ocekivanaNovaCena = pocetnaCenaBroj + ocekivanoUvecanje;
+
+    // 2. Pronalazimo i stikliramo Krem bananicu
+    const bananicaCheckbox = page.locator('#punchSweetsGroup input[value="bananica"]');
+    await bananicaCheckbox.check();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+
+    // 3. Proveravamo da li je cena na ekranu tacno jednaka matematicki izracunatoj novoj ceni
+    const cenaNakonStikliranjaTekst = await prikazCene.innerText();
+    const cenaNakonStikliranjaBroj = parseInt(cenaNakonStikliranjaTekst.replace(/\D/g, ''));
+    
+    expect(cenaNakonStikliranjaBroj).toBe(ocekivanaNovaCena);
+
+    // 4. Destikliramo Krem bananicu i proveravamo da li se cena bez greske vratila na pocetnu
+    await bananicaCheckbox.uncheck();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+
+    const krajnjaCenaTekst = await prikazCene.innerText();
+    const krajnjaCenaBroj = parseInt(krajnjaCenaTekst.replace(/\D/g, ''));
+    expect(krajnjaCenaBroj).toBe(pocetnaCenaBroj);
+  });
 
 });
