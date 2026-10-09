@@ -1,132 +1,239 @@
-window.punchCake = {
-  calculatedTiers: 1,
-  withToys: false,
+const { test, expect } = require('@playwright/test');
 
-  init() {
-    this.bindEvents();
-    this.handleHolesChange();
-  },
+test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
 
-  // Pomoćna metoda za dobijanje trenutnog broja komada po rupi
-  getSweetsPerHoleCount() {
-    const select = document.getElementById('sweetsPerHoleSelect');
-    if (!select) return 2;
+  test.beforeEach(async ({ page }) => {
+    const baseUrl = 'https://github.io';
+    await page.goto(`${baseUrl}punch-torta.html`);
+    await page.waitForLoadState('domcontentloaded');
+  });
 
-    if (select.value === 'custom') {
-      const customInput = document.getElementById('customSweetsPerHoleInput');
-      const val = parseInt(customInput?.value, 10);
-      return (isNaN(val) || val < 1) ? 1 : val;
-    }
+  // Pomoćna funkcija koja izvlači trenutno stanje forme i računa cenu preko tvog PricingEngine-a
+  async function izracunajOcekivanuCenuUPozadini(page) {
+    return await page.evaluate(() => {
+      if (!window.PricingEngine || !window.punchCake) return 0;
+      
+      const holes = parseInt(document.getElementById('punchHolesInput')?.value, 10) || 16;
+      const sweetsPerHole = window.punchCake.getSweetsPerHoleCount();
+      const withToys = window.punchCake.withToys;
+      const tiers = window.punchCake.calculatedTiers;
+      
+      let selectedSweets = [];
+      document.querySelectorAll('#punchSweetsGroup input:checked').forEach(el => selectedSweets.push(el.value));
 
-    return parseInt(select.value, 10) || 2;
-  },
-
-  bindEvents() {
-    document.getElementById('punchHolesInput')?.addEventListener('input', () => this.handleHolesChange());
-
-    const sweetsSelect = document.getElementById('sweetsPerHoleSelect');
-    const customWrap = document.getElementById('customSweetsPerHoleWrap');
-    const customInput = document.getElementById('customSweetsPerHoleInput');
-
-    // Prebacivanje između 1, 2, 3 i custom polja
-    sweetsSelect?.addEventListener('change', () => {
-      const isCustom = sweetsSelect.value === 'custom';
-      if (customWrap) customWrap.style.display = isCustom ? 'block' : 'none';
-      this.calculatePrice();
-    });
-
-    customInput?.addEventListener('input', () => {
-      this.calculatePrice();
-    });
-
-    // OČIŠĆENO: Klikovi za poklone fillOptSlatkisi i fillOptMix su uklonjeni odavde, 
-    // jer ih sada ispravno i direktno pokreću onclick atributi iz tvog HTML-a!
-
-    // Validacija slatkiša
-    document.querySelectorAll('#punchSweetsGroup input[type="checkbox"]').forEach(chk => {
-      chk.addEventListener('change', (e) => {
-        const checked = document.querySelectorAll('#punchSweetsGroup input:checked');
-        if (checked.length === 0) {
-          e.target.checked = true;
-          alert('Morate izabrati barem 1 vrstu slatkiša!');
-        }
-        this.calculatePrice();
+      return window.PricingEngine.calculatePunchCake({
+        holes,
+        tiers,
+        sweetsPerHole,
+        selectedSweets,
+        withToys
       });
     });
-  },
+  }
 
-  handleHolesChange() {
-    let holes = parseInt(document.getElementById('punchHolesInput')?.value, 10);
-    if (isNaN(holes) || holes < 6) holes = 6;
-    const tierBox = document.getElementById('tierInfoBox');
-    if (holes <= 16) {
-      this.calculatedTiers = 1;
-      if (tierBox) tierBox.innerHTML = '🎂 <strong>Konstrukcija: 1 SPRAT</strong><br>Za <strong>' + holes + ' pregrada</strong> dovoljan je 1 nivo (prečnik ~26 cm). Idealno za manje proslave!';
-    } else if (holes <= 32) {
-      this.calculatedTiers = 2;
-      if (tierBox) tierBox.innerHTML = '🎂 <strong>Konstrukcija: 2 SPRATA (Dvospratna torta)</strong><br>Za <strong>' + holes + ' pregrada</strong> torta ima bazu + gornji sprat radi lakšeg bušenja.';
-    } else {
-      this.calculatedTiers = 3;
-      if (tierBox) tierBox.innerHTML = '🎂 <strong>Konstrukcija: 3 SPRATA (Mega trospratna torta)</strong><br>Raskošna konstrukcija na 3 sprata za <strong>' + holes + ' pregrada</strong>!';
+  /* ============================================================
+     1. POZITIVNI TESTOVI (Happy Path & WhatsApp Validacija)
+     ============================================================ */
+  test('Pozitivan test: Ucitavanje forme i provera pocetne cene', async ({ page }) => {
+    const naslovTorte = page.locator('.box-card h2');
+    await expect(naslovTorte).toContainText('PUNCH ROĐENDANSKA TORTA');
+    
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
+    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
+
+    const prikazCene = page.locator('#punchPriceDisplay');
+    await expect(prikazCene).toContainText(formatiranaCena);
+  });
+
+  test('Pozitivan test: Inicijalno su cekirana tacno 3 slatkisa', async ({ page }) => {
+    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
+    const ukupanBroj = await sviCheckboxovi.count();
+
+    let brojacCekiranih = 0;
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        brojacCekiranih++;
+      }
     }
-    this.calculatePrice();
-  },
+    expect(brojacCekiranih).toBe(3);
+  });
 
-  setWithToys(val) {
-    this.withToys = val;
-    document.getElementById('fillOptSlatkisi')?.classList.toggle('selected', !val);
-    document.getElementById('fillOptMix')?.classList.toggle('selected', val);
-    this.calculatePrice();
-  },
+  test('Pozitivan test: Narucivanje torte na 1 SPRAT i provera WhatsApp poruke', async ({ page }) => {
+    await page.locator('#punchColorInput').fill('Bela sa sljokicama');
+    await page.locator('#punchThemeInput').fill('Barbie tema');
+    await page.locator('#punchNotes').fill('Mila, 4 godine');
 
-  calculatePrice() {
-    let holes = parseInt(document.getElementById('punchHolesInput')?.value, 10) || 16;
-    let sweetsPerHole = this.getSweetsPerHoleCount();
-    let selectedSweets = [];
-    document.querySelectorAll('#punchSweetsGroup input:checked').forEach(el => selectedSweets.push(el.value));
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
+    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
 
-    if (!window.PricingEngine) return;
-    const total = window.PricingEngine.calculatePunchCake({
-      holes,
-      tiers: this.calculatedTiers,
-      sweetsPerHole,
-      selectedSweets,
-      withToys: this.withToys
+    const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      page.locator('button.submit-btn').click()
+    ]);
+
+    const whatsappUrl = popup.url();
+    const dekodiranTekst = decodeURIComponent(whatsappUrl).replace(/\+/g, ' ');
+
+    expect(dekodiranTekst).toContain('*Tema:* Barbie tema');
+    expect(dekodiranTekst).toContain('*Boja torte:* Bela sa sljokicama');
+    expect(dekodiranTekst).toContain('*Broj pregrada:* 16 rupa (1 sprat/a)');
+    expect(dekodiranTekst).toContain(`*Cena:* ${formatiranaCena}`);
+    expect(dekodiranTekst).toContain('*Slavljenik i želje:* Mila, 4 godine');
+    
+    await popup.close();
+  });
+
+  test('Pozitivan test: Narucivanje torte na 2 SPRATA sa igrackama i provera WhatsApp poruke', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
+    await inputPregrade.fill('24');
+    await inputPregrade.dispatchEvent('input');
+
+    await page.locator('#fillOptMix').click();
+
+    await page.locator('#punchColorInput').fill('Plava i zuta');
+    await page.locator('#punchThemeInput').fill('Paw Patrol');
+    await page.locator('#punchNotes').fill('Pavle, 5 godina');
+    await page.waitForTimeout(200);
+
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
+    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
+
+    const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      page.locator('button.submit-btn').click()
+    ]);
+
+    const whatsappUrl = popup.url();
+    const dekodiranTekst = decodeURIComponent(whatsappUrl).replace(/\+/g, ' ');
+
+    expect(dekodiranTekst).toContain('*Tema:* Paw Patrol');
+    expect(dekodiranTekst).toContain('*Boja torte:* Plava i zuta');
+    expect(dekodiranTekst).toContain('*Broj pregrada:* 24 rupa (2 sprat/a)');
+    expect(dekodiranTekst).toContain('*Dodaci:* Slatkiši   Igračkice/Privesci');
+    expect(dekodiranTekst).toContain(`*Cena:* ${formatiranaCena}`);
+    expect(dekodiranTekst).toContain('*Slavljenik i želje:* Pavle, 5 godina');
+
+    await popup.close();
+  });
+
+  /* ============================================================
+     2. LOGIČKI TESTOVI (Dinamička verifikacija kalkulacije)
+     ============================================================ */
+  test('Logicki test: Povecanje pregrada preko 16 dinamicki menja i poredi cenu', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
+    const prikazCene = page.locator('#punchPriceDisplay');
+    const kutijaZaSpratove = page.locator('#tierInfoBox');
+
+    const pocetnaCenaTekst = await prikazCene.innerText();
+
+    await inputPregrade.fill('20');
+    await inputPregrade.dispatchEvent('input');
+    await page.waitForTimeout(300); 
+
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
+    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
+
+    await expect(prikazCene).toContainText(formatiranaCena);
+    await expect(kutijaZaSpratove).toContainText('2 SPRATA');
+  });
+
+  test('Logicki test: Dodavanje igrackica uz slatkise dinamicki proverava uvecanje cene', async ({ page }) => {
+    const prikazCene = page.locator('#punchPriceDisplay');
+    const karticaSlatkisiIgrackice = page.locator('#fillOptMix');
+
+    await karticaSlatkisiIgrackice.click();
+    await page.waitForTimeout(300);
+
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
+    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
+
+    await expect(prikazCene).toContainText(formatiranaCena);
+  });
+
+  test('Logicki test: Stikliranje slatkisa dodaje pojedinacnu cenu pomnozenu sa brojem rupa na ukupnu sumu', async ({ page }) => {
+    const prikazCene = page.locator('#punchPriceDisplay');
+    
+    // Čitamo direktno dinamičku cenu sa ekrana kako bismo znali pravo zaokruženo stanje
+    const ocekivanaCenaNakonStikliranja = await page.evaluate(() => {
+      if (!window.PricingEngine || !window.punchCake) return 0;
+      return window.PricingEngine.calculatePunchCake({
+        holes: 16,
+        tiers: 1,
+        sweetsPerHole: 2,
+        selectedSweets: ['kinder_bueno', 'kinder_cokoladica', 'lizalica', 'bananica'],
+        withToys: false
+      });
+    });
+    const formatiranaCenaSaBananicom = `${ocekivanaCenaNakonStikliranja.toLocaleString('sr-RS')} RSD`;
+
+    // Pronalazimo i štikliramo Krem bananicu
+    const bananicaCheckbox = page.locator('#punchSweetsGroup input[value="bananica"]');
+    await bananicaCheckbox.check();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+
+    // Upoređujemo sa zaokruženom cenom sa ekrana
+    await expect(prikazCene).toContainText(formatiranaCenaSaBananicom);
+
+    // Deštikliramo i vraćamo na početno stanje
+    await bananicaCheckbox.uncheck();
+    await bananicaCheckbox.dispatchEvent('change');
+    await page.waitForTimeout(300);
+  });
+
+  /* ============================================================
+     3. NEGATIVNI TESTOVI (Validacija, Tastatura i Popup)
+     ============================================================ */
+  test('Negativan test: HTML5 restrikcija i auto-reset za nevalidne pregrade', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
+
+    await inputPregrade.fill('2');
+    await inputPregrade.dispatchEvent('input');
+    await expect(inputPregrade).toHaveValue('6');
+
+    await inputPregrade.fill('60');
+    await inputPregrade.dispatchEvent('input');
+    let validnoIznad = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoIznad).toBe(false);
+  });
+
+  test('Negativan test: Pokusaj gasenja svih slatkisa okida browser popup', async ({ page }) => {
+    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
+    
+    let popupSePojavio = false;
+    page.on('dialog', async dialog => {
+      popupSePojavio = true;
+      await dialog.accept();
     });
 
-    const disp = document.getElementById('punchPriceDisplay');
-    if (disp) disp.innerText = total.toLocaleString('sr-RS') + ' RSD';
-  },
+    const ukupanBroj = await sviCheckboxovi.count();
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        await sviCheckboxovi.nth(i).uncheck().catch(() => {});
+        await sviCheckboxovi.nth(i).dispatchEvent('change');
+      }
+    }
+    expect(popupSePojavio).toBe(true);
+  });
 
-  sendWhatsApp() {
-    const phone = "381644667485";
-    const color = document.getElementById('punchColorInput')?.value || 'Po dogovoru';
-    const theme = document.getElementById('punchThemeInput')?.value || 'Rođendanska';
-    const holes = document.getElementById('punchHolesInput')?.value || '16';
-    const sweetsCount = this.getSweetsPerHoleCount();
-    // DYNAMIC: Čitamo cenu direktno sa ekrana bez fiksnog fallback-a na stara 3.800 RSD
-    const price = document.getElementById('punchPriceDisplay')?.innerText || 'Preračunato pri porudžbini';
-    const notes = document.getElementById('punchNotes')?.value.trim();
+  /* ============================================================
+     4. FUNKCIONALNI I GRANIČNI TESTOVI
+     ============================================================ */
+  test('Funkcionalni test: Izbor opcije "Drugo" dinamicki prikazuje input polje', async ({ page }) => {
+    const selektBrojaSlatkisa = page.locator('#sweetsPerHoleSelect');
+    const customInputOmotac = page.locator('#customSweetsPerHoleWrap');
 
-    let sweets = [];
-    document.querySelectorAll('#punchSweetsGroup input:checked').forEach(el => sweets.push(el.value));
+    await expect(customInputOmotac).toBeHidden();
+    await selektBrojaSlatkisa.selectOption('custom');
+    await expect(customInputOmotac).toBeVisible();
+  });
 
-    let text = 'Pozdrav! Šaljem upit za PUNCH ROĐENDANSKA TORTU 🎂🎈\n\n' +
-               '*Tema:* ' + theme + '\n' +
-               '*Boja torte:* ' + color + '\n' +
-               '*Broj pregrada:* ' + holes + ' rupa (' + this.calculatedTiers + ' sprat/a)\n' +
-               '*Slatkiša po rupi:* ' + sweetsCount + ' kom.\n' +
-               '*Izabrani slatkiši (1-4):* ' + (sweets.join(', ') || 'Standardni miks') + '\n' +
-               '*Dodaci:* ' + (this.withToys ? 'Slatkiši + Igračkice/Privesci' : 'Samo slatkiši') + '\n' +
-               '*Cena:* ' + price;
+  test('Granicni test: Unos maksimalnog i minimalnog broja pregrada', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
 
-    if (notes) text += '\n*Slavljenik i želje:* ' + notes;
-    
-    // ISPRAVLJENO: Dodat kosi znak '/' nakon wa.me koji je pravio grešku na desktopu
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
-  }
-};
+    await inputPregrade.fill('6');
+    await inputPregrade.dispatchEvent('input');
+    let validnoMin = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoMin).toBe(true);
 
-document.addEventListener('DOMContentLoaded', () => { 
-  if (window.punchCake?.init) window.punchCake.init(); 
-});
+    await inputPregrade.fill('50');
