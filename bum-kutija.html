@@ -41,35 +41,20 @@
         <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
       </div>
       <!-- Dekoracija enterijera kutije -->
+      <!-- Dekoracija enterijera kutije (Sada je padajući meni!) -->
       <div class="form-group">
-        <label>Dekoracija enterijera kutije (izaberi stilove/motive):</label>
-        <div class="checkbox-group" id="interiorGroup">
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="Pisani tekst">
-            <span>✍️ Pisani tekst</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="Štampani tekst">
-            <span>🖨️ Štampani tekst</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="Zvezdice">
-            <span>⭐ Zvezdice</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="Srca">
-            <span>❤️ Srca</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="IT stikeri">
-            <span>💻 IT stikeri (tech, kodiranje, dev)</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="enterijer" value="Girl stikeri">
-            <span>💄 Girl stikeri (estetika, fashion, cute)</span>
-          </label>
-        </div>
+        <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
+        <select id="bumInteriorSelect">
+          <option value="Standardni" selected>✨ Standardni / bez dodataka</option>
+          <option value="Pisani tekst">✍️ Pisani tekst</option>
+          <option value="Štampani tekst">🖨️ Štampani tekst</option>
+          <option value="Zvezdice">⭐ Zvezdice</option>
+          <option value="Srca">❤️ Srca</option>
+          <option value="IT stikeri">💻 IT stikeri (tech, kodiranje, dev)</option>
+          <option value="Girl stikeri">💄 Girl stikeri (estetika, fashion, cute)</option>
+        </select>
       </div>
+
 
       <!-- Stil bočnih ivica -->
       <div class="form-group">
