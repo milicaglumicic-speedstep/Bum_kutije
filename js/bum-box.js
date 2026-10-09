@@ -62,7 +62,7 @@ window.bumBox = {
     if (this.currentPackage === 'custom_gift') {
       select.innerHTML = '<option value="CUSTOM">Prilagođava se vašem poklonu (do 20 × 20 × 20 cm)</option>';
     } else if (this.currentPackage === 'only_sweets') {
-      select.innerHTML = '<option value="Standardna">15 × 15 × 15 cm do 150g ispod čepa</option><option value="Velika">18 × 18 × 18 cm.do 250g ispod čepa</option>';
+      select.innerHTML = '<option value="Standardna">15 × 15 × 15 cm do 150g ispod čepa</option><option value="Velika">18 × 18 × 18 cm do 250g ispod čepa</option>';
     } else {
       select.innerHTML = '<option value="Kompaktna">10 × 10 × 10 cm</option><option value="Standardna" selected>15 × 15 × 15 cm</option><option value="Velika">18 × 18 × 18 cm</option>';
     }
