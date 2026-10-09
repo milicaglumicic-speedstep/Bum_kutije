@@ -1,11 +1,11 @@
 const { test, expect } = require('@playwright/test');
 
-test('Provera pocetne stranice - Elementi, navigacija i sve animacije', async ({ page }) => {
-  const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
-  
-  // 1. Otvori početnu stranicu
-  await page.goto(`${baseUrl}punch-torta.html`);
-      
+test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
+
+  test.beforeEach(async ({ page }) => {
+    const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
+    // Otvaramo tacnu online stranicu konfiguratora torte
+    await page.goto(`${baseUrl}punch-torta.html`);
     await page.waitForLoadState('domcontentloaded');
   });
 
@@ -77,30 +77,51 @@ test('Provera pocetne stranice - Elementi, navigacija i sve animacije', async ({
   });
 
   /* ============================================================
-     3. NOVI TEST CASE: SPECIJALNI KARAKTERI I WHATSAPP SLANJE
+     3. NEGATIVNI TESTOVI (Validacija i Specijalni karakteri)
      ============================================================ */
   test('Negativan test: Unos specijalnih karaktera u pregrade blokira slanje na WhatsApp', async ({ page }) => {
     const inputPregrade = page.locator('#punchHolesInput');
-    const dugmeNaruci = page.locator('button.submit-btn');
 
-    // 1. Pokušavamo da upišemo specijalne karaktere u polje koje prihvata samo brojeve
     await inputPregrade.fill('@#\$!%');
-    
-    // Budući da je input type="number", pretraživač ignoriše ove karaktere i polje ostaje prazno ili nevalidno
     const trenutnaVrednost = await inputPregrade.inputValue();
-    
-    // 2. Proveravamo HTML5 validaciju forme – polje ne sme biti validno za slanje ako je prazno/loše uneto
     const jeValidno = await inputPregrade.evaluate(el => el.checkValidity());
     
     if (!jeValidno || trenutnaVrednost === '') {
-      // Ako je polje nevalidno, HTML5 automatski blokira 'submit' događaj forme
-      console.log('HTML5 validacija je uspešno blokirala nevalidan unos specijalnih karaktera.');
       expect(jeValidno).toBe(false);
     }
   });
 
+  test('Negativan test: HTML5 restrikcija i auto-reset za nevalidne pregrade', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
+
+    await inputPregrade.fill('2');
+    await expect(inputPregrade).toHaveValue('6');
+
+    await inputPregrade.fill('60');
+    let validnoIznad = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoIznad).toBe(false);
+  });
+
+  test('Negativan test: Pokusaj gasenja svih slatkisa okida browser popup', async ({ page }) => {
+    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
+    
+    let popupSePojavio = false;
+    page.on('dialog', async dialog => {
+      popupSePojavio = true;
+      await dialog.accept();
+    });
+
+    const ukupanBroj = await sviCheckboxovi.count();
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        await sviCheckboxovi.nth(i).uncheck().catch(() => {});
+      }
+    }
+    expect(popupSePojavio).toBe(true);
+  });
+
   /* ============================================================
-     4. FUNKCIONALNI I NEGATIVNI TESTOVI (Padajući meni i Popup)
+     4. FUNKCIONALNI I NAVIGACIONI TESTOVI
      ============================================================ */
   test('Funkcionalni test: Izbor opcije "Drugo" dinamicki prikazuje input polje', async ({ page }) => {
     const selektBrojaSlatkisa = page.locator('#sweetsPerHoleSelect');
@@ -121,23 +142,5 @@ test('Provera pocetne stranice - Elementi, navigacija i sve animacije', async ({
     await inputPregrade.fill('50');
     let validnoMax = await inputPregrade.evaluate(el => el.checkValidity());
     expect(validnoMax).toBe(true);
-  });
-
-  test('Negativan test: Pokusaj gasenja svih slatkisa okida browser popup', async ({ page }) => {
-    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
-    
-    let popupSePojavio = false;
-    page.on('dialog', async dialog => {
-      popupSePojavio = true;
-      await dialog.accept();
-    });
-
-    const ukupanBroj = await sviCheckboxovi.count();
-    for (let i = 0; i < ukupanBroj; i++) {
-      if (await sviCheckboxovi.nth(i).isChecked()) {
-        await sviCheckboxovi.nth(i).uncheck().catch(() => {});
-      }
-    }
-    expect(popupSePojavio).toBe(true);
   });
 });
