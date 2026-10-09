@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test('Provera dugmica i navigacije na stranici', async ({ page }) => {
   // Base URL za lakšu proveru stranica
-  const baseUrl = 'https://github.io';
+  const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije.';
 
   // 1. Otvori početnu stranicu
   await page.goto(`${baseUrl}index.html`);
