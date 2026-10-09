@@ -49,14 +49,11 @@ window.punchCake = {
     });
     // ──────────────────────────────────────────────────────────────────
 
-    // Validacija 1 do 4 slatkiša
+    // Validacija slatkiša
     document.querySelectorAll('#punchSweetsGroup input[type="checkbox"]').forEach(chk => {
       chk.addEventListener('change', (e) => {
         const checked = document.querySelectorAll('#punchSweetsGroup input:checked');
-        if (checked.length > 4) {
-          e.target.checked = false;
-          alert('Možete izabrati maksimalno do 4 vrste slatkiša!');
-        } else if (checked.length === 0) {
+       if (checked.length === 0) {
           e.target.checked = true;
           alert('Morate izabrati barem 1 vrstu slatkiša!');
         }
