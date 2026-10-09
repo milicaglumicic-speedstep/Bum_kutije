@@ -130,7 +130,7 @@ window.punchCake = {
                '*Cena:* ' + price;
 
     if (notes) text += '\n*Slavljenik i želje:* ' + notes;
-    window.open('https://wa.me' + phone + '?text=' + encodeURIComponent(text), '_blank');
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
   }
 };
 
