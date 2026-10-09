@@ -5,7 +5,7 @@ window.PricingEngine = {
     if (sweet.price_per_unit) return sweet.price_per_unit;
     return Math.round((sweet.price_per_kg / 1000) * sweet.weight_g);
   },
-  ,
+  
   calculateBumBox({ packageType, size, mechanism, chosenSweets, selected3DItem }) {
     let sheets = size === 'Kompaktna' ? 1.5 : (size === 'Standardna' ? 2 : 2.5);
     calculateBumBox({ packageType, size, mechanism, chosenSweets }) {
