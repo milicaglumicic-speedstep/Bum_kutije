@@ -41,7 +41,7 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     await expect(naslovTorte).toContainText('PUNCH ROĐENDANSKA TORTA');
     
     // Računamo očekivanu cenu u pozadini bez obzira na to kolika je u bazi
-    const ocekivanaCena = await izracunajOcekivanuCenuU Pozadini(page);
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
     const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
 
     const prikazCene = page.locator('#punchPriceDisplay');
@@ -75,7 +75,7 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     await page.waitForTimeout(300); 
 
     // 2. Računamo cenu dinamički u testu za 20 rupa
-    const ocekivanaCena = await izracunajOcekivanuCenuU Pozadini(page);
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
     const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
 
     // 3. Upoređujemo sa onim što je ispisan na ekranu
@@ -92,7 +92,7 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     await page.waitForTimeout(300);
 
     // 2. Računamo cenu sa aktiviranim igračkama
-    const ocekivanaCena = await izracunajOcekivanuCenuU Pozadini(page);
+    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
     const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
 
     // 3. Proveravamo poklapanje na UI
