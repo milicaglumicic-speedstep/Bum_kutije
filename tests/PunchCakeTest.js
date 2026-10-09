@@ -9,7 +9,7 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
   });
 
   // Pomoćna funkcija koja izvlači trenutno stanje forme i računa cenu preko tvog PricingEngine-a
-  async function izracunajOcekivanuCenuU Pozadini(page) {
+  async function izracunajOcekivanuCenuUPozadini(page) {
     return await page.evaluate(() => {
       if (!window.PricingEngine || !window.punchCake) return 0;
       
