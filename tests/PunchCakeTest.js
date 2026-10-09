@@ -1,126 +1,160 @@
 const { test, expect } = require('@playwright/test');
 
-const URL_PUNCH = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/punch-torta.html';
+const URL_PUNCH = 'https://github.io';
 
-test.describe('Punch Torta Konfigurator - QA Test Suite', () => {
+test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
-    // Svaki test počinje otvaranjem stranice konfiguratora
     await page.goto(URL_PUNCH);
   });
 
   /* ============================================================
      1. POZITIVNI TESTOVI (Happy Path)
      ============================================================ */
-  test('Pozitivan test: Osnovna konfiguracija i provera inicijalne cene', async ({ page }) => {
-    // Provera da li se stranica uspešno učitala i prikazuje naslov
+  test('Pozitivan test: Ucitavanje forme i provera pocetne cene', async ({ page }) => {
     await expect(page.locator('h2')).toContainText('PUNCH ROĐENDANSKA TORTA');
-
-    // Provera da li podrazumevani broj pregrada stoji na 16
-    const brojPregrada = page.locator('text=Željeni broj pregrada za bušenje:');
-    await expect(brojPregrada).toBeVisible();
-
-    // Provera da li se ispravno računa i prikazuje početna cena od 3.800 RSD
-    const cenaKontenjer = page.locator('text=3.800 RSD');
-    await expect(cenaKontenjer).toBeVisible();
-
-    // Provera da li postoji funkcionalno WhatsApp dugme za poručivanje
-    const whatsappBtn = page.locator('text=Naruči Punch tortu na WhatsApp 💬');
+    const inputPregrade = page.locator('#punchHolesInput');
+    await expect(inputPregrade).toHaveValue('16');
+    const prikazCene = page.locator('#punchPriceDisplay');
+    await expect(prikazCene).toContainText('3.800 RSD');
+    const whatsappBtn = page.locator('button.submit-btn');
     await expect(whatsappBtn).toBeVisible();
     await expect(whatsappBtn).toBeEnabled();
   });
 
-  test('Pozitivan test: Interakcija sa čekboksima za slatkiše', async ({ page }) => {
-    // Lociramo opciju za Krem bananicu (koja je inicijalno odčekirana prema podacima sa strane)
-    // Možeš prilagoditi selektore u zavisnosti od tvog tačnog HTML inputa (npr. input[value="bananica"])
-    const bananicaCheckbox = page.locator('input[type="checkbox"]').nth(3); // primer za indeks ili iskoristi tekst
-    
-    // Ukoliko tvoj HTML koristi standardne checkbox-ove, testiramo selekciju:
-    if (await bananicaCheckbox.count() > 0) {
-      await bananicaCheckbox.check();
-      await expect(bananicaCheckbox).toBeChecked();
-    }
-  });
+  test('Pozitivan test: Inicijalno su cekirana tacno 3 slatkisa', async ({ page }) => {
+    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
+    const ukupanBroj = await sviCheckboxovi.count();
 
+    let brojacCekiranih = 0;
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        brojacCekiranih++;
+      }
+    }
+    expect(brojacCekiranih).toBe(3);
+  });
 
   /* ============================================================
-     2. GRANIČNI TESTOVI (Boundary Tests)
+     2. NOVI TESTOVI: DINAMIČKA LOGIKA I INPUT POLJA
      ============================================================ */
-  test('Granični test: Biranje opcije "Drugo" i unos graničnih vrednosti', async ({ page }) => {
-    // Pronalaženje polja gde se upisuje proizvoljan broj slatkiša po rupi (inicijalno je 4)
-    // Tražimo input polje koje se nalazi blizu teksta "Drugo (upiši željeni broj)"
-    const customSlatkisiInput = page.locator('input[type="number"], input[placeholder="4"]').first();
+  test('Funkcionalni test: Izbor opcije "Drugo" dinamicki prikazuje input polje', async ({ page }) => {
+    const selektBrojaSlatkisa = page.locator('#sweetsPerHoleSelect');
+    const customInputOmotac = page.locator('#customSweetsPerHoleWrap');
+    const customInputPolje = page.locator('#customSweetsPerHoleInput');
+
+    // 1. Proveravamo da je polje za proizvoljan unos sakriveno na početku (display: none)
+    await expect(customInputOmotac).toBeHidden();
+
+    // 2. Biramo opciju "custom" iz padajućeg menija
+    await selektBrojaSlatkisa.selectOption('custom');
+
+    // 3. Proveravamo da li je polje sada postalo vidljivo korisniku
+    await expect(customInputOmotac).toBeVisible();
+
+    // 4. Proveravamo da li polje ima podrazumevanu vrednost 4 i validna HTML5 ograničenja (min=1, max=10)
+    await expect(customInputPolje).toHaveValue('4');
     
-    if (await customSlatkisiInput.count() > 0) {
-      // Testiramo najmanju graničnu vrednost (npr. 1 slatkiš)
-      await customSlatkisiInput.fill('1');
-      await expect(customSlatkisiInput).toHaveValue('1');
-
-      // Testiramo veću graničnu vrednost (npr. 10 slatkiša)
-      await customSlatkisiInput.fill('10');
-      await expect(customSlatkisiInput).toHaveValue('10');
-    }
+    await customInputPolje.fill('5');
+    let validno = await customInputPolje.evaluate(el => el.checkValidity());
+    expect(validno).toBe(true);
   });
 
-  test('Granični test: Opciono polje za ime i godine (prazno vs popunjeno)', async ({ page }) => {
-    // Pronalaženje input/textarea polja za ime slavljenika i godine
-    const imeGodineInput = page.locator('input[type="text"], textarea').last();
+  test('Funkcionalni test: Unos teksta za boju, temu i napomene slavljenika', async ({ page }) => {
+    const inputBoja = page.locator('#punchColorInput');
+    const inputTema = page.locator('#punchThemeInput');
+    const tekstNapomena = page.locator('#punchNotes');
 
-    if (await imeGodineInput.count() > 0) {
-      // Provera da je inicijalno prazno (granični slučaj - prazno je dozvoljeno jer je opciono)
-      await expect(imeGodineInput).toHaveValue('');
+    // Simuliramo unos detaljnih tekstualnih podataka u konfigurator
+    await inputBoja.fill('Kraljevsko plava sa zlatnim detaljima');
+    await inputTema.fill('Spiderman i Avengers');
+    await tekstNapomena.fill('Marko, 5 godina. Ispisati ime crvenim slovima.');
 
-      // Unos maksimalno dugog imena i provera stabilnosti
-      const dugackoIme = 'Aleksandar Obrenović Obilić Milutinović XXI, 18 godina';
-      await imeGodineInput.fill(dugackoIme);
-      await expect(imeGodineInput).toHaveValue(dugackoIme);
-    }
+    // Potvrđujemo da su svi tekstovi ispravno upisani u polja
+    await expect(inputBoja).toHaveValue('Kraljevsko plava sa zlatnim detaljima');
+    await expect(inputTema).toHaveValue('Spiderman i Avengers');
+    await expect(tekstNapomena).toHaveValue('Marko, 5 godina. Ispisati ime crvenim slovima.');
   });
 
+  test('Funkcionalni test: Selekcija radio-kartica za izbor poklona', async ({ page }) => {
+    const karticaSamoSlatkisi = page.locator('#fillOptSlatkisi');
+    const karticaSlatkisiIgrackice = page.locator('#fillOptMix');
+
+    // 1. Proveravamo da li je kartica "Samo slatkiši" inicijalno selektovana (ima klasu selected)
+    await expect(karticaSamoSlatkisi).toHaveClass(/.*selected.*/);
+    await expect(karticaSlatkisiIgrackice).not.toHaveClass(/.*selected.*/);
+
+    // 2. Kliknemo na karticu "Slatkiši + Igračkice"
+    await karticaSlatkisiIgrackice.click();
+    await page.waitForTimeout(100); // Kratka pauza da JavaScript odradi svoje
+
+    // 3. Proveravamo da li se klasa "selected" uspešno premestila na drugu karticu
+    // Napomena: Pošto u tvom HTML-u postoji mali typo u onclick-u (punchCakeķ.ys), 
+    // ovaj test će ti tačno pokazati da li tvoj JS kod uspešno menja klase na klik!
+    await expect(karticaSlatkisiIgrackice).toHaveClass(/.*selected.*/);
+  });
 
   /* ============================================================
-     3. NEGATIVNI TESTOVI (Edge Case & Error Handling)
+     3. GRANIČNI I NEGATIVNI TESTOVI (Pregrade i Popup)
      ============================================================ */
-  test('Negativan test: Unos nevalidnih/negativnih vrednosti u broj slatkiša', async ({ page }) => {
-    const customSlatkisiInput = page.locator('input[type="number"]').first();
+  test('Granicni test: Unos maksimalnog i minimalnog broja pregrada', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
 
-    if (await customSlatkisiInput.count() > 0) {
-      // Pokušaj unosa negativnog broja (-5)
-      await customSlatkisiInput.fill('-5');
-      
-      // QA Provera: Sistem ne bi smeo da prihvati negativnu vrednost. 
-      // Možeš proveriti da li se cena promenila na minus ili da li polje ima "min=1" atribut.
-      const vrednost = await customSlatkisiInput.inputValue();
-      expect(Number(vrednost)).not.toBeLessThan(0);
-    }
+    await inputPregrade.fill('6');
+    let validnoMin = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoMin).toBe(true);
+
+    await inputPregrade.fill('50');
+    let validnoMax = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoMax).toBe(true);
   });
 
-  test('Negativan test: Klik na WhatsApp bez ijednog izabranog slatkiša', async ({ page }) => {
-    // Odčekiramo sve inicijalno čekirane slatkiše (kinder_bueno, kinder_cokoladica, lizalica)
-    const checkboxes = page.locator('input[type="checkbox"]');
-    const brojCheckboxova = await checkboxes.count();
+  test('Negativan test: HTML5 restrikcija za nevalidan broj pregrada', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
 
-    for (let i = 0; i < brojCheckboxova; i++) {
-      if (await checkboxes.nth(i).isChecked()) {
-        await checkboxes.nth(i).uncheck();
+    await inputPregrade.fill('2');
+    let validnoIspod = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoIspod).toBe(false);
+
+    await inputPregrade.fill('60');
+    let validnoIznad = await inputPregrade.evaluate(el => el.checkValidity());
+    expect(validnoIznad).toBe(false);
+  });
+
+  test('Negativan test: Pokusaj gasenja svih slatkisa okida browser popup', async ({ page }) => {
+    const sviCheckboxovi = page.locator('#punchSweetsGroup input[type="checkbox"]');
+    
+    let popupSePojavio = false;
+    page.on('dialog', async dialog => {
+      popupSePojavio = true;
+      await dialog.accept();
+    });
+
+    const ukupanBroj = await sviCheckboxovi.count();
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        await sviCheckboxovi.nth(i).uncheck().catch(() => {});
       }
     }
 
-    // Provera ponašanja aplikacije kada je korpa prazna:
-    // Dobar sistem će ili onemogućiti WhatsApp dugme ili prikazati cenu 0 RSD / upozorenje.
-    const whatsappBtn = page.locator('text=Naruči Punch tortu na WhatsApp 💬');
-    
-    // Testiramo da li je aplikacija ostala stabilna i dugme je i dalje prisutno (ne ruši se ekran)
-    await expect(whatsappBtn).toBeVisible();
+    expect(popupSePojavio).toBe(true);
+
+    let konacanBrojCekiranih = 0;
+    for (let i = 0; i < ukupanBroj; i++) {
+      if (await sviCheckboxovi.nth(i).isChecked()) {
+        konacanBrojCekiranih++;
+      }
+    }
+    expect(konacanBrojCekiranih).toBeGreaterThan(0);
   });
 
-  test('Navigacioni test: Povratak na početnu stranu', async ({ page }) => {
+  /* ============================================================
+     4. NAVIGACIONI TEST
+     ============================================================ */
+  test('Navigacija: Uspesan povratak na pocetni ekran', async ({ page }) => {
     const nazadLink = page.locator('text=← Nazad na početni izbor');
     await expect(nazadLink).toBeVisible();
-    
-    // Klik na link za povratak
     await nazadLink.click();
-    // Provera da li nas je uspešno vratilo na index.html
     await expect(page).toHaveURL(/.*index.*/);
   });
 
