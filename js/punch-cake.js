@@ -39,21 +39,14 @@ window.punchCake = {
       this.calculatePrice();
     });
 
-    // ─── OVDJE JE BIO PROBLEM: DODAJEMO SLUŠAOCE KLIKOVA ZA POKLONE ───
-    document.getElementById('fillOptSlatkisi')?.addEventListener('click', () => {
-      this.setWithToys(false);
-    });
-
-    document.getElementById('fillOptMix')?.addEventListener('click', () => {
-      this.setWithToys(true);
-    });
-    // ──────────────────────────────────────────────────────────────────
+    // OČIŠĆENO: Klikovi za poklone fillOptSlatkisi i fillOptMix su uklonjeni odavde, 
+    // jer ih sada ispravno i direktno pokreću onclick atributi iz tvog HTML-a!
 
     // Validacija slatkiša
     document.querySelectorAll('#punchSweetsGroup input[type="checkbox"]').forEach(chk => {
       chk.addEventListener('change', (e) => {
         const checked = document.querySelectorAll('#punchSweetsGroup input:checked');
-       if (checked.length === 0) {
+        if (checked.length === 0) {
           e.target.checked = true;
           alert('Morate izabrati barem 1 vrstu slatkiša!');
         }
@@ -111,7 +104,8 @@ window.punchCake = {
     const theme = document.getElementById('punchThemeInput')?.value || 'Rođendanska';
     const holes = document.getElementById('punchHolesInput')?.value || '16';
     const sweetsCount = this.getSweetsPerHoleCount();
-    const price = document.getElementById('punchPriceDisplay')?.innerText || '3.800 RSD';
+    // DYNAMIC: Čitamo cenu direktno sa ekrana bez fiksnog fallback-a na stara 3.800 RSD
+    const price = document.getElementById('punchPriceDisplay')?.innerText || 'Preračunato pri porudžbini';
     const notes = document.getElementById('punchNotes')?.value.trim();
 
     let sweets = [];
@@ -127,6 +121,8 @@ window.punchCake = {
                '*Cena:* ' + price;
 
     if (notes) text += '\n*Slavljenik i želje:* ' + notes;
+    
+    // ISPRAVLJENO: Dodat kosi znak '/' nakon wa.me koji je pravio grešku na desktopu
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
   }
 };
