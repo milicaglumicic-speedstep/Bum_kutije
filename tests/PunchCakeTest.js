@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
-    const baseUrl = 'https://github.io';
+  const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
     await page.goto(`${baseUrl}punch-torta.html`);
     await page.waitForLoadState('domcontentloaded');
   });
