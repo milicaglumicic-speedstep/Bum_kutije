@@ -1,17 +1,11 @@
 const { test, expect } = require('@playwright/test');
 
-// Koristimo cistu putanju jer smo u konfiguraciji osigurali baseURL
-const STRANICA_PUNCH = 'punch-torta.html';
-
-test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
-
-  test.beforeEach(async ({ page }) => {
-    // Ako baseURL nije setovan u configu, Playwright ce iskoristiti pun URL automatski
-    const ciljaniUrl = page.context()._options.baseURL 
-      ? STRANICA_PUNCH 
-      : `https://github.io{STRANICA_PUNCH}`;
+test('Provera pocetne stranice - Elementi, navigacija i sve animacije', async ({ page }) => {
+  const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
+  
+  // 1. Otvori početnu stranicu
+  await page.goto(`${baseUrl}punch-torta.html`);
       
-    await page.goto(ciljaniUrl);
     await page.waitForLoadState('domcontentloaded');
   });
 
