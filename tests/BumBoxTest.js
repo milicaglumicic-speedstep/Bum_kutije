@@ -150,9 +150,9 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
 
     if (await inputBoja.count() > 0) {
       // Unosimo maksimalno dug tekst graničnih vrednosti
-      const dug Tekst = 'Kraljevska teget plava sa satenskom masnom od 3 metra, zlatnim sljokicama i rucno ispisanim slovima na poklopcu';
-      await inputBoja.fill(dug Tekst);
-      await expect(inputBoja).toHaveValue(dug Tekst);
+      const dugTekst = 'Kraljevska teget plava sa satenskom masnom od 3 metra, zlatnim sljokicama i rucno ispisanim slovima na poklopcu';
+      await inputBoja.fill(dugTekst);
+      await expect(inputBoja).toHaveValue(dugTekst);
     }
   });
 
