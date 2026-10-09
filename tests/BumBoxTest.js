@@ -159,18 +159,32 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
   /* ============================================================
      3. NEGATIVNI TESTOVI (Edge Cases / Error Handling)
      ============================================================ */
-  test('Negativan test: Slanje prazne forme ne sme srusiti proracun cene', async ({ page }) => {
+  /* ============================================================
+     3. NEGATIVNI I NAVIGACIONI TESTOVI
+     ============================================================ */
+  test('Negativan test: Slanje prazne forme ne sme srusiti aplikaciju i postavlja "Po dogovoru"', async ({ page }) => {
     const inputBoja = page.locator('#bumColorInput');
-    const tekstNotes = page.locator('#bumNotes');
-
-    // Korisnik ostavlja sva tekstualna polja potpuno prazna
-    if (await inputBoja.count() > 0) await inputBoja.fill('');
-    if (await tekstNotes.count() > 0) await tekstNotes.fill('');
     
-    // Proveravamo da li je kalkulator cene uprkos praznim poljima ostao stabilan i izbacio validnu cifru
-    const prikazCene = page.locator('#bumPriceDisplay');
-    await expect(prikazCene).toBeVisible();
-    await expect(prikazCene).toContainText('RSD');
+    if (await inputBoja.count() > 0) {
+      // 1. Robot namerno briše boju i ostavlja polje potpuno praznim
+      await inputBoja.fill('');
+      await inputBoja.dispatchEvent('input');
+      await page.waitForTimeout(200);
+    }
+
+    // 2. Klikćemo na dugme za naručivanje i presrećemo WhatsApp prozor
+    const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      page.locator('button.submit-btn').click()
+    ]);
+
+    const whatsappUrl = popup.url();
+    const dekodiranTekst = decodeURIComponent(whatsappUrl).replace(/\+/g, ' ');
+
+    // 3. VERIFIKACIJA: Test potvrđuje tvoje pravilo da prazno polje šalje tekst "*Boja kutije:* Po dogovoru"
+    expect(dekodiranTekst).toContain('*Boja kutije:* Po dogovoru');
+    
+    await popup.close();
   });
 
   test('Negativan test: Odcekovanje svih stavki u korpi slatkisa', async ({ page }) => {
