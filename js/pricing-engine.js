@@ -1,10 +1,11 @@
 window.PricingEngine = {
+window.PricingEngine = {
   getSweetUnitCost(sweetKey) {
     const sweet = window.DB.sweets_database[sweetKey];
-    if (!sweet) return 60;
-    if (sweet.price_per_unit) return sweet.price_per_unit;
-    return Math.round((sweet.price_per_kg / 1000) * sweet.weight_g);
+    if (!sweet) return 60; // Sigurnosni fallback ako slatkiš ne postoji
+    return sweet.price_per_unit; // Direktno uzima cenu po komadu
   },
+
 
 calculateBumBox({ packageType, size, mechanism, chosenSweets }) {
     let sheets = size === 'Kompaktna' ? 1.5 : (size === 'Standardna' ? 2 : 2.5);
