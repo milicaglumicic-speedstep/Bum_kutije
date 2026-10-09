@@ -15,22 +15,24 @@ window.bumBox = {
   },
 
   bindEvents() {
-        document.getElementById('bumMechanismSelect')?.addEventListener('change', () => this.calculatePrice());
-
-    // DODAJ OVU LINIJU: Sluša promenu padajućeg menija enterijera
+    // 1. Listen to the interior dropdown change event
     document.getElementById('bumInteriorSelect')?.addEventListener('change', () => this.calculatePrice());
 
+    // 2. Listen to tab selection clicks
     document.querySelectorAll('#bumTabs .tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.switchPackage(e.target.dataset.pkg));
     });
 
+    // 3. Listen to box sizing modifications
     document.getElementById('bumSizeSelect')?.addEventListener('change', () => {
       this.updateGiftInfo();
       this.calculatePrice();
     });
 
+    // 4. Listen to structural mechanism updates (Duplicate entry clean up)
     document.getElementById('bumMechanismSelect')?.addEventListener('change', () => this.calculatePrice());
 
+    // 5. Listen to sidebar candy item checkbox selections
     document.querySelectorAll('#bumSweetsGroup input[type="checkbox"]').forEach(c => {
       c.addEventListener('change', () => this.calculatePrice());
     });
@@ -83,6 +85,9 @@ window.bumBox = {
   calculatePrice() {
     const size = document.getElementById('bumSizeSelect')?.value || 'Standardna';
     const mechanism = document.getElementById('bumMechanismSelect')?.value || 'cubes';
+    
+    // FIXED: Reads the selected interior value from your new dropdown layout option
+    const interior = document.getElementById('bumInteriorSelect')?.value || 'Standardni';
 
     let chosenSweets = [];
     document.querySelectorAll('#bumSweetsGroup input:checked').forEach(el => chosenSweets.push(el.value));
@@ -92,7 +97,8 @@ window.bumBox = {
       packageType: this.currentPackage,
       size,
       mechanism,
-      chosenSweets
+      chosenSweets,
+      interior: interior // Passes option layout value to pricing engine calculation if needed
     });
 
     const disp = document.getElementById('bumPriceDisplay');
@@ -108,7 +114,7 @@ window.bumBox = {
     const price = document.getElementById('bumPriceDisplay')?.innerText || 'Na upit';
     const notes = document.getElementById('bumNotes')?.value.trim();
 
-    // ISPRAVLJENO: Izvlači čist tekst izabrane opcije iz padajućeg menija
+    // FIXED: Correctly extracts the text selection from your option dropdown element
     const interiorSelect = document.getElementById('bumInteriorSelect');
     const interiorText = interiorSelect ? interiorSelect.options[interiorSelect.selectedIndex].text : 'Standardni / bez dodataka';
 
@@ -116,11 +122,10 @@ window.bumBox = {
                '*Paket:* ' + this.currentPackage + '\n' +
                '*Veličina:* ' + size + '\n' +
                '*Stil stranica:* ' + this.selectedStyle + '\n' +
-               '*Enterijer:* ' + interiorText + '\n' + // Šalje izabranu opciju
+               '*Enterijer:* ' + interiorText + '\n' + 
                '*Boja kutije:* ' + color + '\n' +
                '*Mehanizam:* ' + mech + '\n' +
                '*Cena:* ' + price;
-
 
     if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
