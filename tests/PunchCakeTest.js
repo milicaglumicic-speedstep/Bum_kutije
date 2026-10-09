@@ -216,3 +216,4 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     expect(validnoMin).toBe(true);
 
     await inputPregrade.fill('50');
+  });
