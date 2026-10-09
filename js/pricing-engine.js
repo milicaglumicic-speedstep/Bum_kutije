@@ -6,20 +6,25 @@ window.PricingEngine = {
     return Math.round((sweet.price_per_kg / 1000) * sweet.weight_g);
   },
 
-  calculateBumBox({ packageType, size, mechanism, chosenSweets, selected3DItem }) {
+calculateBumBox({ packageType, size, mechanism, chosenSweets }) {
     let sheets = size === 'Kompaktna' ? 1.5 : (size === 'Standardna' ? 2 : 2.5);
     let materialCost = (sheets * window.DB.materials.paper_b1_sheet_rsd) +
                        (window.DB.materials.ribbon_meters_per_box * window.DB.materials.ribbon_per_meter_rsd) +
                        window.DB.materials.glue_dots_and_consumables_rsd;
 
-    // Mehanizam: kocke i leptiri isto (doplata 0), samo je combo skuplji (+500)
-    let mechSurcharge = window.DB.mechanism_surcharges[mechanism] || 0;
+    // SAFE FIX: If mechanism_surcharges is missing from window.DB, default to 0 or 500 for combo
+    let mechSurcharge = 0;
+    if (window.DB.mechanism_surcharges) {
+      mechSurcharge = window.DB.mechanism_surcharges[mechanism] || 0;
+    } else if (mechanism === 'combo') {
+      mechSurcharge = 500; // Fallback doplata for combo
+    }
 
     let sweetsCost = 0;
     if (packageType === 'sweets_gift' || packageType === 'only_sweets') {
       const sweetCount = (size === 'Kompaktna') ? 4 : 16;
       let avgSweet = 100;
-      if (chosenSweets.length > 0) {
+      if (chosenSweets && chosenSweets.length > 0) {
         avgSweet = chosenSweets.reduce((s, k) => s + this.getSweetUnitCost(k), 0) / chosenSweets.length;
       }
       sweetsCost = sweetCount * avgSweet;
