@@ -1,32 +1,55 @@
 const { test, expect } = require('@playwright/test');
 
-test('Provera dugmica i navigacije na stranici', async ({ page }) => {
-  // Base URL za lakšu proveru stranica
+test('Provera dugmica, navigacije i CSS animacija', async ({ page }) => {
   const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije.';
-
+  
   // 1. Otvori početnu stranicu
   await page.goto(`${baseUrl}index.html`);
 
-  // 2. Pronađi dugmiće na stranici
-  const dugmeBumKutija = page.locator('text=Sklopi svoju BUM poklon kutiju →');
-  const dugmePunchTorta = page.locator('text=Kreiraj Punch tortu →');
+  // ─── 1. PROVERA AUTOMATSKIH 3D ANIMACIJA KUTIJE ───────────────────
+  // Proveravamo da li elementi makete eksplodirajuće kutije postoje na stranici
+  const eksplodirajucaKutija = page.locator('.exploding-box');
+  const poklopacKutije = page.locator('.box-lid');
+  const stranicaKutije = page.locator('.wall-front');
 
-  // 3. Proveri da li su dugmići vidljivi i da li se može kliknuti na njih (clickable)
+  await expect(eksplodirajucaKutija).toBeVisible();
+  await expect(poklopacKutije).toBeVisible();
+  await expect(stranicaKutije).toBeVisible();
+
+  // Proveravamo da li su CSS animacije ispravno dodeljene elementima iz CSS-a
+  const animacijaKutije = await eksplodirajucaKutija.evaluate(el => window.getComputedStyle(el).animationName);
+  const animacijaPoklopca = await poklopacKutije.evaluate(el => window.getComputedStyle(el).animationName);
+  
+  expect(animacijaKutije).toBe('boxAnticipateShake');
+  expect(animacijaPoklopca).toBe('lidExplodeUp');
+
+  // ─── 2. PROVERA HOVER ANIMACIJE NA PUNCH TORTA KARTICI ─────────────
+  // Koristimo id="cardPunch" koji sigurno postoji u tvom HTML-u
+  const punchKartica = page.locator('#cardPunch');
+
+  const stilPreHovera = await punchKartica.evaluate(el => window.getComputedStyle(el).transform);
+
+  await punchKartica.hover();
+  await page.waitForTimeout(350);
+
+  const stilPosleHovera = await punchKartica.evaluate(el => window.getComputedStyle(el).transform);
+  expect(stilPreHovera).not.toBe(stilPosleHovera);
+
+  // ─── 3. PROVERA DUGMIĆA I NAVIGACIJE PREKO TEKSTA ─────────────────
+  // Playwright podržava pronalaženje elemenata preko tačnog teksta unutar spanova
+  const dugmeBumKutija = page.locator('span.hub-btn', { hasText: 'Sklopi svoju BUM poklon kutiju →' });
+  const dugmePunchTorta = page.locator('span.hub-btn', { hasText: 'Kreiraj Punch tortu →' });
+
+  // Provera vidljivosti
   await expect(dugmeBumKutija).toBeVisible();
-  await expect(dugmeBumKutija).toBeEnabled();
+  await expect(dugmePunchTorta).toBeVisible()
 
-  await expect(dugmePunchTorta).toBeVisible();
-  await expect(dugmePunchTorta).toBeEnabled();
-
-  // 4. Klikni na prvo dugme i proveri da li vodi na dobru stranicu
+  // Testiramo klik za Bum kutiju
   await dugmeBumKutija.click();
-  // Ovde proveravamo da li se URL promenio i da li sadrži naziv nove stranice
   await expect(page).toHaveURL(/.*bum_kutija.*/);
 
-  // 5. Vrati se nazad na početnu stranicu da testiraš i drugo dugme
+  // Vraćamo se nazad i testiramo klik za Punch tortu
   await page.goto(`${baseUrl}index.html`);
-
-  // 6. Klikni na drugo dugme i proveri navigaciju
   await dugmePunchTorta.click();
   await expect(page).toHaveURL(/.*punch_torta.*/);
 });
