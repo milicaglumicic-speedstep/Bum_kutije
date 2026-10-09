@@ -4,18 +4,19 @@ window.DB = {
     butterfly_aliexpress_rsd: 90, popup_cube_materials_rsd: 35, glue_dots_and_consumables_rsd: 80, punch_cake_base_per_tier: 650
   },
   sweets_database: {
-    ferrero: { name: 'Ferrero Rocher', price_per_kg: 3200, weight_g: 12.5 },
-    raffaello: { name: 'Raffaello', price_per_kg: 2800, weight_g: 10 },
-    lindor: { name: 'Lindt Lindor', price_per_kg: 3900, weight_g: 12.5 },
-    mozart: { name: 'Mozart kugle', price_per_kg: 2900, weight_g: 15 },
-    kinder_bueno: { name: 'Kinder Bueno (mini)', price_per_kg: 2400, weight_g: 20 },
-    kinder_cokoladica: { name: 'Kinder čokoladica', price_per_kg: 2100, weight_g: 12.5 },
-    lizalica: { name: 'Chupa Chups lizalica', price_per_kg: 1800, weight_g: 15 },
-    bananica: { name: 'Krem bananica', price_per_kg: 1100, weight_g: 25 },
+    ferrero: { name: 'Ferrero Rocher', price_per_unit: 56 },
+    raffaello: { name: 'Raffaello', price_per_unit: 43 },
+    lindor: { name: 'Lindt Lindor', price_per_unit: 86 },
+    mozart: { name: 'Mozart kugle', price_per_unit: 53 },
+    kinder_bueno: { name: 'Kinder Bueno (mini)', price_per_unit: 48 },
+    kinder_cokoladica: { name: 'Kinder čokoladica', price_per_unit: 28 },
+    lizalica: { name: 'Chupa Chups lizalica', price_per_unit: 27 },
+    bananica: { name: 'Krem bananica', price_per_unit: 28 },
     sokic: { name: 'Sokić tetrapak (200ml)', price_per_unit: 45 },
-    euroblokic: { name: 'Euroblokić', price_per_kg: 1300, weight_g: 15 },
-    najlepse_zeljice: { name: 'Najlepše željice (mini)', price_per_kg: 1900, weight_g: 15 }
+    euroblokic: { name: 'Euroblokić', price_per_unit: 20 },
+    najlepse_zeljice: { name: 'Najlepše željice (mini)', price_per_unit: 29 }
   },
+
   mechanism_surcharges: {
     cubes: 200,          // Iskačuće pop-up kocke (+200 RSD)
     butterflies: 200,  // Iskačući leteći leptirovi (+200 RSD)
