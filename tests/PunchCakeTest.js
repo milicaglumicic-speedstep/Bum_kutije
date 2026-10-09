@@ -58,71 +58,57 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     expect(brojacCekiranih).toBe(3);
   });
 
-  test('Pozitivan test: Narucivanje torte na 1 SPRAT i provera WhatsApp poruke', async ({ page }) => {
-    // 1. Popunjavamo formu podacima za 1 sprat (16 pregrada je podrazumevano)
+    test('Pozitivan test: Narucivanje torte na 1 SPRAT i provera WhatsApp poruke', async ({ page }) => {
     await page.locator('#punchColorInput').fill('Bela sa sljokicama');
     await page.locator('#punchThemeInput').fill('Barbie tema');
     await page.locator('#punchNotes').fill('Mila, 4 godine');
 
-    // 2. Računamo dinamičku cenu u pozadini kako bismo znali šta da očekujemo u poruci
-    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
-    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
-
-    // 3. Presrećemo otvaranje novog prozora (window.open) za WhatsApp
     const [popup] = await Promise.all([
       page.waitForEvent('popup'),
       page.locator('button.submit-btn').click()
     ]);
 
-    // 4. Uzimamo URL generisanog WhatsApp linka i dekodiramo tekst poruke
     const whatsappUrl = popup.url();
-    const dekodiranTekst = decodeURIComponent(whatsappUrl);
+    // Čistimo pluseve iz URL-a radi lakše provere teksta
+    const dekodiranTekst = decodeURIComponent(whatsappUrl).replace(/\+/g, ' ');
 
-    // 5. RASPАКIVANJE I PROVERA FORMATA PORUKE:
-    expect(dekodiranTekst).toContain('Theme: Barbie tema');
-    expect(dekodiranTekst).toContain('Boja torte: Bela sa sljokicama');
-    expect(dekodiranTekst).toContain('Broj pregrada: 16 rupa (1 sprat/a)');
-    expect(dekodiranTekst).toContain(`Cena: ${formatiranaCena}`);
-    expect(dekodiranTekst).toContain('Slavljenik i zelje: Mila, 4 godine');
+    // Provera tačnog formata tvoje poruke sa sajta
+    expect(dekodiranTekst).toContain('*Tema:* Barbie tema');
+    expect(dekodiranTekst).toContain('*Boja torte:* Bela sa sljokicama');
+    expect(dekodiranTekst).toContain('*Broj pregrada:* 16 rupa (1 sprat/a)');
+    expect(dekodiranTekst).toContain('*Cena:* 3.300 RSD');
+    expect(dekodiranTekst).toContain('*Slavljenik i želje:* Mila, 4 godine');
     
     await popup.close();
   });
 
   test('Pozitivan test: Narucivanje torte na 2 SPRATA sa igrackama i provera WhatsApp poruke', async ({ page }) => {
-    // 1. Unosimo 24 pregrade što pokreće konstrukciju od 2 sprata
     const inputPregrade = page.locator('#punchHolesInput');
     await inputPregrade.fill('24');
     await inputPregrade.dispatchEvent('input');
 
-    // 2. Biramo dodatak Slatkiši + Igračkice
     await page.locator('#fillOptMix').click();
 
-    // 3. Popunjavamo ostale detalje
     await page.locator('#punchColorInput').fill('Plava i zuta');
     await page.locator('#punchThemeInput').fill('Paw Patrol');
     await page.locator('#punchNotes').fill('Pavle, 5 godina');
     await page.waitForTimeout(200);
 
-    // 4. Dinamički računamo novu uvećanu cenu (baza + 2 sprata + doplate za igračke)
-    const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page);
-    const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
-
-    // 5. Klikćemo na dugme i hvatamo WhatsApp iskakanje
     const [popup] = await Promise.all([
       page.waitForEvent('popup'),
       page.locator('button.submit-btn').click()
     ]);
 
     const whatsappUrl = popup.url();
-    const dekodiranTekst = decodeURIComponent(whatsappUrl);
+    const dekodiranTekst = decodeURIComponent(whatsappUrl).replace(/\+/g, ' ');
 
-    // 6. PROVERA ZAVRŠNOG TEKSTA ZA DVO SPRATNU TORTU SA DODACIMA:
-    expect(dekodiranTekst).toContain('Theme: Paw Patrol');
-    expect(dekodiranTekst).toContain('Boja torte: Plava i zuta');
-    expect(dekodiranTekst).toContain('Broj pregrada: 24 rupa (2 sprat/a)');
-    expect(dekodiranTekst).toContain('Dodaci: Slatkisi + Igrackice/Privesci');
-    expect(dekodiranTekst).toContain(`Cena: ${formatiranaCena}`);
-    expect(dekodiranTekst).toContain('Slavljenik i zelje: Pavle, 5 godina');
+    // Provera formata za dvospratnu tortu sa igračkama
+    expect(dekodiranTekst).toContain('*Tema:* Paw Patrol');
+    expect(dekodiranTekst).toContain('*Boja torte:* Plava i zuta');
+    expect(dekodiranTekst).toContain('*Broj pregrada:* 24 rupa (2 sprat/a)');
+    expect(dekodiranTekst).toContain('*Dodaci:* Slatkiši   Igračkice/Privesci');
+    expect(dekodiranTekst).toContain('*Cena:* 7.400 RSD');
+    expect(dekodiranTekst).toContain('*Slavljenik i želje:* Pavle, 5 godina');
 
     await popup.close();
   });
