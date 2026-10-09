@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-const URL_PUNCH = 'https://github.io';
+const URL_PUNCH = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
 
 test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
 
