@@ -32,7 +32,7 @@ window.PricingEngine = {
     let total = (materialCost + sweetsCost + labor + mechSurcharge) * (1 + (window.DB.labor.safety_buffer_percent / 100));
     return Math.round(total / 50) * 50;
   },
-,
+
   calculatePunchCake({ holes, tiers, sweetsPerHole, selectedSweets, withToys }) {
     const structure = tiers * window.DB.materials.punch_cake_base_per_tier + 500;
     let avgSweet = 55;
