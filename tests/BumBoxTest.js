@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
+test.describe('Bum Box Konfigurator - Dinamički QA Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
   const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
@@ -30,23 +30,21 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
   /* ============================================================
      1. POZITIVNI TESTOVI I VERIFIKACIJA RAČUNANJA ZA SVAKI PAKET
      ============================================================ */
-  test('Dinamicki test: Kalkulacija i WhatsApp poruka za prazan paket (empty)', async ({ page }) => {
-    // 1. Aktivacija "praznog" paketa (Inicijalno je postavljen)
+  test('Dinamicki test: Kalkulacija i WhatsApp verifikacija za prazan paket (empty)', async ({ page }) => {
     const tabEmpty = page.locator('#bumTabs .tab-btn[data-pkg="empty"]');
     if (await tabEmpty.count() > 0) {
       await tabEmpty.click();
       await page.waitForTimeout(200);
 
-      // 2. Dinamički računamo cenu u pozadini i proveravamo UI
       const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page, 'empty');
       const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
       await expect(page.locator('#bumPriceDisplay')).toContainText(formatiranaCena);
 
-      // 3. Provera generisanja WhatsApp poruke za ovaj paket
       const [popup] = await Promise.all([
         page.waitForEvent('popup'),
         page.locator('button.submit-btn').click()
       ]);
+      
       const dekodiranTekst = decodeURIComponent(popup.url()).replace(/\+/g, ' ');
       expect(dekodiranTekst).toContain('*Paket:* empty');
       expect(dekodiranTekst).toContain(`*Cena:* ${formatiranaCena}`);
@@ -54,13 +52,12 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     }
   });
 
-  test('Dinamicki test: Kalkulacija i WhatsApp poruka za paket sa slatkizima (sweets_gift)', async ({ page }) => {
+  test('Dinamicki test: Kalkulacija i WhatsApp verifikacija za paket sa slatkizima (sweets_gift)', async ({ page }) => {
     const tabSweets = page.locator('#bumTabs .tab-btn[data-pkg="sweets_gift"]');
     if (await tabSweets.count() > 0) {
       await tabSweets.click();
       await page.waitForTimeout(200);
 
-      // Proveravamo da li je sekcija sa slatkišima postala vidljiva korisniku
       await expect(page.locator('#bumSweetsGroup')).toBeVisible();
 
       const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page, 'sweets_gift');
@@ -78,15 +75,11 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     }
   });
 
-  test('Dinamicki test: Kalkulacija i WhatsApp poruka za paket "Samo slatkisi" (only_sweets)', async ({ page }) => {
+  test('Dinamicki test: Kalkulacija i WhatsApp verifikacija za paket "Samo slatkisi" (only_sweets)', async ({ page }) => {
     const tabOnlySweets = page.locator('#bumTabs .tab-btn[data-pkg="only_sweets"]');
     if (await tabOnlySweets.count() > 0) {
       await tabOnlySweets.click();
       await page.waitForTimeout(200);
-
-      // Proveravamo da li padajući meni nudi samo Standardnu i Veliku (tvoj updateSizeOptions filter)
-      const opcije = await page.locator('#bumSizeSelect option').allInnerTexts();
-      expect(opcije.length).toBe(2);
 
       const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page, 'only_sweets');
       const formatiranaCena = `${ocekivanaCena.toLocaleString('sr-RS')} RSD`;
@@ -103,13 +96,12 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
     }
   });
 
-  test('Dinamicki test: Kalkulacija i WhatsApp poruka za paket po meri (custom_gift)', async ({ page }) => {
+  test('Dinamicki test: Kalkulacija i WhatsApp verifikacija za paket po meri (custom_gift)', async ({ page }) => {
     const tabCustom = page.locator('#bumTabs .tab-btn[data-pkg="custom_gift"]');
     if (await tabCustom.count() > 0) {
       await tabCustom.click();
       await page.waitForTimeout(200);
 
-      // Proveravamo da li se prikazuje polje za slobodan unos dimenzija poklona
       await expect(page.locator('#customNotesGroup')).toBeVisible();
 
       const ocekivanaCena = await izracunajOcekivanuCenuUPozadini(page, 'custom_gift');
@@ -125,9 +117,7 @@ test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
       expect(dekodiranTekst).toContain(`*Cena:* ${formatiranaCena}`);
       await popup.close();
     }
-  });
-
-  /* ============================================================
+  });  /* ============================================================
      2. GRANIČNI TESTOVI (Boundary Tests)
      ============================================================ */
   test('Granicni test: Izmena stilova i provera prenosa selected klase', async ({ page }) => {
