@@ -32,15 +32,28 @@ window.PricingEngine = {
   },
 
   calculatePunchCake({ holes, tiers, sweetsPerHole, selectedSweets, withToys }) {
+    // Osnovna cena strukture (spratovi + fiksni trošak izrade)
     const structure = tiers * window.DB.materials.punch_cake_base_per_tier + 500;
-    let avgSweet = 55;
+    
+    // 1. Sabiramo cenu pojedinačnih slatkiša koji su štiklirani
+    let sweetsUnitCostSum = 0;
     if (selectedSweets.length > 0) {
-      avgSweet = selectedSweets.reduce((s, k) => s + this.getSweetUnitCost(k), 0) / selectedSweets.length;
+      sweetsUnitCostSum = selectedSweets.reduce((suma, trenutniSlatkis) => {
+        return suma + this.getSweetUnitCost(trenutniSlatkis);
+      }, 0);
+    } else {
+      sweetsUnitCostSum = 55; // Default cena ako ništa nije izabrano
     }
-    const sweetsTotal = holes * sweetsPerHole * avgSweet;
+    
+    // 2. FORMIRANJE CENE: Cena pojedinačnih slatkiša * broj rupa * broj slatkiša po rupi
+    const sweetsTotal = sweetsUnitCostSum * holes * sweetsPerHole;
+    
     const toysTotal = withToys ? (holes * 70) : 0;
     const labor = tiers * window.DB.labor.punch_cake_labor_per_tier;
+    
+    // Ukupna cena sa sigurnosnim bufferom iz baze podataka
     let total = (structure + sweetsTotal + toysTotal + labor) * (1 + (window.DB.labor.safety_buffer_percent / 100));
     return Math.round(total / 50) * 50;
   }
+
 };
