@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PUNCH TORTA | Konfigurator</title>
   <link rel="stylesheet" href="css/main.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="punch-theme">
 
@@ -24,7 +24,7 @@
       <!-- Željena paleta -->
       <div class="form-group">
         <label for="punchColorInput">Željena boja torte:</label>
-        <input type="text" id="punchColorInput" placeholder="npr. bela,  plava, roze, zelena...">
+        <input type="text" id="punchColorInput" placeholder="npr. bela, plava, roze, zelena...">
       </div>
 
       <!-- Tema i motiv -->
@@ -36,10 +36,17 @@
       <!-- Slobodan unos broja pregrada -->
       <div class="form-group">
         <label for="punchHolesInput">Željeni broj pregrada za bušenje:</label>
-        <input type="number" id="punchHolesInput" value="16" min="6" max="50">
+        <!-- Dodat je oninput uslov koji automatski briše minus i resetuje na 6 ako korisnik pokuša da ukuca manje -->
+        <input 
+          type="number" 
+          id="punchHolesInput" 
+          value="16" 
+          min="6" 
+          max="50"
+          oninput="if(this.value && this.value < 6) this.value = 6;"
+        >
         <div id="tierInfoBox" class="punch-info-box"></div>
       </div>
-
 
       <!-- Izbor broja slatkiša po pregradi sa custom unosom -->
       <div class="form-group">
@@ -63,6 +70,7 @@
           >
         </div>
       </div>
+
       <!-- Bira se 1 do 4 slatkiša -->
       <div class="form-group">
         <label>Izaberi slatkiše za punjenje:</label>
@@ -79,15 +87,17 @@
       
       <!-- Dodaci u pregradama -->
       <div class="form-group">
-        <label> Izaberi poklon u pregradama:</label>
+        <label>Izaberi poklon u pregradama:</label>
         <div class="radio-card-group">
+          <!-- ISPRAVLJENO: Poziva ispravnu funkciju na klik -->
           <div class="radio-card selected" id="fillOptSlatkisi" onclick="window.punchCake.setWithToys(false)">
             <div style="font-weight:600; color:#fff;">🍬 Samo slatkiši</div>
             <div style="font-size:0.82rem; color:var(--text-muted);">Samo izabrani slatkiši u svakoj pregradi.</div>
           </div>
-          <div class="radio-card" id="fillOptMix" onclick="window.punchCakeķ.ys(true)">
+          <!-- ISPRAVLJENO: Uklonjeno 'ķ.ys' i stavljeno ispravno 'setWithToys(true)' -->
+          <div class="radio-card" id="fillOptMix" onclick="window.punchCake.setWithToys(true)">
             <div style="font-weight:600; color:#fff;">🎁 Slatkiši + Igračkice</div>
-            <div style="font-size:0.82rem; color:var(--text-muted);">Slatkiš + privezak, figurica, tetovaza,pečat ili narukvica...</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Slatkiš + privezak, figurica, tetovaza, pečat ili narukvica...</div>
           </div>
         </div>
       </div>
