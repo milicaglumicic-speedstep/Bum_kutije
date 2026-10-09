@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2  # Fully patched version compatible with newer node environments
     
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v4.1.0
       with:
-        node-version: lts/*
+        node-version: '24'          # Explicitly set to Node 24 to match the runner environment
         
     - name: Install dependencies
       run: npm install
@@ -27,7 +27,7 @@ jobs:
       run: npx playwright test
       
     - name: Upload Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.4.3 # Upgraded artifact uploader
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
