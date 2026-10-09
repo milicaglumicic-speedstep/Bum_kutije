@@ -1,13 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('Bum Kutija Konfigurator - Sveobuhvatni QA Test Suite', () => {
+test.describe('Punch Torta Konfigurator - Dinamički QA Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
-    const baseUrl = 'https://github.io';
+  const baseUrl = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
     await page.goto(`${baseUrl}bum-kutija.html`);
     await page.waitForLoadState('domcontentloaded');
   });
-
   // Pomoćna funkcija koja u pozadini izvršava PricingEngine računanje za trenutno stanje forme
   async function izracunajOcekivanuCenuUPozadini(page, packageType) {
     return await page.evaluate((pkg) => {
