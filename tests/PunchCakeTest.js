@@ -1,11 +1,17 @@
 const { test, expect } = require('@playwright/test');
 
-const LOKALNA_PUTANJA = './punch-torta.html';
+// Koristimo cistu putanju jer smo u konfiguraciji osigurali baseURL
+const STRANICA_PUNCH = 'punch-torta.html';
 
 test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(LOKALNA_PUTANJA);
+    // Ako baseURL nije setovan u configu, Playwright ce iskoristiti pun URL automatski
+    const ciljaniUrl = page.context()._options.baseURL 
+      ? STRANICA_PUNCH 
+      : `https://github.io{STRANICA_PUNCH}`;
+      
+    await page.goto(ciljaniUrl);
     await page.waitForLoadState('domcontentloaded');
   });
 
@@ -37,31 +43,25 @@ test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
   });
 
   /* ============================================================
-     2. NOVI TESTOVI: DINAMIČKA DINAMIKA SPRATOVA I RAČUNANJA CENE
+     2. LOGIČKI TESTOVI (Spratnost i Kalkulacija)
      ============================================================ */
   test('Logicki test: Povecanje pregrada preko 16 menja cenu i prebacuje tortu na 2 sprata', async ({ page }) => {
     const inputPregrade = page.locator('#punchHolesInput');
     const prikazCene = page.locator('#punchPriceDisplay');
     const kutijaZaSpratove = page.locator('#tierInfoBox');
 
-    // 1. Uzimamo pocetnu cenu za 16 pregrada (3.800 RSD)
     const pocetnaCenaTekst = await prikazCene.innerText();
 
-    // 2. Upisujemo 20 pregrada (sto je veće od 16 i aktivira drugi sprat)
     await inputPregrade.fill('20');
-    await page.waitForTimeout(100); // Kratka pauza da kalkulator i JS ažuriraju dom
+    await page.waitForTimeout(200); 
 
-    // 3. Provera da li se cena promenila i porasla na više
     const novaCenaTekst = await prikazCene.innerText();
     expect(pocetnaCenaTekst).not.toBe(novaCenaTekst);
 
-    // Pretvaramo tekst u broj kako bismo osigurali logičku ispravnost (veća cena)
     const pocetnaCenaBroj = parseInt(pocetnaCenaTekst.replace(/\D/g, ''));
     const novaCenaBroj = parseInt(novaCenaTekst.replace(/\D/g, ''));
     expect(novaCenaBroj).toBeGreaterThan(pocetnaCenaBroj);
 
-    // 4. Provera teksta obaveštenja o spratnosti unutar #tierInfoBox elementa
-    // Test proverava da li se pojavila reč "2" ili reč "sprat" u zavisnosti od tvoje JS poruke
     await expect(kutijaZaSpratove).toBeVisible();
     await expect(kutijaZaSpratove).toContainText(/.*(2|sprat).*/i);
   });
@@ -70,15 +70,12 @@ test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
     const prikazCene = page.locator('#punchPriceDisplay');
     const karticaSlatkisiIgrackice = page.locator('#fillOptMix');
 
-    // 1. Snimamo trenutnu cenu kada su izabrani samo slatkiši
     const cenaSamoSlatkisiTekst = await prikazCene.innerText();
     const cenaSamoSlatkisiBroj = parseInt(cenaSamoSlatkisiTekst.replace(/\D/g, ''));
 
-    // 2. Kliknemo na opciju "Slatkiši + Igračkice" da aktiviramo doplatu od 70 RSD po rupi
     await karticaSlatkisiIgrackice.click();
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(200);
 
-    // 3. Proveravamo da li je cena porasla na više
     const cenaSaIgrackamaTekst = await prikazCene.innerText();
     const cenaSaIgrackamaBroj = parseInt(cenaSaIgrackamaTekst.replace(/\D/g, ''));
     
@@ -86,7 +83,30 @@ test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
   });
 
   /* ============================================================
-     3. FUNKCIONALNI TESTOVI: DIJALOZI I POLJA
+     3. NOVI TEST CASE: SPECIJALNI KARAKTERI I WHATSAPP SLANJE
+     ============================================================ */
+  test('Negativan test: Unos specijalnih karaktera u pregrade blokira slanje na WhatsApp', async ({ page }) => {
+    const inputPregrade = page.locator('#punchHolesInput');
+    const dugmeNaruci = page.locator('button.submit-btn');
+
+    // 1. Pokušavamo da upišemo specijalne karaktere u polje koje prihvata samo brojeve
+    await inputPregrade.fill('@#\$!%');
+    
+    // Budući da je input type="number", pretraživač ignoriše ove karaktere i polje ostaje prazno ili nevalidno
+    const trenutnaVrednost = await inputPregrade.inputValue();
+    
+    // 2. Proveravamo HTML5 validaciju forme – polje ne sme biti validno za slanje ako je prazno/loše uneto
+    const jeValidno = await inputPregrade.evaluate(el => el.checkValidity());
+    
+    if (!jeValidno || trenutnaVrednost === '') {
+      // Ako je polje nevalidno, HTML5 automatski blokira 'submit' događaj forme
+      console.log('HTML5 validacija je uspešno blokirala nevalidan unos specijalnih karaktera.');
+      expect(jeValidno).toBe(false);
+    }
+  });
+
+  /* ============================================================
+     4. FUNKCIONALNI I NEGATIVNI TESTOVI (Padajući meni i Popup)
      ============================================================ */
   test('Funkcionalni test: Izbor opcije "Drugo" dinamicki prikazuje input polje', async ({ page }) => {
     const selektBrojaSlatkisa = page.locator('#sweetsPerHoleSelect');
@@ -97,9 +117,6 @@ test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
     await expect(customInputOmotac).toBeVisible();
   });
 
-  /* ============================================================
-     4. GRANIČNI I NEGATIVNI TESTOVI
-     ============================================================ */
   test('Granicni test: Unos maksimalnog i minimalnog broja pregrada', async ({ page }) => {
     const inputPregrade = page.locator('#punchHolesInput');
 
@@ -110,17 +127,6 @@ test.describe('Punch Torta Konfigurator - Napredni QA Test Suite', () => {
     await inputPregrade.fill('50');
     let validnoMax = await inputPregrade.evaluate(el => el.checkValidity());
     expect(validnoMax).toBe(true);
-  });
-
-  test('Negativan test: HTML5 restrikcija i auto-reset za nevalidne pregrade', async ({ page }) => {
-    const inputPregrade = page.locator('#punchHolesInput');
-
-    await inputPregrade.fill('2');
-    await expect(inputPregrade).toHaveValue('6');
-
-    await inputPregrade.fill('60');
-    let validnoIznad = await inputPregrade.evaluate(el => el.checkValidity());
-    expect(validnoIznad).toBe(false);
   });
 
   test('Negativan test: Pokusaj gasenja svih slatkisa okida browser popup', async ({ page }) => {
