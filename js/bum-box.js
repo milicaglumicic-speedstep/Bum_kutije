@@ -15,6 +15,11 @@ window.bumBox = {
   },
 
   bindEvents() {
+        document.getElementById('bumMechanismSelect')?.addEventListener('change', () => this.calculatePrice());
+
+    // DODAJ OVU LINIJU: Sluša promenu padajućeg menija enterijera
+    document.getElementById('bumInteriorSelect')?.addEventListener('change', () => this.calculatePrice());
+
     document.querySelectorAll('#bumTabs .tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.switchPackage(e.target.dataset.pkg));
     });
@@ -103,19 +108,19 @@ window.bumBox = {
     const price = document.getElementById('bumPriceDisplay')?.innerText || 'Na upit';
     const notes = document.getElementById('bumNotes')?.value.trim();
 
-    let interiorList = [];
-    document.querySelectorAll('input[name="enterijer"]:checked').forEach(el => {
-      interiorList.push(el.value);
-    });
+    // ISPRAVLJENO: Izvlači čist tekst izabrane opcije iz padajućeg menija
+    const interiorSelect = document.getElementById('bumInteriorSelect');
+    const interiorText = interiorSelect ? interiorSelect.options[interiorSelect.selectedIndex].text : 'Standardni / bez dodataka';
 
     let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
                '*Paket:* ' + this.currentPackage + '\n' +
                '*Veličina:* ' + size + '\n' +
                '*Stil stranica:* ' + this.selectedStyle + '\n' +
-               '*Enterijer:* ' + (interiorList.length > 0 ? interiorList.join(', ') : 'Standardni / bez dodataka') + '\n' +
+               '*Enterijer:* ' + interiorText + '\n' + // Šalje izabranu opciju
                '*Boja kutije:* ' + color + '\n' +
                '*Mehanizam:* ' + mech + '\n' +
                '*Cena:* ' + price;
+
 
     if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
