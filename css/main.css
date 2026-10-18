@@ -163,7 +163,7 @@ body {
 }
 
 /* ==========================================
-   KARTICA ZA POKLON & DUGME (Centrirano i fiksirano)
+   KARTICA ZA POKLON & VIDEO
    ========================================== */
 .hub-grid {
   display: flex;
@@ -268,7 +268,12 @@ body {
   padding: 26px;
 }
 
+.section-title-wrap { margin-bottom: 20px; }
+.section-title-wrap h2 { font-size: 1.6rem; color: #fff; margin-bottom: 4px; font-family: var(--font-heading); }
+.section-title-wrap .subtitle { color: var(--text-muted); font-size: 0.95rem; font-family: var(--font-serif); }
+
 .form-group { margin-bottom: 20px; }
+.form-group-relative { position: relative; }
 label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--gold-light); font-size: 0.9rem; }
 
 select, input[type="text"], input[type="number"], textarea {
@@ -280,6 +285,11 @@ select, input[type="text"], input[type="number"], textarea {
   color: #fff;
   font-size: 0.95rem;
   outline: none;
+}
+
+.gift-info-box {
+  margin-top: 10px; padding: 12px; border-radius: 8px; font-size: 0.88rem; color: var(--silver);
+  background: rgba(223, 186, 104, 0.08); border-left: 3px solid var(--gold-primary);
 }
 
 .tabs {
@@ -304,62 +314,35 @@ select, input[type="text"], input[type="number"], textarea {
   color: #0c0814;
   border-color: #f6e09e;
 }
-/* ==========================================
-   KONTROLA VELIČINE ILUSTRACIJA I OPCIJA
-   ========================================== */
-.style-grid {
+
+.checkbox-group {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.style-option {
-  background: var(--input-bg, #0e0a1a);
+  gap: 10px;
+  background: var(--input-bg);
+  padding: 14px;
+  border-radius: 10px;
   border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 12px;
+}
+
+.checkbox-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  gap: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 0.92rem;
+  color: var(--text-silk);
 }
 
-.style-option.selected {
-  border-color: var(--gold-primary);
-  background: rgba(223, 186, 104, 0.12);
-}
-
-/* Ograničava ogromne slike i SVG stranica na kompaktnu veličinu */
-.style-option svg,
-.style-preview svg,
-.style-option img {
-  width: 70px !important;
-  height: 70px !important;
-  max-width: 70px !important;
-  max-height: 70px !important;
-  object-fit: contain;
-  margin-bottom: 8px;
-}
-
-.style-option span, 
-.style-option label {
-  font-size: 0.82rem;
-  color: var(--silver, #cbd5e1);
-  margin: 0;
-}
 /* ============================================================
-   CUSTOM SELECT ZA STIL BOČNIH IVICA SA SVG-OM U SEBI
+   CUSTOM SELECT ZA STIL BOČNIH IVICA (FIKSIRANE IKONICE)
    ============================================================ */
 .custom-side-select {
   width: 100%;
   padding: 8px 14px;
   border-radius: 10px;
-  background: var(--input-bg, #0e0a1a);
-  border: 1px solid var(--card-border, rgba(223, 186, 104, 0.28));
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -373,29 +356,30 @@ select, input[type="text"], input[type="number"], textarea {
   align-items: center;
   gap: 12px;
   font-size: 0.95rem;
-  color: var(--text-silk, #f4efe6);
+  color: var(--text-silk);
 }
 
 .dropdown-chevron {
-  color: var(--gold-light, #f5e6b3);
+  color: var(--gold-light);
   font-size: 0.85rem;
 }
 
-/* Padajući spisak sa opcijama */
+/* Padajući prozor sa opcijama */
 .custom-side-options {
   display: none;
   position: absolute;
   left: 0;
   right: 0;
   top: calc(100% + 4px);
-  background: #140d24;
-  border: 1px solid var(--gold-primary, #dfba68);
+  background: #150f24;
+  border: 1px solid var(--gold-primary);
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   z-index: 120;
   padding: 6px;
-  max-height: 240px;
+  max-height: 250px;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .custom-side-options.open {
@@ -411,7 +395,7 @@ select, input[type="text"], input[type="number"], textarea {
   padding: 8px 10px;
   border-radius: 8px;
   cursor: pointer;
-  color: var(--text-silk, #f4efe6);
+  color: var(--text-silk);
   font-size: 0.92rem;
   transition: background 0.15s ease;
 }
@@ -425,10 +409,22 @@ select, input[type="text"], input[type="number"], textarea {
   border: 1px solid rgba(223, 186, 104, 0.4);
 }
 
-/* SVG unutar samog menija i svake opcije */
-.dropdown-svg {
-  width: 26px !important;
-  height: 26px !important;
-  min-width: 26px;
-  display: block;
+/* Stroga kontrola veličine SVG sličica */
+.dropdown-svg,
+.custom-side-select svg,
+.custom-side-options svg,
+.side-selected-content svg,
+.custom-option svg {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+@media (max-width: 650px) {
+  .tabs, .checkbox-group { grid-template-columns: 1fr; }
 }
