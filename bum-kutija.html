@@ -11,25 +11,28 @@
 </head>
 <body>
 
+<!-- Brojač poseta gore desno -->
+<div class="top-bar-counter">
+  <span class="counter-eye">👁️</span>
+  <span>Pregleda: <strong id="visitCount">...</strong></span>
+</div>
+
 <div class="container">
   <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
 
   <div class="box-card">
-        <header class="section-title-wrap" style="text-align: center; margin-bottom: 22px;">
+    <header class="section-title-wrap" style="text-align: center; margin-bottom: 22px;">
       <h2>BUM KUTIJA</h2>
       
       <!-- Instagram link direktno iznad teksta 'Personalizuj svoj poklon' -->
       <div style="margin: 8px 0 10px 0;">
-        <a href="https://instagram.com/tvoj_instagram_profil" target="_blank" rel="noopener" class="insta-live-link">
+        <a href="https://instagram.com/bum.kutija" target="_blank" rel="noopener" class="insta-live-link">
           📸 Pogledaj video snimke i reakcije na Instagramu ↗
         </a>
       </div>
 
       <p class="subtitle">Personalizuj svoj poklon</p>
-
-      
     </header>
-
 
     <div class="tabs" id="bumTabs">
       <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
@@ -39,7 +42,7 @@
     </div>
 
     <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp();">
-            <!-- Veličina kutije -->
+      <!-- Veličina kutije -->
       <div class="form-group">
         <label for="bumSizeSelect">Veličina kutije:</label>
         <select id="bumSizeSelect"></select>
@@ -75,8 +78,7 @@
         <input type="text" id="bumCustomInteriorInput" style="display:none; margin-top:8px;" placeholder="Opiši željeni motiv enterijera (npr. zvezdano nebo, strip, cveće...)">
       </div>
 
-      <!-- Stil bočnih ivica (Pravi custom dropdown sa zaključanim SVG) -->
-                <!-- Stil bočnih ivica -->
+      <!-- Stil bočnih ivica -->
       <div class="form-group form-group-relative">
         <label>Stil bočnih ivica:</label>
         <input type="hidden" id="selectedSideStyle" name="sideStyle" value="koverat">
@@ -100,7 +102,7 @@
               <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
               <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
             </svg>
-            <span>Koverat (do 4 slatkiša)</span>
+            <span>Koverat (do 3 slatkiša)</span>
           </div>
 
           <div class="custom-option" data-value="2-grede">
@@ -143,8 +145,6 @@
           </div>
         </div>
       </div>
-
-
 
       <!-- Mehanizam -->
       <div class="form-group">
@@ -191,36 +191,12 @@
         <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
         <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
       </div>
-      
 
       <!-- Dugme za naručivanje -->
       <button type="submit" class="submit-btn" style="margin-top: 12px;">Naruči BUM kutiju na WhatsApp 💬</button>
     </form>
   </div>
 </div>
-
-<script>
-  
-
-  function pickSideStyle(val, labelText, element) {
-    document.getElementById('selectedSideStyle').value = val;
-    const svgHtml = element.querySelector('svg').outerHTML;
-    document.getElementById('sideSelectedContent').innerHTML = `${svgHtml}<span>${labelText}</span>`;
-    
-    document.querySelectorAll('.custom-option').forEach(el => el.classList.remove('active'));
-    element.classList.add('active');
-    
-    document.getElementById('sideOptionsList').classList.remove('open');
-  }
-
-  window.addEventListener('click', function(e) {
-    const selectBox = document.getElementById('sideDropdownBtn');
-    const list = document.getElementById('sideOptionsList');
-    if (selectBox && list && !selectBox.contains(e.target) && !list.contains(e.target)) {
-      list.classList.remove('open');
-    }
-  });
-</script>
 
 <script src="js/database.js"></script>
 <script src="js/pricing-engine.js"></script>
