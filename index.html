@@ -1,9 +1,27 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUM KUTIJE | Kreativni Pokloni</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+  <header class="main-header">
+    <h1 class="main-title">KREATIVNA RADIONICA POKLONA</h1>
+    <p class="main-subtitle">Izaberi šta želiš da prilagodiš i poručiš:</p>
+  </header>
+
   <main class="hub-grid">
-    <!-- Kartica 1: BUM KUTIJA -->
-    <a href="bum-kutija.html" class="hub-card bum" id="cardBum">
+    <a href="bum-kutija.html" class="hub-card" id="cardBum">
       <div class="gift-stage">
         <div class="exploding-box">
-          <!-- Poklopac koji naglo poleti uvis -->
+          <!-- Poklopac sa trakom i mašnom -->
           <div class="box-lid">
             <div class="lid-top">
               <span class="ribbon-v"></span>
@@ -21,7 +39,7 @@
           <div class="box-wall wall-left"></div>
           <div class="box-wall wall-right"></div>
 
-          <!-- Eksplozija pop-up kocki (izleću u vis pod uglovima) -->
+          <!-- 4 iskačuće 3D pop-up kocke -->
           <div class="pop-cubes-wrap">
             <div class="jump-cube cube-1"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
             <div class="jump-cube cube-2"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
@@ -29,11 +47,10 @@
             <div class="jump-cube cube-4"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
           </div>
 
-          <!-- Raspršene konfete -->
+          <!-- Konfete -->
           <div class="confetti-cloud">
-            <span class="conf c1"></span><span class="conf c2"></span><span class="conf c3"></span>
-            <span class="conf c4"></span><span class="conf c5"></span><span class="conf c6"></span>
-            <span class="conf c7"></span><span class="conf c8"></span>
+            <span class="conf c1"></span><span class="conf c2"></span>
+            <span class="conf c3"></span><span class="conf c4"></span>
           </div>
         </div>
       </div>
@@ -41,8 +58,11 @@
       <h2>BUM KUTIJA</h2>
       <p class="hub-card-desc">Interaktivna eksplodirajuća poklon kutija sa iskačućim pop-up kockama i konfetama</p>
       
-      <div class="hub-btn-wrap">
-        <span class="hub-btn">Sklopi svoju BUM poklon kutiju →</span>
-      </div>
+      <span class="hub-btn">Sklopi svoju BUM poklon kutiju →</span>
     </a>
   </main>
+</div>
+
+<script src="chatbot.js"></script>
+</body>
+</html>
