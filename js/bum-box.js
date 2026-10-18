@@ -25,9 +25,7 @@ window.bumBox = {
     const priceBox = document.querySelector('.price-box');
     if (priceBox) priceBox.style.display = 'none';
 
-    const submitBtn = document.querySelector('.submit-btn');
-    if (submitBtn) submitBtn.style.display = 'none';
-  },
+     },
 
 
   bindEvents() {
