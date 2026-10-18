@@ -8,10 +8,10 @@ window.bumBox = {
   sideTheme: 'sweets', // 'sweets' ili 'coffee'
 
   giftDimensions: {
-    Kompaktna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~6 × 6 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa (čokoladice ili kafa kapsule).</small>',
-    Standardna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~9 × 9 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa po strani.</small>',
-    Velika: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~12 × 12 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa po strani.</small>',
-    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (visina ispod čepa najviše do 3 cm).'
+    Kompaktna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~7 × 7 × 7 cm<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    Standardna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 × 12 cm<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    Velika: '📏 <strong>Dimenzije mesta za poklon:</strong> ~15 × 15 × 15 cm<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (za 3 cm manje od dimenzija kutije).'
   },
 
   init() {
