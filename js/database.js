@@ -1,6 +1,6 @@
 /**
  * js/database.js
- * Centralna baza podataka: materijali, slatkiši, cene rada, veličine i brojač
+ * Centralna baza podataka: materijali, slatkiši, cene rada, veličine i lokalni brojač
  */
 
 window.DB = {
@@ -57,50 +57,35 @@ window.DB = {
     safety_buffer_percent: 15
   },
 
-  // 6. Centralni brojač poseta
+  // 6. Modul brojača pregleda (čuva se lokalno u localStorage-u)
   counter: {
     storageKey: 'bum_box_visit_counter',
 
-    getLocalCount: function () {
+    getCount: function () {
       const saved = localStorage.getItem(this.storageKey);
       return saved ? parseInt(saved, 10) : 128;
     },
 
-    incrementLocal: function () {
-      let count = this.getLocalCount() + 1;
+    incrementCount: function () {
+      let count = this.getCount() + 1;
       localStorage.setItem(this.storageKey, count);
       return count;
     },
 
-    init: function () {
-      const el = document.getElementById('visitCount') || 
-                 document.querySelector('.top-bar-counter strong');
-
-      if (!el) return;
-
-      // Pokušaj kontaktiranja CounterAPI servisa
-      fetch('https://api.counterapi.dev/v1/bum-kutija-radionica/visits/up')
-        .then(res => res.json())
-        .then(data => {
-          const count = data.count ?? data.value;
-          if (count !== undefined) {
-            el.textContent = Number(count).toLocaleString();
-            localStorage.setItem(this.storageKey, count);
-          } else {
-            el.textContent = this.incrementLocal().toLocaleString();
-          }
-        })
-        .catch(() => {
-          // Rezervni plan preko localStorage-a
-          el.textContent = this.incrementLocal().toLocaleString();
-        });
+    render: function () {
+      const el = document.getElementById('visitCount');
+      // Brojač se aktivira i uvećava samo ako element postoji na stranici (index.html)
+      if (el) {
+        const currentCount = this.incrementCount();
+        el.textContent = currentCount.toLocaleString();
+      }
     }
   }
 };
 
-// Automatsko pokretanje brojača
+// Automatsko pokretanje brojača čim se stranica učita
 document.addEventListener('DOMContentLoaded', function () {
   if (window.DB && window.DB.counter) {
-    window.DB.counter.init();
+    window.DB.counter.render();
   }
 });
