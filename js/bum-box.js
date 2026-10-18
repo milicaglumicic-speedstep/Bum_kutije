@@ -148,20 +148,22 @@
           </div>
 
           <!-- 4. Postolje -->
-          <div class="style-option" onclick="selectStyleOption('Postolje 1-2-3', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <rect x="7" y="18" width="8" height="15" stroke="#c084fc" fill="rgba(192, 132, 252, 0.2)" />
-                <rect x="16" y="11" width="8" height="22" stroke="#c084fc" fill="rgba(192, 132, 252, 0.3)" />
-                <rect x="25" y="23" width="8" height="10" stroke="#c084fc" fill="rgba(192, 132, 252, 0.15)" />
-                <circle cx="11" cy="14" r="2" fill="#f59e0b" />
-                <circle cx="20" cy="7" r="2" fill="#f59e0b" />
-                <circle cx="29" cy="19" r="2" fill="#f59e0b" />
-              </svg>
-            </div>
-            <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
-          </div>
+          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje', this)">
+  <div class="style-preview">
+    <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+      <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+      <rect x="7" y="18" width="8" height="15" stroke="#c084fc" fill="rgba(192, 132, 252, 0.2)" />
+      <rect x="16" y="11" width="8" height="22" stroke="#c084fc" fill="rgba(192, 132, 252, 0.3)" />
+      <rect x="25" y="23" width="8" height="10" stroke="#c084fc" fill="rgba(192, 132, 252, 0.15)" />
+      <circle cx="11" cy="14" r="2" fill="#f59e0b" />
+      <circle cx="20" cy="7" r="2" fill="#f59e0b" />
+      <circle cx="29" cy="19" r="2" fill="#f59e0b" />
+    </svg>
+  </div>
+  <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
+</div>
+
+    
       </div>
     </div> 
 
