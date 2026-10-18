@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM KUTIJE | Kreativni Pokloni</title>
+  <title>BUM KUTIJE & PUNCH TORTE | Kreativni Pokloni</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -17,47 +17,16 @@
     <p class="main-subtitle">Izaberi šta želiš da prilagodiš i poručiš:</p>
   </header>
 
-  <main class="hub-grid">
-    <a href="bum-kutija.html" class="hub-card" id="cardBum">
-      <div class="gift-stage">
-        <div class="exploding-box">
-          <!-- Poklopac sa trakom i mašnom -->
-          <div class="box-lid">
-            <div class="lid-top">
-              <span class="ribbon-v"></span>
-              <span class="ribbon-h"></span>
-              <div class="lid-knot"></div>
-            </div>
-          </div>
-
-          <!-- Dno kutije -->
-          <div class="box-base"></div>
-
-          <!-- 4 stranice koje se otvaraju i padaju na sto -->
-          <div class="box-wall wall-front"></div>
-          <div class="box-wall wall-back"></div>
-          <div class="box-wall wall-left"></div>
-          <div class="box-wall wall-right"></div>
-
-          <!-- 4 iskačuće 3D pop-up kocke -->
-          <div class="pop-cubes-wrap">
-            <div class="jump-cube cube-1"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
-            <div class="jump-cube cube-2"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
-            <div class="jump-cube cube-3"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
-            <div class="jump-cube cube-4"><div class="c-face f-front"></div><div class="c-face f-top"></div><div class="c-face f-right"></div></div>
-          </div>
-
-          <!-- Konfete -->
-          <div class="confetti-cloud">
-            <span class="conf c1"></span><span class="conf c2"></span>
-            <span class="conf c3"></span><span class="conf c4"></span>
-          </div>
-        </div>
+  <main class="hub-grid" style="grid-template-columns: 1fr; max-width: 460px; margin: 25px auto 0;">
+    <!-- Kartica 1: BUM KUTIJA -->
+    <a href="bum-kutija.html" class="hub-card bum" id="cardBum">
+      <div class="gift-media-wrap">
+        <!-- Ovde ide tvoj GIF ili video snimak kutije -->
+        <img src="images/bum-box.gif" alt="BUM Kutija" class="box-gif-preview" onerror="this.style.display='none'">
       </div>
 
       <h2>BUM KUTIJA</h2>
-      <p class="hub-card-desc">Interaktivna eksplodirajuća poklon kutija sa iskačućim pop-up kockama i konfetama</p>
-      
+      <p class="hub-card-desc">Interaktivna eksplodirajuća poklon kutija</p>
       <span class="hub-btn">Sklopi svoju BUM poklon kutiju →</span>
     </a>
   </main>
