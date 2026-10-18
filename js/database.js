@@ -13,7 +13,7 @@ window.DB = {
 
   // 2. Materijali i nabavne cene
   materials: {
-    paper_b1_sheet_rsd: 120,
+    paper_b1_sheet_rsd: 180,
     ribbon_per_meter_rsd: 45,
     ribbon_meters_per_box: 2.2,
     butterfly_aliexpress_rsd: 90,
@@ -55,36 +55,4 @@ window.DB = {
     },
     punch_cake_labor_per_tier: 700,
     safety_buffer_percent: 15
-  },
-
-  // 6. Modul brojača pregleda (radi samo kad postoji #visitCount na stranici)
-  counter: {
-    storageKey: 'bum_box_visit_counter',
-
-    getCount: function () {
-      const saved = localStorage.getItem(this.storageKey);
-      return saved ? parseInt(saved, 10) : 128;
-    },
-
-    incrementCount: function () {
-      let count = this.getCount() + 1;
-      localStorage.setItem(this.storageKey, count);
-      return count;
-    },
-
-    render: function () {
-      const el = document.getElementById('visitCount');
-      if (el) {
-        const currentCount = this.incrementCount();
-        el.textContent = currentCount.toLocaleString();
-      }
-    }
   }
-};
-
-// Automatsko pokretanje brojača čim se stranica učita
-document.addEventListener('DOMContentLoaded', function () {
-  if (window.DB && window.DB.counter) {
-    window.DB.counter.render();
-  }
-});
