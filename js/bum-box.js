@@ -8,6 +8,49 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Sigurnosni stilovi u slucaju da css/main.css pravi prelamanje */
+    .style-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .style-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      border: 1px solid #3b3054;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 58px;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+    .style-option.selected {
+      border-color: #c084fc;
+      background: rgba(192, 132, 252, 0.1);
+    }
+    .style-preview {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    .style-text {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.3;
+    }
+    .gift-info-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: rgba(192, 132, 252, 0.12);
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #f1f5f9;
+    }
+  </style>
 </head>
 <body>
 
@@ -21,18 +64,24 @@
     </header>
 
     <div class="tabs" id="bumTabs">
-      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kutija punjena slatkišima ili kafom</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovani BUM poklon</button>
+      <button type="button" class="tab-btn active" data-pkg="empty" onclick="switchPackage('empty', this)">1. Prazna BUM kutija</button>
+      <button type="button" class="tab-btn" data-pkg="sweets_gift" onclick="switchPackage('sweets_gift', this)">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
+      <button type="button" class="tab-btn" data-pkg="only_sweets" onclick="switchPackage('only_sweets', this)">3. BUM kutija punjena slatkišima ili kafom</button>
+      <button type="button" class="tab-btn" data-pkg="custom_gift" onclick="switchPackage('custom_gift', this)">4. Personalizovani BUM poklon</button>
     </div>
 
-    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox.sendWhatsApp();">
+    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp ? window.bumBox.sendWhatsApp() : alert('Porudžbina je zabeležena!');">
       <!-- Veličina kutije -->
       <div class="form-group">
         <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect"></select>
-        <div id="bumGiftDimInfo" class="gift-info-box"></div>
+        <select id="bumSizeSelect" onchange="updateDimensions(this.value)">
+          <option value="15x15x15" selected>Standardna (15 × 15 × 15 cm)</option>
+          <option value="18x18x18">Srednja (18 × 18 × 18 cm)</option>
+          <option value="20x20x20">Velika (20 × 20 × 20 cm)</option>
+        </select>
+        <div id="bumGiftDimInfo" class="gift-info-box">
+          📦 Unutrašnji prostor za poklon (centralni čep): <strong>10 × 10 × 12 cm</strong>
+        </div>
       </div>
 
       <!-- Željena boja -->
@@ -58,7 +107,8 @@
       <div class="form-group">
         <label>Stil bočnih ivica:</label>
         <div class="style-grid">
-          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+          <!-- 1. Zvezda -->
+          <div class="style-option selected" onclick="selectStyleOption('Zvezda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -69,8 +119,8 @@
             <span class="style-text">Zvezda (koverat u centar)</span>
           </div>
 
-          <!-- 2 Vertikalna stuba (3 čokoladice) -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('2 vertikalna stuba', this)">
+          <!-- 2. Vertikalna stuba -->
+          <div class="style-option" onclick="selectStyleOption('2 vertikalna stuba', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -84,8 +134,8 @@
             <span class="style-text">2 vertikalna stuba (3 čokoladice)</span>
           </div>
 
-          <!-- X greda -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+          <!-- 3. X greda -->
+          <div class="style-option" onclick="selectStyleOption('X greda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -97,8 +147,8 @@
             <span class="style-text">X greda (dijagonale)</span>
           </div>
 
-          <!-- Postolje (1, 2, 3 mesto) -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
+          <!-- 4. Postolje -->
+          <div class="style-option" onclick="selectStyleOption('Postolje 1-2-3', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -113,22 +163,22 @@
             <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
           </div>
         </div>
-      
+      </div>
 
       <!-- Mehanizam -->
       <div class="form-group">
         <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
         <select id="bumMechanismSelect">
-          <option value="cubes">Iskačuće pop-up kocke</option>
+          <option value="cubes" selected>Iskačuće pop-up kocke</option>
           <option value="butterflies">Iskačući leteći leptirovi</option>
           <option value="combo">Kombo (Kocke + Leptirovi)</option>
         </select>
       </div>
 
-      <!-- Dropdown za izbor teme stranica (Slatkiši ili Kafa) -->
+      <!-- Izbor teme stranica (Slatkiši ili Kafa) -->
       <div class="form-group" id="sideThemeGroup" style="display:none;">
         <label for="bumSideThemeSelect">Punjenje stranica (izaberi temu):</label>
-        <select id="bumSideThemeSelect" onchange="window.bumBox.switchSideTheme(this.value)">
+        <select id="bumSideThemeSelect" onchange="toggleSideTheme(this.value)">
           <option value="sweets" selected>🍫 Slatke strane (čokoladice i praline)</option>
           <option value="coffee">☕ Kafa strane (Nespresso / Dolce Gusto)</option>
         </select>
@@ -160,21 +210,58 @@
         <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
       </div>
 
-      <!-- Prikaz cene (privremeno sakriven) -->
-      <div class="price-box" style="display:none;">
+      <!-- Prikaz cene -->
+      <div class="price-box" style="margin-top: 20px;">
         <div class="price-title">Kalkulisana cena BUM kutije</div>
         <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
       </div>
 
-      <!-- Dugme za naručivanje (privremeno sakriveno) -->
-      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
+      <!-- Dugme za naručivanje -->
+      <button type="submit" class="submit-btn" style="margin-top: 15px;">Naruči BUM kutiju na WhatsApp 💬</button>
     </form>
   </div>
 </div>
 
-<script src="js/database.js"></script>
-<script src="js/pricing-engine.js"></script>
-<script src="js/bum-box.js"></script>
-<script src="chatbot.js"></script>
-</body>
-</html>
+<script>
+  // Prebacivanje tabova i prikaz opcija za stranice
+  function switchPackage(pkg, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const sideTheme = document.getElementById('sideThemeGroup');
+    const sweets = document.getElementById('bumSweetsGroup');
+    const coffee = document.getElementById('bumCoffeeGroup');
+    const notes = document.getElementById('customNotesGroup');
+
+    if (pkg === 'empty') {
+      sideTheme.style.display = 'none';
+      sweets.style.display = 'none';
+      coffee.style.display = 'none';
+      notes.style.display = 'none';
+    } else if (pkg === 'sweets_gift' || pkg === 'only_sweets') {
+      sideTheme.style.display = 'block';
+      toggleSideTheme(document.getElementById('bumSideThemeSelect').value);
+      notes.style.display = 'none';
+    } else if (pkg === 'custom_gift') {
+      sideTheme.style.display = 'block';
+      toggleSideTheme(document.getElementById('bumSideThemeSelect').value);
+      notes.style.display = 'block';
+    }
+
+    if (window.bumBox && window.bumBox.selectPackage) {
+      window.bumBox.selectPackage(pkg);
+    }
+  }
+
+  // Prebacivanje između Slatkiša i Kafe
+  function toggleSideTheme(theme) {
+    const sweets = document.getElementById('bumSweetsGroup');
+    const coffee = document.getElementById('bumCoffeeGroup');
+    if (theme === 'coffee') {
+      sweets.style.display = 'none';
+      coffee.style.display = 'block';
+    } else {
+      sweets.style.display = 'block';
+      coffee.style.display = 'none';
+    }
+    if (window.bumBox && window.bumBox.switch
