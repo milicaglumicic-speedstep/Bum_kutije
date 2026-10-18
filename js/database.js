@@ -1,3 +1,4 @@
+
 /**
  * js/database.js
  * Centralna baza podataka: materijali, slatkiši, cene rada, veličine i lokalni brojač
@@ -58,6 +59,37 @@ window.DB = {
   }
 
   
+  }
+};
+
+// Automatsko pokretanje brojača čim se stranica učita
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.DB && window.DB.counter) {
+    window.DB.counter.render();
+  }
+});
+// 6. Modul brojača pregleda (radi samo kad postoji #visitCount na stranici)
+  counter: {
+    storageKey: 'bum_box_visit_counter',
+
+    getCount: function () {
+      const saved = localStorage.getItem(this.storageKey);
+      return saved ? parseInt(saved, 10) : 0;
+    },
+
+    incrementCount: function () {
+      let count = this.getCount() + 1;
+      localStorage.setItem(this.storageKey, count);
+      return count;
+    },
+
+    render: function () {
+      const el = document.getElementById('visitCount');
+      if (el) {
+        const currentCount = this.incrementCount();
+        el.textContent = currentCount.toLocaleString();
+      }
+    }
   }
 };
 
