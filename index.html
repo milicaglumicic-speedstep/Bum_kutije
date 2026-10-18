@@ -94,28 +94,8 @@
   </main>
 </div>
 
-<!-- Logika brojača -->
-<script>
-  (function updateCounter() {
-    const el = document.getElementById('visitCount');
-    if (!el) return;
-
-    fetch('https://api.counterapi.dev/v1/bum-kutija-radionica/visits/up')
-      .then(res => res.json())
-      .then(data => {
-        const count = data.count ?? data.value;
-        if (count !== undefined) {
-          el.textContent = count.toLocaleString();
-        } else {
-          el.textContent = '1';
-        }
-      })
-      .catch(() => {
-        el.textContent = '1';
-      });
-  })();
-</script>
-
+<script src="js/database.js"></script>
+<script src="chatbot.js"></script>
 <script src="chatbot.js"></script>
 </body>
 </html>
