@@ -98,18 +98,26 @@
   (function updateCounter() {
     const el = document.getElementById('visitCount');
     if (!el) return;
+
+    // Koristi se jedinstveni ključ za tvoj domen
     fetch('https://api.counterapi.dev/v1/bum-kutija-radionica/visits/up')
       .then(res => res.json())
       .then(data => {
-        if (data && typeof data.count !== 'undefined') {
-          el.textContent = data.count.toLocaleString();
+        // CounterAPI vraća vrednost u data.count ili data.value
+        const count = data.count ?? data.value;
+        if (count !== undefined) {
+          el.textContent = count.toLocaleString();
         } else {
-          el.textContent = '1+';
+          el.textContent = '1';
         }
       })
-      .catch(() => { el.textContent = '100+'; });
+      .catch(() => {
+        // Ako je mreža blokirana ili servis ne odgovara
+        el.textContent = '1';
+      });
   })();
 </script>
+
 
 <script src="chatbot.js"></script>
 </body>
