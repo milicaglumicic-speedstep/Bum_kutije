@@ -1,161 +1,234 @@
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM KUTIJA | konfigurator</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+/**
+ * js/bum-box.js
+ * Glavna logika za BUM KUTIJA konfigurator
+ */
 
-<div class="container">
-  <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
+window.bumBox = {
+  currentPkg: 'empty',
+  selectedStyle: 'Zvezda',
+  sideTheme: 'sweets',
 
-  <div class="box-card">
-    <header class="section-title-wrap">
-      <h2>BUM KUTIJA</h2>
-      <p>Personalizuj svoj poklon</p>
-    </header>
+  init: function () {
+    this.initTabs();
+    this.populateSizes();
+    this.bindEvents();
+    this.updatePrice();
+  },
 
-    <div class="tabs" id="bumTabs">
-      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa slatkim stranama</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kutija sa poklon slatkišima</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovani BUM poklon</button>
-    </div>
+  // Inicijalizacija tabova na vrhu
+  initTabs: function () {
+    const tabs = document.querySelectorAll('#bumTabs .tab-btn');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
 
-    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox.sendWhatsApp();">
-      <!-- Veličina kutije -->
-      <div class="form-group">
-        <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect"></select>
-        <div id="bumGiftDimInfo" class="gift-info-box"></div>
-      </div>
+        const pkg = tab.getAttribute('data-pkg');
+        this.selectPackage(pkg);
+      });
+    });
+  },
 
-      <!-- Željena boja -->
-      <div class="form-group">
-        <label for="bumColorInput">Željena boja:</label>
-        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
-      </div>
+  // Prikaz / skrivanje opcija prema odabranom paketu
+  selectPackage: function (pkg) {
+    this.currentPkg = pkg;
 
-      <!-- Dekoracija enterijera kutije -->
-      <div class="form-group">
-        <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
-        <select id="bumInteriorSelect">
-          <option value="Standardni" selected>✨ Standardni / bez dodataka</option>
-          <option value="Pisani tekst">✍️ Pisani tekst</option>
-          <option value="Štampani tekst">🖨️ Štampani tekst</option>
-          <option value="Zvezdice">⭐ Zvezdice</option>
-          <option value="Srca">❤️ Srca</option>
-          <option value="IT stikeri">💻 IT stikeri</option>
-        </select>
-      </div>
+    const sideThemeGroup = document.getElementById('sideThemeGroup');
+    const sweetsGroup = document.getElementById('bumSweetsGroup');
+    const coffeeGroup = document.getElementById('bumCoffeeGroup');
+    const notesGroup = document.getElementById('customNotesGroup');
 
-      <!-- Stil bočnih ivica -->
-      <div class="form-group">
-        <label>Stil bočnih ivica (za slatkiše):</label>
-        <div class="style-grid">
-          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <path d="M4 4L36 36M36 4L4 36" />
-                <circle cx="20" cy="20" r="3" fill="#c084fc" />
-              </svg>
-            </div>
-            <span class="style-text">Zvezda (koverat u centar)</span>
-          </div>
+    if (pkg === 'empty') {
+      if (sideThemeGroup) sideThemeGroup.style.display = 'none';
+      if (sweetsGroup) sweetsGroup.style.display = 'none';
+      if (coffeeGroup) coffeeGroup.style.display = 'none';
+      if (notesGroup) notesGroup.style.display = 'none';
+    } else if (pkg === 'sweets_gift' || pkg === 'only_sweets') {
+      if (sideThemeGroup) sideThemeGroup.style.display = 'block';
+      this.switchSideTheme(this.sideTheme);
+      if (notesGroup) notesGroup.style.display = 'none';
+    } else if (pkg === 'custom_gift') {
+      if (sideThemeGroup) sideThemeGroup.style.display = 'block';
+      this.switchSideTheme(this.sideTheme);
+      if (notesGroup) notesGroup.style.display = 'block';
+    }
 
-          <!-- 2 Vertikalna stuba -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('2 vertikalna stuba', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <line x1="15" y1="4" x2="15" y2="36" stroke-width="1.8" />
-                <line x1="25" y1="4" x2="25" y2="36" stroke-width="1.8" />
-                <rect x="7" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
-                <rect x="17.5" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
-                <rect x="28" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
-              </svg>
-            </div>
-            <span class="style-text">2 vertikalna stuba (3 čokoladice)</span>
-          </div>
+    this.populateSizes();
+    this.updatePrice();
+  },
 
-          <!-- X greda -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
-                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
-                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
-              </svg>
-            </div>
-            <span class="style-text">X greda (dijagonale)</span>
-          </div>
+  // Popunjavanje padajućeg izbornika za veličine kutija
+  populateSizes: function () {
+    const sizeSelect = document.getElementById('bumSizeSelect');
+    if (!sizeSelect) return;
 
-          <!-- Postolje (1, 2, 3 mesto) -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
-            <div class="style-preview">
-              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                <rect x="7" y="18" width="8" height="15" stroke="#c084fc" fill="rgba(192, 132, 252, 0.2)" />
-                <rect x="16" y="11" width="8" height="22" stroke="#c084fc" fill="rgba(192, 132, 252, 0.3)" />
-                <rect x="25" y="23" width="8" height="10" stroke="#c084fc" fill="rgba(192, 132, 252, 0.15)" />
-                <circle cx="11" cy="14" r="2" fill="#f59e0b" />
-                <circle cx="20" cy="7" r="2" fill="#f59e0b" />
-                <circle cx="29" cy="19" r="2" fill="#f59e0b" />
-              </svg>
-            </div>
-            <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
-          </div>
-        </div>
-      </div>
+    // Ako postoje podaci u bazi (database.js), vuče ih odatle, inače koristi standardne
+    const sizes = (window.DB && window.DB.bumSizes) || [
+      { id: '15x15x15', label: '15 × 15 × 15 cm (Standardna)', giftDim: '10 × 10 × 12 cm' },
+      { id: '18x18x18', label: '18 × 18 × 18 cm (Srednja)', giftDim: '12 × 12 × 14 cm' },
+      { id: '20x20x20', label: '20 × 20 × 20 cm (Velika)', giftDim: '14 × 14 × 16 cm' }
+    ];
 
-      <!-- Mehanizam -->
-      <div class="form-group">
-        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
-        <select id="bumMechanismSelect">
-          <option value="cubes">Iskačuće pop-up kocke</option>
-          <option value="butterflies">Iskačući leteći leptirovi</option>
-          <option value="combo">Kombo (Kocke + Leptirovi)</option>
-        </select>
-      </div>
+    const currentVal = sizeSelect.value || sizes[0].id;
+    sizeSelect.innerHTML = '';
 
-      <!-- Slatkiši za stranice -->
-      <div class="form-group" id="bumSweetsGroup" style="display:none;">
-        <label>Izaberi slatkiše za stranice:</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
-          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
-          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
-          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
-        </div>
-      </div>
+    sizes.forEach((s) => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = s.label;
+      if (s.id === currentVal) opt.selected = true;
+      sizeSelect.appendChild(opt);
+    });
 
-      <!-- Polje za opis i posvetu (Paket 4) -->
-      <div class="form-group" id="customNotesGroup" style="display:none;">
-        <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
-        <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
-      </div>
+    this.updateSizeInfo(sizeSelect.value);
+  },
 
-      <!-- Prikaz cene -->
-      <div class="price-box" style="display:none;">
-        <div class="price-title">Kalkulisana cena BUM kutije</div>
-        <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
-      </div>
+  // Ažuriranje teksta u gift-info-box
+  updateSizeInfo: function (val) {
+    const dimInfo = document.getElementById('bumGiftDimInfo');
+    if (!dimInfo) return;
 
-      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
-    </form>
-  </div>
-</div>
+    let giftDim = '10 × 10 × 12 cm';
+    if (val === '18x18x18') giftDim = '12 × 12 × 14 cm';
+    if (val === '20x20x20') giftDim = '14 × 14 × 16 cm';
 
-<script src="js/database.js"></script>
-<script src="js/pricing-engine.js"></script>
-<script src="js/bum-box.js"></script>
-<script src="chatbot.js"></script>
-</body>
-</html>
+    dimInfo.innerHTML = `📦 Unutrašnji prostor za poklon (centralni čep): <strong>${giftDim}</strong>`;
+    this.updatePrice();
+  },
+
+  // Odabir kartice stila bočnih ivica
+  selectStyle: function (styleName, el) {
+    this.selectedStyle = styleName;
+    document.querySelectorAll('.style-option').forEach((opt) => {
+      opt.classList.remove('selected');
+    });
+    if (el) {
+      el.classList.add('selected');
+    }
+  },
+
+  // Prebacivanje između slatkiša i kave
+  switchSideTheme: function (theme) {
+    this.sideTheme = theme;
+    const sweets = document.getElementById('bumSweetsGroup');
+    const coffee = document.getElementById('bumCoffeeGroup');
+
+    if (theme === 'coffee') {
+      if (sweets) sweets.style.display = 'none';
+      if (coffee) coffee.style.display = 'block';
+    } else {
+      if (sweets) sweets.style.display = 'block';
+      if (coffee) coffee.style.display = 'none';
+    }
+    this.updatePrice();
+  },
+
+  // Event listeneri na formi
+  bindEvents: function () {
+    const sizeSelect = document.getElementById('bumSizeSelect');
+    if (sizeSelect) {
+      sizeSelect.addEventListener('change', (e) => {
+        this.updateSizeInfo(e.target.value);
+      });
+    }
+
+    // Osluškivanje promjena za cijenu
+    document.querySelectorAll('#bumForm input, #bumForm select').forEach((el) => {
+      el.addEventListener('change', () => this.updatePrice());
+    });
+  },
+
+  // Kalkulacija cijene
+  updatePrice: function () {
+    const priceDisplay = document.getElementById('bumPriceDisplay');
+    if (!priceDisplay) return;
+
+    if (window.pricingEngine && window.pricingEngine.calcBumBox) {
+      const calculated = window.pricingEngine.calcBumBox(this.collectFormData());
+      priceDisplay.textContent = calculated.toLocaleString('sr-RS') + ' RSD';
+      return;
+    }
+
+    // Osnovni proračun ako pricing-engine nije učitan
+    let total = 2800;
+    const size = document.getElementById('bumSizeSelect') ? document.getElementById('bumSizeSelect').value : '15x15x15';
+    if (size === '18x18x18') total += 600;
+    if (size === '20x20x20') total += 1200;
+
+    if (this.currentPkg === 'sweets_gift') total += 1200;
+    if (this.currentPkg === 'only_sweets') total += 1500;
+    if (this.currentPkg === 'custom_gift') total += 2000;
+
+    priceDisplay.textContent = total.toLocaleString('sr-RS') + ' RSD';
+  },
+
+  // Prikupljanje unesenih podataka
+  collectFormData: function () {
+    const colorInput = document.getElementById('bumColorInput');
+    const interiorSelect = document.getElementById('bumInteriorSelect');
+    const mechanismSelect = document.getElementById('bumMechanismSelect');
+    const notes = document.getElementById('bumNotes');
+
+    const fillings = [];
+    if (this.currentPkg !== 'empty') {
+      const selector = this.sideTheme === 'coffee' 
+        ? '#bumCoffeeGroup input[type="checkbox"]:checked' 
+        : '#bumSweetsGroup input[type="checkbox"]:checked';
+      
+      document.querySelectorAll(selector).forEach((chk) => {
+        fillings.push(chk.parentElement.textContent.trim());
+      });
+    }
+
+    return {
+      package: this.currentPkg,
+      size: document.getElementById('bumSizeSelect') ? document.getElementById('bumSizeSelect').value : '15x15x15',
+      color: colorInput ? colorInput.value : '',
+      interior: interiorSelect ? interiorSelect.value : 'Standardni',
+      style: this.selectedStyle,
+      mechanism: mechanismSelect ? mechanismSelect.value : 'cubes',
+      fillings: fillings,
+      notes: notes ? notes.value : ''
+    };
+  },
+
+  // Slanje porudžbine na WhatsApp
+  sendWhatsApp: function () {
+    const data = this.collectFormData();
+    const pkgLabels = {
+      empty: '1. Prazna BUM kutija',
+      sweets_gift: '2. BUM kutija sa slatkim/kafa stranama',
+      only_sweets: '3. BUM kutija punjena slatkišima ili kafom',
+      custom_gift: '4. Personalizovani BUM poklon'
+    };
+
+    let msg = `Pozdrav! Želim poručiti BUM kutiju:\n\n`;
+    msg += `📦 Paket: ${pkgLabels[data.package] || data.package}\n`;
+    msg += `📏 Veličina: ${data.size}\n`;
+    msg += `🎨 Boja: ${data.color || 'Standardna'}\n`;
+    msg += `✨ Dekoracija: ${data.interior}\n`;
+    msg += `📐 Stil ivica: ${data.style}\n`;
+    msg += `⚙️ Mehanizam: ${data.mechanism}\n`;
+
+    if (data.fillings.length > 0) {
+      msg += `🍬 Punjenje: ${data.fillings.join(', ')}\n`;
+    }
+    if (data.notes) {
+      msg += `📝 Napomena: ${data.notes}\n`;
+    }
+
+    const price = document.getElementById('bumPriceDisplay');
+    if (price) {
+      msg += `\n💰 Cena: ${price.textContent}`;
+    }
+
+    const phone = '381600000000'; // Ovdje ide tvoj WhatsApp broj
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+};
+
+// Automatsko pokretanje kada se DOM učita
+document.addEventListener('DOMContentLoaded', function () {
+  window.bumBox.init();
+});
