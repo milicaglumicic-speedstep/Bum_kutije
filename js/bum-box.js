@@ -102,8 +102,8 @@ window.bumBox = {
 
     const sizes = (window.DB && window.DB.bumSizes) || [
       { id: '15x15x15', label: '15 × 15 × 15 cm (Standardna)', giftDim: '10 × 10 × 12 cm' },
-      { id: '18x18x18', label: '18 × 18 × 18 cm (Srednja)', giftDim: '12 × 12 × 14 cm' },
-      { id: '20x20x20', label: '20 × 20 × 20 cm (Velika)', giftDim: '14 × 14 × 16 cm' }
+      { id: '18x18x18', label: '18 × 18 × 18 cm (Srednja)', giftDim: '12 × 12 × 15 cm' },
+      { id: '20x20x20', label: '20 × 20 × 20 cm (Velika)', giftDim: '14 × 14 × 17 cm' }
     ];
 
     const currentVal = sizeSelect.value || sizes[0].id;
@@ -126,8 +126,8 @@ window.bumBox = {
     if (!dimInfo) return;
 
     let giftDim = '10 × 10 × 12 cm';
-    if (val === '18x18x18') giftDim = '12 × 12 × 14 cm';
-    if (val === '20x20x20') giftDim = '14 × 14 × 16 cm';
+    if (val === '18x18x18') giftDim = '12 × 12 × 15 cm';
+    if (val === '20x20x20') giftDim = '14 × 14 × 17 cm';
 
     dimInfo.innerHTML = `📦 Unutrašnji prostor za poklon (centralni čep): <strong>${giftDim}</strong>`;
   },
@@ -230,7 +230,7 @@ window.bumBox = {
       msg += `📝 Povod / opis želje: ${data.notes}\n`;
     }
 
-    const phone = '381600000000'; // Ovde upiši svoj WhatsApp broj
+    const phone = '381644667485'; // Ovde upiši svoj WhatsApp broj
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   }
