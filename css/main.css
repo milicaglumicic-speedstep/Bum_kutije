@@ -1,28 +1,15 @@
 /* ============================================================
-   PREMIUM LUXURY PALETA & GLOBALNI RESET
+   GLOBALNI STILOVI & RESET
    ============================================================ */
 :root {
   --bg: #07050d;
-  --bg-card: rgba(21, 16, 36, 0.92);
-  --card-border: rgba(192, 132, 252, 0.3);
-  --card-border-gold: rgba(245, 158, 11, 0.35);
-
-  --accent-gold: #f59e0b;
-  --gold-glow: rgba(245, 158, 11, 0.35);
-
+  --bg-card: rgba(21, 16, 36, 0.95);
+  --card-border: rgba(192, 132, 252, 0.35);
   --accent-purple: #9333ea;
   --accent-light: #c084fc;
-  --purple-glow: rgba(168, 85, 247, 0.35);
-
-  --text-primary: #fcfcfd;
-  --text-secondary: #cbd5e1;
+  --text-main: #fcfcfd;
   --text-muted: #94a3b8;
-  
-  --input-bg: rgba(9, 7, 16, 0.85);
-  --input-border: rgba(255, 255, 255, 0.1);
-  --input-focus: #c084fc;
-  
-  --success: #22c55e;
+  --text-sub: #cbd5e1;
 }
 
 * {
@@ -35,115 +22,66 @@
 
 body {
   background-color: var(--bg);
-  color: var(--text-primary);
-  line-height: 1.6;
-  padding: 30px 16px 80px;
+  color: var(--text-main);
   min-height: 100vh;
+  padding: 40px 16px 80px;
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 51, 234, 0.22) 0%, transparent 70%),
-    radial-gradient(circle 600px at bottom right, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
-    radial-gradient(circle 500px at bottom left, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 51, 234, 0.25) 0%, transparent 70%),
+    radial-gradient(circle 500px at bottom, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
   background-attachment: fixed;
 }
 
 .container {
-  max-width: 840px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
-/* ============================================================
-   ZAGLAVLJE & NAVIGACIJA
-   ============================================================ */
+/* Zaglavlje */
 .main-header {
   text-align: center;
-  padding: 35px 0 25px;
+  margin-bottom: 30px;
 }
 
 .main-title {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #ffffff 30%, #e2e8f0 70%, #c084fc 100%);
+  background: linear-gradient(135deg, #ffffff 40%, var(--accent-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
 
 .main-subtitle {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  max-width: 580px;
-  margin: 0 auto;
-  font-weight: 400;
-}
-
-.section-title-wrap {
-  margin-bottom: 24px;
-}
-.section-title-wrap h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-}
-.section-title-wrap p {
   color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-.back-nav {
-  margin-bottom: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
-  padding: 8px 18px;
-  border-radius: 9999px;
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.back-nav:hover {
-  background: rgba(192, 132, 252, 0.12);
-  color: #ffffff;
-  border-color: var(--accent-light);
-  transform: translateX(-3px);
-  box-shadow: 0 4px 15px var(--purple-glow);
+  font-size: 1rem;
 }
 
 /* ============================================================
-   POČETNA KARTICA (HUB CARD) & DUGME
+   POČETNA KARTICA I DUGME
    ============================================================ */
 .hub-grid {
   display: flex;
   justify-content: center;
-  margin: 30px auto 0;
-  max-width: 480px;
-  padding: 0 10px;
+  width: 100%;
 }
 
 .hub-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   width: 100%;
-  background: var(--bg-card) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border) !important;
-  border-radius: 24px !important;
-  padding: 38px 24px 32px !important;
-  text-decoration: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(147, 51, 234, 0.15) !important;
-  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 36px 24px 30px;
+  text-decoration: none;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(147, 51, 234, 0.15);
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .hub-card::before {
@@ -153,70 +91,60 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-light), var(--accent-gold), transparent);
-  opacity: 0.7;
+  background: linear-gradient(90deg, transparent, var(--accent-light), #f59e0b, transparent);
 }
 
 .hub-card:hover {
-  transform: translateY(-6px);
-  border-color: #c084fc !important;
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.85), 0 0 40px rgba(168, 85, 247, 0.3) !important;
+  transform: translateY(-5px);
+  border-color: var(--accent-light);
 }
 
 .hub-card h2 {
-  font-size: 1.8rem !important;
-  font-weight: 800 !important;
-  color: #ffffff !important;
-  margin: 16px 0 8px !important;
-  letter-spacing: 0.5px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 18px 0 8px;
 }
 
 .hub-card-desc {
-  font-size: 0.95rem !important;
-  color: #cbd5e1 !important;
-  line-height: 1.45 !important;
-  margin-bottom: 24px !important;
-  max-width: 380px;
-}
-
-.hub-btn-wrap {
-  width: 100%;
-  margin-top: auto;
+  font-size: 0.95rem;
+  color: var(--text-sub);
+  line-height: 1.45;
+  margin-bottom: 26px;
 }
 
 .hub-btn {
-  display: inline-block !important;
-  width: 100% !important;
-  padding: 15px 22px !important;
-  border-radius: 12px !important;
-  font-size: 1rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 8px 20px rgba(147, 51, 234, 0.4) !important;
-  transition: all 0.25s ease !important;
-  box-sizing: border-box !important;
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 22px rgba(147, 51, 234, 0.45);
+  box-sizing: border-box;
+  letter-spacing: 0.2px;
+  transition: all 0.2s ease;
 }
 
 .hub-card:hover .hub-btn {
-  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important;
-  box-shadow: 0 10px 25px rgba(168, 85, 247, 0.55) !important;
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
   transform: translateY(-2px);
 }
 
 /* ============================================================
-   REALISTIČNA DINAMIČNA 3D BUM KUTIJA (Kao na snimku)
+   3D DINAMIČNA BUM KUTIJA (Kao na videu)
    ============================================================ */
 .gift-stage {
   width: 220px;
-  height: 190px;
+  height: 180px;
   perspective: 750px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin: 0 auto 10px;
 }
 
 .exploding-box {
@@ -228,7 +156,6 @@ body {
   animation: stageSequence 3.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Baza kutije na stolu */
 .box-base {
   position: absolute;
   width: 70px;
@@ -239,7 +166,6 @@ body {
   box-shadow: 0 25px 35px rgba(0, 0, 0, 0.9);
 }
 
-/* 4 Stranice kutije - elegantna mat crna sa tankim satenskim akcentom */
 .box-wall {
   position: absolute;
   width: 70px;
@@ -258,7 +184,6 @@ body {
   width: 8px;
   height: 100%;
   background: linear-gradient(90deg, #f59e0b, #fde047, #d97706);
-  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
 }
 
 .wall-front { transform: translateZ(35px); animation: fallFront 3.8s infinite cubic-bezier(0.18, 0.89, 0.32, 1.2); }
@@ -266,7 +191,6 @@ body {
 .wall-left  { transform: rotateY(-90deg) translateZ(35px); animation: fallLeft 3.8s infinite cubic-bezier(0.18, 0.89, 0.32, 1.2); }
 .wall-right { transform: rotateY(90deg) translateZ(35px); animation: fallRight 3.8s infinite cubic-bezier(0.18, 0.89, 0.32, 1.2); }
 
-/* Poklopac kutije sa mašnicom */
 .box-lid {
   position: absolute;
   width: 76px;
@@ -289,36 +213,29 @@ body {
 
 .ribbon-v {
   position: absolute;
-  top: 0;
-  left: 33px;
-  width: 10px;
-  height: 100%;
+  top: 0; left: 33px;
+  width: 10px; height: 100%;
   background: linear-gradient(90deg, #d97706, #fbbf24, #b45309);
 }
 .ribbon-h {
   position: absolute;
-  top: 33px;
-  left: 0;
-  width: 100%;
-  height: 10px;
+  top: 33px; left: 0;
+  width: 100%; height: 10px;
   background: linear-gradient(180deg, #d97706, #fbbf24, #b45309);
 }
 .lid-knot {
   position: absolute;
-  top: 31px;
-  left: 31px;
-  width: 14px;
-  height: 14px;
+  top: 31px; left: 31px;
+  width: 14px; height: 14px;
   border-radius: 50%;
   background: #fde047;
   box-shadow: 0 0 10px #f59e0b;
 }
 
-/* Više pop-up kockica sa punom 3D dubinom */
+/* Iskačuće pop-up kocke */
 .pop-cubes-wrap {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   transform-style: preserve-3d;
   pointer-events: none;
 }
@@ -327,8 +244,7 @@ body {
   position: absolute;
   width: 28px;
   height: 28px;
-  top: 21px;
-  left: 21px;
+  top: 21px; left: 21px;
   transform-style: preserve-3d;
   opacity: 0;
 }
@@ -341,7 +257,6 @@ body {
   box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
 }
 
-/* Boje kockica po uzoru na snimak (bež/kraft, metalik ljubičasta, crna, zlatna) */
 .cube-1 .c-face { background: linear-gradient(135deg, #d4a373, #a9714b); }
 .cube-2 .c-face { background: linear-gradient(135deg, #9333ea, #6b21a8); }
 .cube-3 .c-face { background: linear-gradient(135deg, #2b2538, #181422); }
@@ -351,7 +266,6 @@ body {
 .f-top   { transform: rotateX(90deg) translateZ(14px); filter: brightness(1.2); }
 .f-right { transform: rotateY(90deg) translateZ(14px); filter: brightness(0.8); }
 
-/* Animacija rasipanja i skakanja kockica u vazduh */
 .cube-1 { animation: popCubeOne 3.8s infinite cubic-bezier(0.15, 0.9, 0.3, 1); }
 .cube-2 { animation: popCubeTwo 3.8s infinite cubic-bezier(0.15, 0.9, 0.3, 1); }
 .cube-3 { animation: popCubeThree 3.8s infinite cubic-bezier(0.15, 0.9, 0.3, 1); }
@@ -388,16 +302,13 @@ body {
 /* Konfete */
 .confetti-cloud {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   pointer-events: none;
 }
 .conf {
   position: absolute;
-  width: 6px;
-  height: 10px;
-  top: 30px;
-  left: 30px;
+  width: 6px; height: 10px;
+  top: 30px; left: 30px;
   opacity: 0;
   border-radius: 2px;
 }
@@ -405,17 +316,13 @@ body {
 .c2 { background: #c084fc; animation: burstConf2 3.8s infinite ease-out; }
 .c3 { background: #38bdf8; animation: burstConf3 3.8s infinite ease-out; }
 .c4 { background: #ec4899; animation: burstConf4 3.8s infinite ease-out; }
-.c5 { background: #fde047; animation: burstConf1 3.8s infinite 0.05s ease-out; }
-.c6 { background: #ffffff; animation: burstConf2 3.8s infinite 0.07s ease-out; }
-.c7 { background: #a855f7; animation: burstConf3 3.8s infinite 0.04s ease-out; }
-.c8 { background: #22c55e; animation: burstConf4 3.8s infinite 0.06s ease-out; }
 
 @keyframes burstConf1 { 0%, 22% { transform: translate(0,0) scale(0); opacity:0; } 28% { opacity:1; } 40%, 65% { transform: translate(-65px, -90px) rotate(220deg); opacity:0.9; } 76%, 100% { opacity:0; } }
 @keyframes burstConf2 { 0%, 22% { transform: translate(0,0) scale(0); opacity:0; } 28% { opacity:1; } 40%, 65% { transform: translate(70px, -85px) rotate(-190deg); opacity:0.9; } 76%, 100% { opacity:0; } }
 @keyframes burstConf3 { 0%, 22% { transform: translate(0,0) scale(0); opacity:0; } 28% { opacity:1; } 40%, 65% { transform: translate(-35px, -110px) rotate(140deg); opacity:0.9; } 76%, 100% { opacity:0; } }
 @keyframes burstConf4 { 0%, 22% { transform: translate(0,0) scale(0); opacity:0; } 28% { opacity:1; } 40%, 65% { transform: translate(45px, -115px) rotate(-160deg); opacity:0.9; } 76%, 100% { opacity:0; } }
 
-/* Tajming otvaranja kutije i padanja stranica */
+/* Otvaranje kutije */
 @keyframes lidJumpFly {
   0%, 20%   { transform: rotateX(90deg) translateZ(37px) scale(1); opacity: 1; }
   26%       { transform: rotateX(90deg) translateZ(125px) rotateZ(35deg) scale(1.15); opacity: 1; }
@@ -435,190 +342,4 @@ body {
   22%       { transform: rotateX(-20deg) rotateY(34deg) scale(1.05); }
   26%, 72%  { transform: rotateX(-20deg) rotateY(34deg) scale(1); }
   85%, 100% { transform: rotateX(-20deg) rotateY(34deg) scale(1); }
-}
-
-/* ============================================================
-   KARTICE, FORME I STRANICA KONFIGURATORA
-   ============================================================ */
-.box-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
-  padding: 36px 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(147, 51, 234, 0.08);
-}
-
-.form-group {
-  margin-bottom: 24px;
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  letter-spacing: 0.2px;
-}
-
-select, input[type="text"], input[type="number"], textarea {
-  width: 100%;
-  padding: 13px 16px;
-  border-radius: 12px;
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  color: #ffffff;
-  font-size: 0.95rem;
-  outline: none;
-  transition: all 0.25s ease;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-select:focus, input:focus, textarea:focus {
-  border-color: var(--accent-light);
-  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.2), inset 0 2px 4px rgba(0,0,0,0.4);
-}
-
-/* Tabovi konfiguratora */
-.tabs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 24px 0 28px;
-}
-.tab-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--card-border);
-  color: var(--text-secondary);
-  padding: 14px 16px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.92rem;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.tab-btn:hover {
-  background: rgba(192, 132, 252, 0.08);
-  border-color: var(--accent-light);
-  color: #ffffff;
-}
-.tab-btn.active {
-  background: linear-gradient(135deg, rgba(147, 51, 234, 0.9), rgba(107, 33, 168, 0.95));
-  border-color: var(--accent-light);
-  color: #ffffff;
-  box-shadow: 0 8px 20px var(--purple-glow), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-}
-
-/* Info kutije */
-.gift-info-box {
-  margin-top: 10px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #f1f5f9;
-  background: rgba(192, 132, 252, 0.08);
-  border: 1px solid rgba(192, 132, 252, 0.25);
-  box-shadow: inset 0 0 15px rgba(147, 51, 234, 0.05);
-}
-
-/* Stil bočnih ivica */
-.style-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-.style-option {
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-.style-option:hover {
-  border-color: rgba(192, 132, 252, 0.5);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-2px);
-}
-.style-option.selected {
-  border-color: var(--accent-light);
-  background: rgba(147, 51, 234, 0.2);
-  box-shadow: 0 4px 15px var(--purple-glow), inset 0 0 10px rgba(192, 132, 252, 0.15);
-}
-.style-preview svg {
-  width: 36px;
-  height: 36px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-}
-.style-text {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-/* Checkbox lista */
-.checkbox-group {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  background: var(--input-bg);
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid var(--input-border);
-}
-.checkbox-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-}
-
-/* Dugme za naručivanje na konfiguratoru */
-.submit-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 16px 20px;
-  border-radius: 14px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.3px;
-}
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(34, 197, 94, 0.45);
-  background: linear-gradient(135deg, #25d366 0%, #15803d 100%);
-}
-.submit-btn:active {
-  transform: translateY(0);
-}
-
-/* ============================================================
-   RESPONZIVNOST (MOBILNI TELEFONI)
-   ============================================================ */
-@media (max-width: 650px) {
-  .tabs, .style-grid, .checkbox-group {
-    grid-template-columns: 1fr;
-  }
-  .box-card {
-    padding: 24px 18px;
-    border-radius: 18px;
-  }
-  .main-title {
-    font-size: 2.2rem;
-  }
 }
