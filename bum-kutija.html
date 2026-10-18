@@ -57,26 +57,83 @@
         <input type="text" id="bumCustomInteriorInput" style="display:none; margin-top:8px;" placeholder="Opiši željeni motiv enterijera (npr. zvezdano nebo, strip, cveće...)">
       </div>
 
-      <!-- Stil bočnih ivica -->
-   <div class="form-group">
-  <label for="sideStyleSelect">Stil bočnih ivica:</label>
-  <select id="sideStyleSelect" name="sideStyle" onchange="changeSideStyle(this.value)">
-    <option value="koverat" selected>✉️ Koverat (u centar)</option>
-    <option value="2-grede">🍫 2 grede (3 slatkiša)</option>
-    <option value="x-greda">✖️ X greda (4 tačke)</option>
-    <option value="postolje">🏆 Postolje (3 nivoa)</option>
-  </select>
+      <!-- Stil bočnih ivica --><div class="form-group">
+  <label>Stil bočnih ivica:</label>
 
-  <!-- Mali luksuzni prozorčić koji prikazuje crtež onoga što je izabrano u meniju -->
-  <div id="sidePreviewContainer" class="side-mini-preview">
-    <!-- Početni prikaz: Koverat -->
-    <svg id="sideSvgDisplay" viewBox="0 0 100 100">
-      <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-      <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-      <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-    </svg>
+  <!-- Skriveno polje koje čuva vrednost za slanje narudžbine -->
+  <input type="hidden" id="selectedSideStyle" name="sideStyle" value="koverat">
+
+  <!-- Glavno polje dropdown menija (izgleda isto kao vaši <select> meniji) -->
+  <div class="custom-side-select" id="sideDropdownBtn" onclick="toggleSideMenu()">
+    <div class="side-selected-content" id="sideSelectedContent">
+      <svg viewBox="0 0 100 100" class="dropdown-svg">
+        <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+        <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
+        <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
+      </svg>
+      <span>Koverat (u centar)</span>
+    </div>
+    <span class="dropdown-chevron">▾</span>
+  </div>
+
+  <!-- Lista koja se spušta na klik sa SVG sličicama -->
+  <div class="custom-side-options" id="sideOptionsList">
+    
+    <!-- Opcija 1: Koverat -->
+    <div class="custom-option active" onclick="pickSideStyle('koverat', 'Koverat (u centar)', this)">
+      <svg viewBox="0 0 100 100" class="dropdown-svg">
+        <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+        <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
+        <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
+      </svg>
+      <span>Koverat (u centar)</span>
+    </div>
+
+    <!-- Opcija 2: 2 grede -->
+    <div class="custom-option" onclick="pickSideStyle('2-grede', '2 grede (3 slatkiša)', this)">
+      <svg viewBox="0 0 100 100" class="dropdown-svg">
+        <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+        <rect x="18" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
+        <rect x="42" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
+        <rect x="66" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
+        <line x1="36" y1="5" x2="36" y2="95" stroke="#c084fc" stroke-width="5"/>
+        <line x1="64" y1="5" x2="64" y2="95" stroke="#c084fc" stroke-width="5"/>
+      </svg>
+      <span>2 grede (3 slatkiša)</span>
+    </div>
+
+    <!-- Opcija 3: X greda -->
+    <div class="custom-option" onclick="pickSideStyle('x-greda', 'X greda (4 tačke)', this)">
+      <svg viewBox="0 0 100 100" class="dropdown-svg">
+        <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+        <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
+        <line x1="92" y1="8" x2="8" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="50" cy="24" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+        <circle cx="50" cy="76" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+        <circle cx="24" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+        <circle cx="76" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+      </svg>
+      <span>X greda (4 tačke)</span>
+    </div>
+
+    <!-- Opcija 4: Postolje -->
+    <div class="custom-option" onclick="pickSideStyle('postolje', 'Postolje (3 nivoa)', this)">
+      <svg viewBox="0 0 100 100" class="dropdown-svg">
+        <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+        <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
+        <rect x="18" y="44" width="20" height="38" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+        <text x="28" y="68" font-size="12" text-anchor="middle" fill="#1b1429" font-weight="bold">2</text>
+        <rect x="40" y="28" width="20" height="54" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+        <text x="50" y="58" font-size="13" text-anchor="middle" fill="#1b1429" font-weight="bold">1</text>
+        <rect x="62" y="54" width="20" height="28" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+        <text x="72" y="74" font-size="11" text-anchor="middle" fill="#1b1429" font-weight="bold">3</text>
+      </svg>
+      <span>Postolje (3 nivoa)</span>
+    </div>
+
   </div>
 </div>
+
 
 
       <!-- Mehanizam (samo pop-up kocke) -->
@@ -134,58 +191,7 @@
     </form>
   </div>
 </div>
-<script>
-  function changeSideStyle(value) {
-    const container = document.getElementById('sidePreviewContainer');
-    if (!container) return;
 
-    if (value === 'koverat') {
-      container.innerHTML = `
-        <svg viewBox="0 0 100 100">
-          <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-          <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-          <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-        </svg>
-      `;
-    } else if (value === '2-grede') {
-      container.innerHTML = `
-        <svg viewBox="0 0 100 100">
-          <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-          <rect x="18" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-          <rect x="42" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-          <rect x="66" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-          <line x1="36" y1="5" x2="36" y2="95" stroke="#c084fc" stroke-width="5"/>
-          <line x1="64" y1="5" x2="64" y2="95" stroke="#c084fc" stroke-width="5"/>
-        </svg>
-      `;
-    } else if (value === 'x-greda') {
-      container.innerHTML = `
-        <svg viewBox="0 0 100 100">
-          <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-          <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-          <line x1="92" y1="8" x2="8" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-          <circle cx="50" cy="24" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-          <circle cx="50" cy="76" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-          <circle cx="24" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-          <circle cx="76" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-        </svg>
-      `;
-    } else if (value === 'postolje') {
-      container.innerHTML = `
-        <svg viewBox="0 0 100 100">
-          <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-          <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
-          <rect x="18" y="44" width="20" height="38" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-          <text x="28" y="68" font-size="12" text-anchor="middle" fill="#1b1429" font-weight="bold">2</text>
-          <rect x="40" y="28" width="20" height="54" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-          <text x="50" y="58" font-size="13" text-anchor="middle" fill="#1b1429" font-weight="bold">1</text>
-          <rect x="62" y="54" width="20" height="28" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-          <text x="72" y="74" font-size="11" text-anchor="middle" fill="#1b1429" font-weight="bold">3</text>
-        </svg>
-      `;
-    }
-  }
-</script>
 
 <script src="js/database.js"></script>
 <script src="js/pricing-engine.js"></script>
