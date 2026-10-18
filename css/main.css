@@ -9,16 +9,12 @@
   --card-border-gold: rgba(245, 158, 11, 0.35);
 
   --accent-gold: #f59e0b;
-  --gold-gradient: linear-gradient(135deg, #fef08a 0%, #d97706 50%, #78350f 100%);
-  --gold-glow: rgba(245, 158, 11, 0.3);
+  --gold-glow: rgba(245, 158, 11, 0.35);
 
   --accent-purple: #9333ea;
   --accent-light: #c084fc;
   --purple-glow: rgba(168, 85, 247, 0.35);
 
-  --punch-accent: #0ea5e9;
-  --punch-light: #38bdf8;
-  
   --text-primary: #fcfcfd;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
@@ -26,8 +22,6 @@
   --input-bg: rgba(9, 7, 16, 0.85);
   --input-border: rgba(255, 255, 255, 0.1);
   --input-focus: #c084fc;
-  
-  --success: #22c55e;
 }
 
 * {
@@ -103,6 +97,7 @@ body {
   gap: 10px;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--card-border);
   padding: 8px 18px;
   border-radius: 9999px;
@@ -121,7 +116,92 @@ body {
 }
 
 /* ============================================================
-   REALISTIČNA 3D EKSPLOZIJA POKLONA (LUXURY SATIN)
+   POČETNA KARTICA (HUB CARD)
+   ============================================================ */
+.hub-grid {
+  display: flex;
+  justify-content: center;
+  margin: 35px auto 0;
+  max-width: 460px;
+}
+
+.hub-card {
+  width: 100%;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 40px 28px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(147, 51, 234, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hub-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-light), var(--accent-gold), transparent);
+  opacity: 0.7;
+}
+
+.hub-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(192, 132, 252, 0.45);
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, 0.25);
+}
+
+.hub-card h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 18px 0 8px;
+  letter-spacing: -0.3px;
+}
+
+.hub-card-desc {
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 26px;
+  line-height: 1.45;
+}
+
+.hub-btn {
+  margin-top: auto;
+  padding: 13px 26px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: #ffffff;
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.35) 0%, rgba(245, 158, 11, 0.25) 100%);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.2px;
+}
+
+.hub-card:hover .hub-btn {
+  background: linear-gradient(135deg, #9333ea 0%, #d97706 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+  transform: scale(1.03);
+}
+
+/* ============================================================
+   REALISTIČNA 3D EKSPLOZIJA POKLONA
    ============================================================ */
 .gift-scene {
   width: 140px;
@@ -143,7 +223,6 @@ body {
   animation: boxAnticipateShake 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Osnova kutije */
 .box-base {
   position: absolute;
   width: 60px;
@@ -153,7 +232,6 @@ body {
   box-shadow: 0 35px 35px rgba(0, 0, 0, 0.8), 0 0 30px var(--purple-glow);
 }
 
-/* Zidovi kutije sa satenskom trakom */
 .box-wall {
   position: absolute;
   width: 60px;
@@ -164,7 +242,6 @@ body {
   transform-origin: bottom center;
 }
 
-/* Zlatna reljefna satenska traka na zidovima */
 .box-wall::after {
   content: '';
   position: absolute;
@@ -181,7 +258,6 @@ body {
 .wall-left  { transform: rotateY(-90deg) translateZ(30px); animation: wallDropLeft 4s infinite cubic-bezier(0.16, 1, 0.3, 1); }
 .wall-right { transform: rotateY(90deg) translateZ(30px); animation: wallDropRight 4s infinite cubic-bezier(0.16, 1, 0.3, 1); }
 
-/* Poklopac sa unakrsnom satenskom trakom */
 .box-lid {
   position: absolute;
   width: 64px;
@@ -219,7 +295,6 @@ body {
   box-shadow: 0 0 8px var(--gold-glow);
 }
 
-/* 3D Luksuzna mašna na poklopcu */
 .lid-bow {
   position: absolute;
   width: 48px;
@@ -229,7 +304,6 @@ body {
   transform: translateZ(8px);
 }
 
-/* Iskačuće pop-up kocke & konfete */
 .mini-cube {
   position: absolute;
   width: 26px;
@@ -296,7 +370,7 @@ body {
 }
 
 /* ============================================================
-   KARTICE, FORMA I GLASSMORPHISM
+   KARTICE, FORMA I KONFIGURATOR
    ============================================================ */
 .box-card {
   background: var(--bg-card);
@@ -384,7 +458,7 @@ select:focus, input:focus, textarea:focus {
   box-shadow: inset 0 0 15px rgba(147, 51, 234, 0.05);
 }
 
-/* Opcije stila bočnih ivica */
+/* Stil bočnih ivica */
 .style-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -441,7 +515,7 @@ select:focus, input:focus, textarea:focus {
   color: var(--text-secondary);
 }
 
-/* Dugme za WhatsApp naručivanje (High-End CTA) */
+/* WhatsApp CTA dugme */
 .submit-btn {
   width: 100%;
   background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
