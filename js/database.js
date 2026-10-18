@@ -55,31 +55,9 @@ window.DB = {
     },
     punch_cake_labor_per_tier: 700,
     safety_buffer_percent: 15
-  },
+  }
 
-  // 6. Modul brojača pregleda (čuva se lokalno u localStorage-u)
-  counter: {
-    storageKey: 'bum_box_visit_counter',
-
-    getCount: function () {
-      const saved = localStorage.getItem(this.storageKey);
-      return saved ? parseInt(saved, 10) : 128;
-    },
-
-    incrementCount: function () {
-      let count = this.getCount() + 1;
-      localStorage.setItem(this.storageKey, count);
-      return count;
-    },
-
-    render: function () {
-      const el = document.getElementById('visitCount');
-      // Brojač se aktivira i uvećava samo ako element postoji na stranici (index.html)
-      if (el) {
-        const currentCount = this.incrementCount();
-        el.textContent = currentCount.toLocaleString();
-      }
-    }
+  
   }
 };
 
