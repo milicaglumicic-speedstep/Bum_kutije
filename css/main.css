@@ -304,3 +304,50 @@ select, input[type="text"], input[type="number"], textarea {
   color: #0c0814;
   border-color: #f6e09e;
 }
+/* ==========================================
+   KONTROLA VELIČINE ILUSTRACIJA I OPCIJA
+   ========================================== */
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.style-option {
+  background: var(--input-bg, #0e0a1a);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.style-option.selected {
+  border-color: var(--gold-primary);
+  background: rgba(223, 186, 104, 0.12);
+}
+
+/* Ograničava ogromne slike i SVG stranica na kompaktnu veličinu */
+.style-option svg,
+.style-preview svg,
+.style-option img {
+  width: 70px !important;
+  height: 70px !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.style-option span, 
+.style-option label {
+  font-size: 0.82rem;
+  color: var(--silver, #cbd5e1);
+  margin: 0;
+}
