@@ -14,10 +14,21 @@ window.bumBox = {
     CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (za 3 cm manje od dimenzija kutije).'
   },
 
-  init() {
+    init() {
+    this.hideElements();
     this.bindEvents();
     this.updateSizeOptions();
   },
+
+  hideElements() {
+    // Skriva cenu i dugme za poručivanje na WhatsApp
+    const priceBox = document.querySelector('.price-box');
+    if (priceBox) priceBox.style.display = 'none';
+
+    const submitBtn = document.querySelector('.submit-btn');
+    if (submitBtn) submitBtn.style.display = 'none';
+  },
+
 
   bindEvents() {
     // Izbor paketa (tabovi)
@@ -72,8 +83,10 @@ window.bumBox = {
       if (sweetsGroup) sweetsGroup.style.display = 'none';
       if (coffeeGroup) coffeeGroup.style.display = 'none';
     }
+         this.updateSizeOptions();
+    this.hideElements();
+  },
 
-    this.updateSizeOptions();
   },
 
   updateSizeOptions() {
@@ -83,9 +96,10 @@ window.bumBox = {
 
     if (this.currentPackage === 'custom_gift') {
       select.innerHTML = '<option value="CUSTOM">Prilagođava se vašem poklonu (do 20 × 20 × 20 cm)</option>';
-    } else if (this.currentPackage === 'only_sweets') {
-      select.innerHTML = '<option value="Standardna">15 × 15 × 15 cm do 150g ispod čepa</option><option value="Velika">18 × 18 × 18 cm do 250g ispod čepa</option>';
-    } else {
+    }     } else if (this.currentPackage === 'only_sweets') {
+      select.innerHTML = '<option value="Standardna">15 × 15 × 15 cm (mesto unutra 12 × 12 × 12 cm)</option><option value="Velika">18 × 18 × 18 cm (mesto unutra 15 × 15 × 15 cm)</option>';
+    }
+else {
       select.innerHTML = '<option value="Kompaktna">10 × 10 × 10 cm</option><option value="Standardna" selected>15 × 15 × 15 cm</option><option value="Velika">18 × 18 × 18 cm</option>';
     }
     this.updateGiftInfo();
