@@ -8,53 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Popravka da se donje 2 kartice nikad ne saberu i da uvek imaju mesta za tekst */
-    .style-grid {
-      display: grid !important;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
-      gap: 12px !important;
-      height: auto !important;
-    }
-    .style-option {
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
-      padding: 12px 14px !important;
-      min-height: 64px !important;
-      height: auto !important;
-      border: 1px solid #3b3054 !important;
-      border-radius: 8px !important;
-      cursor: pointer !important;
-      box-sizing: border-box !important;
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .style-option.selected {
-      border-color: #c084fc !important;
-      background: rgba(192, 132, 252, 0.15) !important;
-    }
-    .style-preview {
-      width: 40px !important;
-      height: 40px !important;
-      flex-shrink: 0 !important;
-    }
-    .style-text {
-      display: block !important;
-      color: #fff !important;
-      font-size: 0.92rem !important;
-      line-height: 1.25 !important;
-      word-break: normal !important;
-    }
-    .gift-info-box {
-      margin-top: 8px;
-      padding: 10px 12px;
-      background: rgba(192, 132, 252, 0.12);
-      border: 1px solid rgba(192, 132, 252, 0.3);
-      border-radius: 6px;
-      font-size: 0.9rem;
-      color: #f1f5f9;
-    }
-  </style>
 </head>
 <body>
 
@@ -68,27 +21,6 @@
     </header>
 
     <div class="tabs" id="bumTabs">
-      <button type="button" class="tab-btn active" data-pkg="empty" onclick="switchPackage('empty', this)">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift" onclick="switchPackage('sweets_gift', this)">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets" onclick="switchPackage('only_sweets', this)">3. BUM kutija punjena slatkišima ili kafom</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift" onclick="switchPackage('custom_gift', this)">4. Personalizovani BUM poklon</button>
-    </div>
-
-    <form id="bumForm" onsubmit="event.preventDefault(); (window.bumBox && window.bumBox.sendWhatsApp) ? window.bumBox.sendWhatsApp() : alert('Porudžbina je zabeležena!');">
-      <!-- Veličina kutije -->
-      <div class="form-group">
-        <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect" onchange="updateDimensions(this.value)">
-          <option value="15x15x15" selected>Standardna (15 × 15 × 15 cm)</option>
-          <option value="18x18x18">Srednja (18 × 18 × 18 cm)</option>
-          <option value="20x20x20">Velika (20 × 20 × 20 cm)</option>
-        </select>
-        <div id="bumGiftDimInfo" class="gift-info-box">
-          📦 Unutrašnji prostor za poklon (centralni čep): <strong>10 × 10 × 12 cm</strong>
-        </div>
-      </div>
-
-      <!-- Željena boja -->
-      <div class="form-group">
-        <label for="bumColorInput">Željena boja:</label>
-        <input type="text" id="bumColorInput" placeholder="npr. crna, cr
+      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
+      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
+      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kut
