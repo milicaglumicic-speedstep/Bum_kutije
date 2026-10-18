@@ -460,3 +460,31 @@ select, input[type="text"], input[type="number"], textarea {
 .insta-sub-link:hover {
   color: var(--gold-light);
 }
+/* ==========================================
+   ELEGANTNO ZLATNO DUGME ZA INSTAGRAM
+   ========================================== */
+.insta-live-link,
+a.insta-live-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 6px 16px !important;
+  background: rgba(223, 186, 104, 0.1) !important;
+  border: 1px solid rgba(223, 186, 104, 0.35) !important;
+  border-radius: 50px !important;
+  color: #f5e6b3 !important; /* Šampanjac zlato umesto plave */
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.insta-live-link:hover,
+a.insta-live-link:hover {
+  background: rgba(223, 186, 104, 0.22) !important;
+  border-color: #dfba68 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
