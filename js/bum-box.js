@@ -1,119 +1,69 @@
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUM KUTIJA | Konfigurator</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+/**
+ * js/bum-box.js
+ * Glavna logika za BUM KUTIJA konfigurator
+ */
 
-<div class="container">
-  <a href="index.html" class="back-nav">← Nazad na početnu stranu</a>
+window.bumBox = {
+  currentPkg: 'empty',
+  selectedStyle: 'Koverat (do 3 slatkiša)',
+  sideTheme: 'sweets',
 
-  <div class="box-card">
-    <header class="section-title-wrap">
-      <h2>BUM KUTIJA</h2>
-      <p class="subtitle">Personalizuj svoj poklon</p>
-    </header>
+  init: function () {
+    this.initTabs();
+    this.populateSizes();
+    this.initSideDropdown();
+    this.bindEvents();
+  },
 
-    <div class="tabs" id="bumTabs">
-      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kutija punjena slatkišima / kafom</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovani BUM poklon</button>
-    </div>
+  // Inicijalizacija tabova na vrhu
+  initTabs: function () {
+    const tabs = document.querySelectorAll('#bumTabs .tab-btn');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
 
-    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp();">
-      <!-- Veličina kutije -->
-      <div class="form-group">
-        <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect"></select>
-        <!-- Polje za unos dimenzija po želji kad se izabere opcija 4 / ručni unos -->
-        <input type="text" id="bumCustomSizeInput" style="display:none; margin-top:8px;" placeholder="Unesi željene dimenzije">
-        <div id="bumGiftDimInfo" class="gift-info-box"></div>
-      </div>
+        const pkg = tab.getAttribute('data-pkg');
+        this.selectPackage(pkg);
+      });
+    });
+  },
 
-      <!-- Željena boja -->
-      <div class="form-group">
-        <label for="bumColorInput">Željena boja:</label>
-        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
-      </div>
+  // Prikaz i skrivanje sekcija prema izabranom paketu
+  selectPackage: function (pkg) {
+    this.currentPkg = pkg;
 
-      <!-- Dekoracija enterijera kutije -->
-      <div class="form-group">
-        <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
-        <select id="bumInteriorSelect" onchange="window.bumBox && window.bumBox.toggleCustomInterior(this.value)">
-          <option value="Standardni" selected>✨ Standardni / bez dodataka</option>
-          <option value="Pisani tekst">✍️ Pisani tekst</option>
-          <option value="Štampani tekst">🖨️ Štampani tekst</option>
-          <option value="Zvezdice">⭐ Zvezdice</option>
-          <option value="Srca">❤️ Srca</option>
-          <option value="IT stikeri">💻 IT stikeri</option>
-          <option value="custom">✏️ Po sopstvenoj želji (unesi ispod)</option>
-        </select>
-        <!-- Polje za unos sopstvenog motiva enterijera -->
-        <input type="text" id="bumCustomInteriorInput" style="display:none; margin-top:8px;" placeholder="Opiši željeni motiv enterijera (npr. zvezdano nebo, strip, cveće...)">
-      </div>
+    const sideThemeGroup = document.getElementById('sideThemeGroup');
+    const sweetsGroup = document.getElementById('bumSweetsGroup');
+    const coffeeGroup = document.getElementById('bumCoffeeGroup');
+    const customSideGroup = document.getElementById('bumCustomSideGroup');
+    const notesGroup = document.getElementById('customNotesGroup');
+    const customSizeInput = document.getElementById('bumCustomSizeInput');
 
-      <!-- Stil bočnih ivica -->
-      <div class="form-group form-group-relative">
-        <label>Stil bočnih ivica:</label>
-        <input type="hidden" id="selectedSideStyle" name="sideStyle" value="koverat">
+    if (pkg === 'empty') {
+      if (sideThemeGroup) sideThemeGroup.style.display = 'none';
+      if (sweetsGroup) sweetsGroup.style.display = 'none';
+      if (coffeeGroup) coffeeGroup.style.display = 'none';
+      if (customSideGroup) customSideGroup.style.display = 'none';
+      if (notesGroup) notesGroup.style.display = 'none';
+    } else {
+      if (sideThemeGroup) sideThemeGroup.style.display = 'block';
+      if (notesGroup) notesGroup.style.display = 'block';
+      
+      const themeSelect = document.getElementById('bumSideThemeSelect');
+      this.switchSideTheme(themeSelect ? themeSelect.value : this.sideTheme);
+    }
 
-        <div class="custom-side-select" id="sideDropdownBtn">
-          <div class="side-selected-content" id="sideSelectedContent">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-              <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-            </svg>
-            <span>Koverat (do 4 slatkiša)</span>
-          </div>
-          <span class="dropdown-chevron">▾</span>
-        </div>
+    // Ponovno punjenje veličina zavisno od izabranog paketa
+    this.populateSizes();
 
-        <div class="custom-side-options" id="sideOptionsList">
-          <div class="custom-option active" data-value="koverat">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-              <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-            </svg>
-            <span>Koverat (do 4 slatkiša)</span>
-          </div>
+    // Sakrij polje za sopstvene dimenzije ako nismo na custom opciji
+    const sizeSelect = document.getElementById('bumSizeSelect');
+    if (customSizeInput && sizeSelect && sizeSelect.value !== 'custom_size') {
+      customSizeInput.style.display = 'none';
+    }
+  },
 
-          <div class="custom-option" data-value="2-grede">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <rect x="18" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <rect x="42" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <rect x="66" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <line x1="36" y1="5" x2="36" y2="95" stroke="#c084fc" stroke-width="5"/>
-              <line x1="64" y1="5" x2="64" y2="95" stroke="#c084fc" stroke-width="5"/>
-            </svg>
-            <span>2 grede (3 slatkiša)</span>
-          </div>
-
-          <div class="custom-option" data-value="x-greda">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-              <line x1="92" y1="8" x2="8" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-              <circle cx="50" cy="24" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="50" cy="76" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="24" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="76" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-            </svg>
-            <span>X greda (4 slatkiša)</span>
-          </div>
-
-          <div class="custom-option" data-value="postolje">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
-              <rect x="18" y="44" width="20" height="38" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-              <text x="28" y="68" font-size="12" text-anchor="middle" fill="#1b1
+  // Prikaz polja za unos sopstvenog motiva enterijera
+  toggleCustomInterior: function (val) {
+    const customInput =
