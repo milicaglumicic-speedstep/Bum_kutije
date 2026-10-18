@@ -137,21 +137,25 @@ window.bumBox = {
     this.updateSizeInfo(sizeSelect.value);
   },
 
-  // Ažuriranje unutrašnjih dimenzija i polja za unos sopstvene veličine
+    // Ažuriranje unutrašnjih dimenzija i polja za dimenzije poklona
   updateSizeInfo: function (val) {
     const dimInfo = document.getElementById('bumGiftDimInfo');
-    const customSizeInput = document.getElementById('bumCustomSizeInput');
+    const customGiftWrap = document.getElementById('bumCustomGiftWrap');
+    const customGiftInput = document.getElementById('bumCustomGiftInput');
 
     if (val === 'custom_size') {
-      if (dimInfo) dimInfo.innerHTML = `📦 Unesite željene dimenzije u polje ispod:`;
-      if (customSizeInput) {
-        customSizeInput.style.display = 'block';
-        customSizeInput.focus();
+      // Skrivamo standardni tekst kartice, a prikazujemo polje za unos dimenzija poklona
+      if (dimInfo) dimInfo.style.display = 'none';
+      if (customGiftWrap) {
+        customGiftWrap.style.display = 'block';
+        if (customGiftInput) customGiftInput.focus();
       }
       return;
-    } else {
-      if (customSizeInput) customSizeInput.style.display = 'none';
     }
+
+    // Za standardne veličine prikazujemo info karticu i skrivamo custom polje
+    if (customGiftWrap) customGiftWrap.style.display = 'none';
+    if (dimInfo) dimInfo.style.display = 'block';
 
     let giftDim = '10 × 10 × 12 cm';
     if (val === '10x10x10') giftDim = '6 × 6 × 8 cm';
@@ -161,6 +165,7 @@ window.bumBox = {
       dimInfo.innerHTML = `📦 Unutrašnji prostor za poklon (centralni čep): <strong>${giftDim}</strong>`;
     }
   },
+
 
   // Padajući meni za stil bočnih ivica sa SVG sličicama
   initSideDropdown: function () {
@@ -238,11 +243,14 @@ window.bumBox = {
     const notes = document.getElementById('bumNotes');
 
     // Obrada veličine (standardna ili ručno uneta)
+        // Obrada veličine i dimenzija poklona
+    const customGiftInput = document.getElementById('bumCustomGiftInput');
     let sizeVal = sizeSelect ? sizeSelect.value : '15x15x15';
     if (sizeVal === 'custom_size') {
-      const customSizeText = customSizeInput ? customSizeInput.value.trim() : '';
-      sizeVal = customSizeText ? `Po želji: ${customSizeText}` : 'Po želji (nije uneto)';
+      const giftDimVal = customGiftInput ? customGiftInput.value.trim() : '';
+      sizeVal = giftDimVal ? `Kutija po meri poklona (${giftDimVal})` : 'Kutija po meri poklona (dimenzije nisu navedene)';
     }
+
 
     // Obrada enterijera
     let interiorVal = interiorSelect ? interiorSelect.value : 'Standardni';
