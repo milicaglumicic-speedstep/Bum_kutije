@@ -1,4 +1,4 @@
-/* ============================================================
+9/* ============================================================
    OSNOVNI STILOVI & PROMENLJIVE
    ============================================================ */
 :root {
@@ -119,3 +119,86 @@ select:focus, input:focus, textarea:focus { border-color: var(--accent-light); }
 @media (max-width: 650px) {
   .hub-grid, .tabs, .style-grid, .checkbox-group { grid-template-columns: 1fr; }
 }
+/* ==========================================
+   BROJAČ U GORNJEM UGLU
+   ========================================== */
+.top-bar-counter {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(192, 132, 252, 0.25);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  z-index: 50;
+}
+
+.top-bar-counter strong {
+  color: #c084fc;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+/* ==========================================
+   OPISNI TEKST NA VRHU
+   ========================================== */
+.top-info-block {
+  margin: 45px auto 25px auto;
+  padding: 22px;
+  background: rgba(21, 16, 36, 0.7);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+  border-radius: 18px;
+  color: #cbd5e1;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.top-title {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.top-lead {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0 0 18px 0;
+  color: #cbd5e1;
+}
+
+.occasions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.occasion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.occasion-item .occ-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.occasion-item strong {
+  color: #e2e8f0;
+}
+
+.occasion-item p {
+  margin: 2px 0 0 0;
+  color: #94a3b8;
+}
+
