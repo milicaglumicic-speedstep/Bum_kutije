@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+8<!DOCTYPE html>
 <html lang="sr">
 <head>
   <!-- Primarne SEO oznake -->
@@ -94,6 +94,22 @@
     </a>
   </main>
 </div>
+<script>
+  (function updateCounter() {
+    const el = document.getElementById('visitCount');
+    if (!el) return;
+    fetch('https://api.counterapi.dev/v1/bum-kutija-radionica/visits/up')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count !== 'undefined') {
+          el.textContent = data.count.toLocaleString();
+        } else {
+          el.textContent = '1+';
+        }
+      })
+      .catch(() => { el.textContent = '100+'; });
+  })();
+</script>
 
 <script src="chatbot.js"></script>
 </body>
