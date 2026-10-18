@@ -1,12 +1,13 @@
 window.bumBox = {
   currentPackage: 'empty',
   selectedStyle: 'Zvezda',
-  giftDimensions: {
-    Kompaktna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~6 × 6 cm (visina do 4.5 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se po 1 čokoladica (ukupno 4).</small>',
-    Standardna: '📏 <strong>Dimenzije mesta za poklon:</strong> ~9 × 9 cm (visina do 8 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
-    Velika: '📏 <strong>Dimenzije mesta za poklon:</strong> ~12 × 12 cm (visina do 10 cm)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavljaju se po 4 čokoladice (ukupno 16).</small>',
-    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (do 20 × 20 × 20 cm).'
+    giftDimensions: {
+    Kompaktna: '📏 <strong>Dimenzije mesta za poklon (ispod čepa):</strong> ~6 × 6 cm (visina do <strong>7 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    Standardna: '📏 <strong>Dimenzije mesta za poklon (ispod čepa):</strong> ~9 × 9 cm (visina do <strong>12 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    Velika: '📏 <strong>Dimenzije mesta za poklon (ispod čepa):</strong> ~12 × 12 cm (visina do <strong>15 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+    CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (visina unutar čepa je do 3 cm manja od visine kutije).'
   },
+
 
   init() {
     this.bindEvents();
@@ -118,14 +119,16 @@ window.bumBox = {
     const interiorSelect = document.getElementById('bumInteriorSelect');
     const interiorText = interiorSelect ? interiorSelect.options[interiorSelect.selectedIndex].text : 'Standardni / bez dodataka';
 
-    let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
-               '*Paket:* ' + this.currentPackage + '\n' +
-               '*Veličina:* ' + size + '\n' +
-               '*Stil stranica:* ' + this.selectedStyle + '\n' +
-               '*Enterijer:* ' + interiorText + '\n' + 
-               '*Boja kutije:* ' + color + '\n' +
-               '*Mehanizam:* ' + mech + '\n' +
-               '*Cena:* ' + price;
+   let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
+             '*Paket:* ' + this.currentPackage + '\n' +
+             '*Veličina:* ' + size + '\n' +
+             '*Stil stranica:* ' + this.selectedStyle + '\n' +
+             '*Enterijer:* ' + interiorText + '\n' + 
+             '*Boja kutije:* ' + color + '\n' +
+             '*Mehanizam:* ' + mech;
+
+  if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
+
 
     if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
