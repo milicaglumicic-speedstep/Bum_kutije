@@ -1,42 +1,33 @@
+/* ============================================================
+   BUM KUTIJA - Logika konfiguratora (js/bum-box.js)
+   ============================================================ */
+
 window.bumBox = {
   currentPackage: 'empty',
   selectedStyle: 'Zvezda',
-      giftDimensions: {
-    Kompaktna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~6 × 6 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
-    Standardna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~9 × 9 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
-    Velika: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~12 × 12 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 čokoladice.</small>',
+  sideTheme: 'sweets', // 'sweets' ili 'coffee'
+
+  giftDimensions: {
+    Kompaktna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~6 × 6 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa (čokoladice ili kafa kapsule).</small>',
+    Standardna: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~9 × 9 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa po strani.</small>',
+    Velika: '📏 <strong>Mesto za poklon (ispod čepa):</strong> ~12 × 12 cm (visina najviše <strong>do 3 cm</strong>)<br><small style="color:var(--accent-light);">* Na bočnim stranicama postavlja se do 4 elementa po strani.</small>',
     CUSTOM: '✨ <strong>Mesto za poklon:</strong> Izrađuje se po meri vašeg poklona (visina ispod čepa najviše do 3 cm).'
   },
-
-
 
   init() {
     this.bindEvents();
     this.updateSizeOptions();
-    this.calculatePrice();
   },
 
   bindEvents() {
-    // 1. Listen to the interior dropdown change event
-    document.getElementById('bumInteriorSelect')?.addEventListener('change', () => this.calculatePrice());
-
-    // 2. Listen to tab selection clicks
+    // Izbor paketa (tabovi)
     document.querySelectorAll('#bumTabs .tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.switchPackage(e.target.dataset.pkg));
     });
 
-    // 3. Listen to box sizing modifications
+    // Promena veličine
     document.getElementById('bumSizeSelect')?.addEventListener('change', () => {
       this.updateGiftInfo();
-      this.calculatePrice();
-    });
-
-    // 4. Listen to structural mechanism updates (Duplicate entry clean up)
-    document.getElementById('bumMechanismSelect')?.addEventListener('change', () => this.calculatePrice());
-
-    // 5. Listen to sidebar candy item checkbox selections
-    document.querySelectorAll('#bumSweetsGroup input[type="checkbox"]').forEach(c => {
-      c.addEventListener('change', () => this.calculatePrice());
     });
   },
 
@@ -46,6 +37,18 @@ window.bumBox = {
     element.classList.add('selected');
   },
 
+  switchSideTheme(theme) {
+    this.sideTheme = theme;
+    document.getElementById('themeOptSweets')?.classList.toggle('selected', theme === 'sweets');
+    document.getElementById('themeOptCoffee')?.classList.toggle('selected', theme === 'coffee');
+
+    const sweetsGroup = document.getElementById('bumSweetsGroup');
+    const coffeeGroup = document.getElementById('bumCoffeeGroup');
+
+    if (sweetsGroup) sweetsGroup.style.display = (theme === 'sweets') ? 'block' : 'none';
+    if (coffeeGroup) coffeeGroup.style.display = (theme === 'coffee') ? 'block' : 'none';
+  },
+
   switchPackage(pkg) {
     this.currentPackage = pkg;
     document.querySelectorAll('#bumTabs .tab-btn').forEach(btn => {
@@ -53,14 +56,24 @@ window.bumBox = {
     });
 
     const isCustom = (pkg === 'custom_gift');
+    const showSides = (pkg === 'sweets_gift' || pkg === 'only_sweets');
+
     const notes = document.getElementById('customNotesGroup');
-    const sweets = document.getElementById('bumSweetsGroup');
+    const themeGroup = document.getElementById('sideThemeGroup');
 
     if (notes) notes.style.display = isCustom ? 'block' : 'none';
-    if (sweets) sweets.style.display = (pkg === 'sweets_gift' || pkg === 'only_sweets') ? 'block' : 'none';
+    if (themeGroup) themeGroup.style.display = showSides ? 'block' : 'none';
+
+    if (showSides) {
+      this.switchSideTheme(this.sideTheme);
+    } else {
+      const sweetsGroup = document.getElementById('bumSweetsGroup');
+      const coffeeGroup = document.getElementById('bumCoffeeGroup');
+      if (sweetsGroup) sweetsGroup.style.display = 'none';
+      if (coffeeGroup) coffeeGroup.style.display = 'none';
+    }
 
     this.updateSizeOptions();
-    this.calculatePrice();
   },
 
   updateSizeOptions() {
@@ -84,54 +97,49 @@ window.bumBox = {
     if (box && size) box.innerHTML = this.giftDimensions[size] || '';
   },
 
-  calculatePrice() {
-    const size = document.getElementById('bumSizeSelect')?.value || 'Standardna';
-    const mechanism = document.getElementById('bumMechanismSelect')?.value || 'cubes';
-    
-    // FIXED: Reads the selected interior value from your new dropdown layout option
-    const interior = document.getElementById('bumInteriorSelect')?.value || 'Standardni';
-
-    let chosenSweets = [];
-    document.querySelectorAll('#bumSweetsGroup input:checked').forEach(el => chosenSweets.push(el.value));
-
-    if (!window.PricingEngine) return;
-    const total = window.PricingEngine.calculateBumBox({
-      packageType: this.currentPackage,
-      size,
-      mechanism,
-      chosenSweets,
-      interior: interior // Passes option layout value to pricing engine calculation if needed
-    });
-
-    const disp = document.getElementById('bumPriceDisplay');
-    if (disp) disp.innerText = total.toLocaleString('sr-RS') + ' RSD';
-  },
-
   sendWhatsApp() {
     const phone = "381644667485";
     const size = document.getElementById('bumSizeSelect')?.value || 'Standardna';
     const color = document.getElementById('bumColorInput')?.value || 'Po dogovoru';
     const mechSelect = document.getElementById('bumMechanismSelect');
     const mech = mechSelect ? mechSelect.options[mechSelect.selectedIndex].text : 'Kocke';
-    const price = document.getElementById('bumPriceDisplay')?.innerText || 'Na upit';
     const notes = document.getElementById('bumNotes')?.value.trim();
 
-    // FIXED: Correctly extracts the text selection from your option dropdown element
     const interiorSelect = document.getElementById('bumInteriorSelect');
     const interiorText = interiorSelect ? interiorSelect.options[interiorSelect.selectedIndex].text : 'Standardni / bez dodataka';
 
-   let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
-             '*Paket:* ' + this.currentPackage + '\n' +
-             '*Veličina:* ' + size + '\n' +
-             '*Stil stranica:* ' + this.selectedStyle + '\n' +
-             '*Enterijer:* ' + interiorText + '\n' + 
-             '*Boja kutije:* ' + color + '\n' +
-             '*Mehanizam:* ' + mech;
+    // Prikupljanje izbora slatkiša ili kapsula kafe
+    let fillItems = [];
+    if (this.sideTheme === 'sweets') {
+      document.querySelectorAll('#bumSweetsGroup input:checked').forEach(el => {
+        fillItems.push(el.parentNode.textContent.trim());
+      });
+    } else {
+      document.querySelectorAll('#bumCoffeeGroup input:checked').forEach(el => {
+        fillItems.push(el.parentNode.textContent.trim());
+      });
+    }
 
-  if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
+    let text = 'Pozdrav! Šaljem upit za BUM KUTIJU 🎁\n\n' +
+               '*Paket:* ' + this.currentPackage + '\n' +
+               '*Veličina:* ' + size + '\n' +
+               '*Stil stranica:* ' + this.selectedStyle + '\n';
 
+    if (this.currentPackage === 'sweets_gift' || this.currentPackage === 'only_sweets') {
+      text += '*Tema stranica:* ' + (this.sideTheme === 'coffee' ? 'Kafa kapsule' : 'Slatkiši') + '\n';
+      if (fillItems.length > 0) {
+        text += '*Izabrano punjenje:* ' + fillItems.join(', ') + '\n';
+      }
+    }
 
-    if (notes) text += '\n*Opis poklona i posveta:* ' + notes;
+    text += '*Enterijer:* ' + interiorText + '\n' + 
+            '*Boja kutije:* ' + color + '\n' +
+            '*Mehanizam:* ' + mech;
+
+    if (notes) {
+      text += '\n*Opis poklona i posveta:* ' + notes;
+    }
+
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
   }
 };
