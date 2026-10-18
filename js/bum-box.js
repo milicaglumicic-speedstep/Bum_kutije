@@ -161,9 +161,6 @@
     </svg>
   </div>
   <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
-</div>
-
-    
       </div>
     </div> 
 
