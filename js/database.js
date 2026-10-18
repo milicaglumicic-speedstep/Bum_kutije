@@ -1,8 +1,28 @@
+/**
+ * js/database.js
+ * Centralna baza podataka: materijali, slatkiši, cene rada, veličine i brojač
+ */
+
 window.DB = {
+  // 1. Standardne veličine BUM kutije i unutrašnji prostor za poklon
+  bumSizes: [
+    { id: '10x10x10', label: '10 × 10 × 10 cm (Mala)', giftDim: '6 × 6 × 8 cm' },
+    { id: '15x15x15', label: '15 × 15 × 15 cm (Standardna)', giftDim: '10 × 10 × 12 cm' },
+    { id: '18x18x18', label: '18 × 18 × 18 cm (Velika)', giftDim: '12 × 12 × 15 cm' }
+  ],
+
+  // 2. Materijali i nabavne cene
   materials: {
-    paper_b1_sheet_rsd: 120, ribbon_per_meter_rsd: 45, ribbon_meters_per_box: 2.2,
-    butterfly_aliexpress_rsd: 90, popup_cube_materials_rsd: 35, glue_dots_and_consumables_rsd: 80, punch_cake_base_per_tier: 650
+    paper_b1_sheet_rsd: 120,
+    ribbon_per_meter_rsd: 45,
+    ribbon_meters_per_box: 2.2,
+    butterfly_aliexpress_rsd: 90,
+    popup_cube_materials_rsd: 35,
+    glue_dots_and_consumables_rsd: 80,
+    punch_cake_base_per_tier: 650
   },
+
+  // 3. Baza slatkiša
   sweets_database: {
     ferrero: { name: 'Ferrero Rocher', price_per_unit: 56 },
     raffaello: { name: 'Raffaello', price_per_unit: 43 },
@@ -17,14 +37,69 @@ window.DB = {
     najlepse_zeljice: { name: 'Najlepše željice (mini)', price_per_unit: 29 }
   },
 
+  // 4. Doplate za mehanizme
   mechanism_surcharges: {
     cubes: 200,          // Iskačuće pop-up kocke (+200 RSD)
-    butterflies: 200,  // Iskačući leteći leptirovi (+200 RSD)
-    combo: 400         // Kombo mehanizam (+500 RSD doplata)
+    butterflies: 200,    // Iskačući leteći leptirovi (+200 RSD)
+    combo: 400           // Kombo mehanizam (+400 RSD)
   },
+
+  // 5. Radni sati i satnice
   labor: {
     hourly_rate_rsd: 700,
-    bum_box_assembly_hours: { Kompaktna: 1.5, Standardna: 2.2, Velika: 2.8, CUSTOM: 3.2 },
-    punch_cake_labor_per_tier: 700, safety_buffer_percent: 15
+    bum_box_assembly_hours: { 
+      Kompaktna: 1.5, 
+      Standardna: 2.2, 
+      Velika: 2.8, 
+      CUSTOM: 3.2 
+    },
+    punch_cake_labor_per_tier: 700,
+    safety_buffer_percent: 15
+  },
+
+  // 6. Modul za brojač poseta koji se pamti u memoriji pregledača
+  counter: {
+    storageKey: 'bum_box_visit_counter',
+
+    // Čita trenutni broj poseta (početna vrednost 128)
+    getCount: function () {
+      const saved = localStorage.getItem(this.storageKey);
+      return saved ? parseInt(saved, 10) : 128;
+    },
+
+    // Uvećava brojač za 1 i trajno ga čuva
+    incrementCount: function () {
+      let count = this.getCount();
+      count += 1;
+      localStorage.setItem(this.storageKey, count);
+      return count;
+    },
+
+    // Ažurira element na stranici
+    render: function () {
+      const currentCount = this.incrementCount();
+      const counterElement = document.querySelector('.top-bar-counter strong') || 
+                             document.querySelector('.top-bar-counter');
+
+      if (counterElement) {
+        if (counterElement.tagName === 'STRONG') {
+          counterElement.textContent = currentCount;
+        } else {
+          const strongTag = counterElement.querySelector('strong');
+          if (strongTag) {
+            strongTag.textContent = currentCount;
+          } else {
+            counterElement.innerHTML = `👁️ Poseta: <strong>${currentCount}</strong>`;
+          }
+        }
+      }
+    }
   }
 };
+
+// Automatski pokreni brojač čim se stranica učita
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.DB && window.DB.counter) {
+    window.DB.counter.render();
+  }
+});
