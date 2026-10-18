@@ -31,8 +31,14 @@
       <!-- Veličina kutije -->
       <div class="form-group">
         <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect"></select>
-        <div id="bumGiftDimInfo" class="gift-info-box"></div>
+        <select id="bumSizeSelect" onchange="window.bumBox && window.bumBox.updateSizeInfo ? window.bumBox.updateSizeInfo(this.value) : (document.getElementById('bumGiftDimInfo').innerHTML = this.value === '15x15x15' ? '📦 Unutrašnji prostor za poklon (centralni čep): <strong>10 × 10 × 12 cm</strong>' : (this.value === '18x18x18' ? '📦 Unutrašnji prostor za poklon (centralni čep): <strong>12 × 12 × 14 cm</strong>' : '📦 Unutrašnji prostor za poklon (centralni čep): <strong>14 × 14 × 16 cm</strong>'))">
+          <option value="15x15x15" selected>Standardna (15 × 15 × 15 cm)</option>
+          <option value="18x18x18">Srednja (18 × 18 × 18 cm)</option>
+          <option value="20x20x20">Velika (20 × 20 × 20 cm)</option>
+        </select>
+        <div id="bumGiftDimInfo" class="gift-info-box">
+          📦 Unutrašnji prostor za poklon (centralni čep): <strong>10 × 10 × 12 cm</strong>
+        </div>
       </div>
 
       <!-- Željena boja -->
@@ -108,77 +114,3 @@
                 <circle cx="11" cy="14" r="2" fill="#f59e0b" />
                 <circle cx="20" cy="7" r="2" fill="#f59e0b" />
                 <circle cx="29" cy="19" r="2" fill="#f59e0b" />
-              </svg>
-            </div>
-            <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mehanizam -->
-            <!-- Mehanizam -->
-      <div class="form-group">
-        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
-        <select id="bumMechanismSelect">
-          <option value="cubes" selected>Iskačuće pop-up kocke</option>
-          <!-- Privremeno sakriveno:
-          <option value="butterflies">Iskačući leteći leptirovi</option>
-          <option value="combo">Kombo (Kocke + Leptirovi)</option>
-          -->
-        </select>
-      </div>
-
-
-      <!-- Dropdown za izbor teme stranica (Slatkiši ili Kafa) -->
-      <div class="form-group" id="sideThemeGroup" style="display:none;">
-        <label for="bumSideThemeSelect">Punjenje stranica (izaberi temu):</label>
-        <select id="bumSideThemeSelect" onchange="window.bumBox.switchSideTheme(this.value)">
-          <option value="sweets" selected>🍫 Slatke strane (čokoladice i praline)</option>
-          <option value="coffee">☕ Kafa strane (Nespresso / Dolce Gusto)</option>
-        </select>
-      </div>
-
-      <!-- Slatkiši za stranice -->
-      <div class="form-group" id="bumSweetsGroup" style="display:none;">
-        <label>Izaberi slatkiše za stranice (do 4 po strani):</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
-          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
-          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
-          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
-        </div>
-      </div>
-
-      <!-- Kafa kapsule za stranice -->
-      <div class="form-group" id="bumCoffeeGroup" style="display:none;">
-        <label>Izaberi kapsule za kafu:</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" value="nespresso" checked> Nespresso kapsule</label>
-          <label class="checkbox-item"><input type="checkbox" value="dolce_gusto"> Dolce Gusto kapsule</label>
-        </div>
-      </div>
-
-      <!-- Polje za opis i posvetu (Paket 4) -->
-      <div class="form-group" id="customNotesGroup" style="display:none;">
-        <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
-        <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
-      </div>
-
-      <!-- Prikaz cene (privremeno sakriven) -->
-      <div class="price-box" style="display:none;">
-        <div class="price-title">Kalkulisana cena BUM kutije</div>
-        <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
-      </div>
-
-      <!-- Dugme za naručivanje (privremeno sakriveno) -->
-      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
-    </form>
-  </div>
-</div>
-
-<script src="js/database.js"></script>
-<script src="js/pricing-engine.js"></script>
-<script src="js/bum-box.js"></script>
-<script src="chatbot.js"></script>
-</body>
-</html>
