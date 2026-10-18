@@ -97,6 +97,7 @@ window.bumBox = {
     }
   },
 
+  // Popunjavanje veličina (Paketi 1, 2 i 4 omogućavaju unos dimenzija po želji)
   populateSizes: function () {
     const sizeSelect = document.getElementById('bumSizeSelect');
     if (!sizeSelect) return;
@@ -118,7 +119,9 @@ window.bumBox = {
       sizeSelect.appendChild(opt);
     });
 
-    if (this.currentPkg === 'custom_gift') {
+    // Omogućeno za pakete: 1 (empty), 2 (sweets_gift) i 4 (custom_gift)
+    const allowsCustomSize = ['empty', 'sweets_gift', 'custom_gift'].includes(this.currentPkg);
+    if (allowsCustomSize) {
       const optCustom = document.createElement('option');
       optCustom.value = 'custom_size';
       optCustom.textContent = '✏️ Unesi dimenzije po želji...';
