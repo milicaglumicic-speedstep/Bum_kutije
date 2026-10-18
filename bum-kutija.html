@@ -29,11 +29,15 @@
 
     <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp();">
       <!-- Veličina kutije -->
+            <!-- Veličina kutije -->
       <div class="form-group">
         <label for="bumSizeSelect">Veličina kutije:</label>
         <select id="bumSizeSelect"></select>
+        <!-- Polje za unos dimenzija po želji kad se izabere opcija 4 / ručni unos -->
+        <input type="text" id="bumCustomSizeInput" style="display:none; margin-top:8px;" placeholder="Unesi željene dimenzije">
         <div id="bumGiftDimInfo" class="gift-info-box"></div>
       </div>
+
 
       <!-- Željena boja -->
       <div class="form-group">
