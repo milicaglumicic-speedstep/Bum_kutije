@@ -44,14 +44,17 @@
       <!-- Dekoracija enterijera kutije -->
       <div class="form-group">
         <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
-        <select id="bumInteriorSelect">
+        <select id="bumInteriorSelect" onchange="window.bumBox && window.bumBox.toggleCustomInterior(this.value)">
           <option value="Standardni" selected>✨ Standardni / bez dodataka</option>
           <option value="Pisani tekst">✍️ Pisani tekst</option>
           <option value="Štampani tekst">🖨️ Štampani tekst</option>
           <option value="Zvezdice">⭐ Zvezdice</option>
           <option value="Srca">❤️ Srca</option>
           <option value="IT stikeri">💻 IT stikeri</option>
+          <option value="custom">✏️ Po sopstvenoj želji (unesi ispod)</option>
         </select>
+        <!-- Polje za unos sopstvenog motiva enterijera -->
+        <input type="text" id="bumCustomInteriorInput" style="display:none; margin-top:8px;" placeholder="Opiši željeni motiv enterijera (npr. zvezdano nebo, strip, cveće...)">
       </div>
 
       <!-- Stil bočnih ivica -->
@@ -115,23 +118,28 @@
         </div>
       </div>
 
-      <!-- Mehanizam -->
+      <!-- Mehanizam (samo pop-up kocke) -->
       <div class="form-group">
         <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
         <select id="bumMechanismSelect">
-          <option value="cubes">Iskačuće pop-up kocke</option>
-          <option value="butterflies">Iskačući leteći leptirovi</option>
-          <option value="combo">Kombo (Kocke + Leptirovi)</option>
+          <option value="cubes" selected>Iskačuće pop-up kocke</option>
         </select>
       </div>
 
-      <!-- Izbor teme stranica (Slatkiši ili Kafa) -->
+      <!-- Izbor teme stranica (Slatkiši, Kafa ili Po sopstvenoj želji) -->
       <div class="form-group" id="sideThemeGroup" style="display:none;">
         <label for="bumSideThemeSelect">Punjenje stranica (izaberi temu):</label>
         <select id="bumSideThemeSelect" onchange="window.bumBox.switchSideTheme(this.value)">
           <option value="sweets" selected>🍫 Slatke strane (čokoladice i praline)</option>
           <option value="coffee">☕ Kafa strane (Nespresso / Dolce Gusto)</option>
+          <option value="custom_sides">✨ Po sopstvenoj želji (unesi ispod)</option>
         </select>
+      </div>
+
+      <!-- Polje za unos sopstvenog punjenja stranica -->
+      <div class="form-group" id="bumCustomSideGroup" style="display:none;">
+        <label for="bumCustomSideInput">Opiši željeno punjenje stranica:</label>
+        <input type="text" id="bumCustomSideInput" placeholder="npr. kozmetika, vaučeri, mini porukice, sitnice...">
       </div>
 
       <!-- Slatkiši za stranice -->
@@ -154,19 +162,14 @@
         </div>
       </div>
 
-      <!-- Polje za opis i posvetu (Paket 4) -->
+      <!-- Polje za opis i posvetu -->
       <div class="form-group" id="customNotesGroup" style="display:none;">
         <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
         <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
       </div>
 
-      <!-- Prikaz cene -->
-      <div class="price-box">
-        <div class="price-title">Kalkulisana cena BUM kutije</div>
-        <div class="price-val" id="bumPriceDisplay">2.800 RSD</div>
-      </div>
-
-      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
+      <!-- Dugme za naručivanje -->
+      <button type="submit" class="submit-btn" style="margin-top: 25px;">Naruči BUM kutiju na WhatsApp 💬</button>
     </form>
   </div>
 </div>
