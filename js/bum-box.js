@@ -102,9 +102,6 @@
           <option value="IT stikeri">💻 IT stikeri</option>
         </select>
       </div>
-
-      <!-- Stil bočnih ivica -->
-      <div class="form-group">
         <label>Stil bočnih ivica:</label>
         <div class="style-grid">
           <!-- 1. Zvezda -->
