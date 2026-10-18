@@ -57,49 +57,50 @@ window.DB = {
     safety_buffer_percent: 15
   },
 
-  // 6. Modul za brojač poseta koji se pamti u memoriji pregledača
+  // 6. Centralni brojač poseta
   counter: {
     storageKey: 'bum_box_visit_counter',
 
-    // Čita trenutni broj poseta (početna vrednost 128)
-    getCount: function () {
+    getLocalCount: function () {
       const saved = localStorage.getItem(this.storageKey);
       return saved ? parseInt(saved, 10) : 128;
     },
 
-    // Uvećava brojač za 1 i trajno ga čuva
-    incrementCount: function () {
-      let count = this.getCount();
-      count += 1;
+    incrementLocal: function () {
+      let count = this.getLocalCount() + 1;
       localStorage.setItem(this.storageKey, count);
       return count;
     },
 
-    // Ažurira element na stranici
-    render: function () {
-      const currentCount = this.incrementCount();
-      const counterElement = document.querySelector('.top-bar-counter strong') || 
-                             document.querySelector('.top-bar-counter');
+    init: function () {
+      const el = document.getElementById('visitCount') || 
+                 document.querySelector('.top-bar-counter strong');
 
-      if (counterElement) {
-        if (counterElement.tagName === 'STRONG') {
-          counterElement.textContent = currentCount;
-        } else {
-          const strongTag = counterElement.querySelector('strong');
-          if (strongTag) {
-            strongTag.textContent = currentCount;
+      if (!el) return;
+
+      // Pokušaj kontaktiranja CounterAPI servisa
+      fetch('https://api.counterapi.dev/v1/bum-kutija-radionica/visits/up')
+        .then(res => res.json())
+        .then(data => {
+          const count = data.count ?? data.value;
+          if (count !== undefined) {
+            el.textContent = Number(count).toLocaleString();
+            localStorage.setItem(this.storageKey, count);
           } else {
-            counterElement.innerHTML = `👁️ Poseta: <strong>${currentCount}</strong>`;
+            el.textContent = this.incrementLocal().toLocaleString();
           }
-        }
-      }
+        })
+        .catch(() => {
+          // Rezervni plan preko localStorage-a
+          el.textContent = this.incrementLocal().toLocaleString();
+        });
     }
   }
 };
 
-// Automatski pokreni brojač čim se stranica učita
+// Automatsko pokretanje brojača
 document.addEventListener('DOMContentLoaded', function () {
   if (window.DB && window.DB.counter) {
-    window.DB.counter.render();
+    window.DB.counter.init();
   }
 });
