@@ -5,12 +5,13 @@
 
 window.bumBox = {
   currentPkg: 'empty',
-  selectedStyle: 'Zvezda',
+  selectedStyle: 'Koverat (u centar)',
   sideTheme: 'sweets',
 
   init: function () {
     this.initTabs();
     this.populateSizes();
+    this.initSideDropdown();
     this.bindEvents();
   },
 
@@ -45,7 +46,6 @@ window.bumBox = {
       if (customSideGroup) customSideGroup.style.display = 'none';
       if (notesGroup) notesGroup.style.display = 'none';
     } else {
-      // Za sve ostale pakete prikazujemo izbor punjenja stranica i napomenu
       if (sideThemeGroup) sideThemeGroup.style.display = 'block';
       if (notesGroup) notesGroup.style.display = 'block';
       
@@ -69,7 +69,7 @@ window.bumBox = {
     }
   },
 
-  // Prebacivanje teme stranica (Slatkiši, Kafa ili Po sopstvenoj želji)
+  // Prebacivanje teme stranica
   switchSideTheme: function (theme) {
     this.sideTheme = theme;
     const sweets = document.getElementById('bumSweetsGroup');
@@ -132,15 +132,54 @@ window.bumBox = {
     dimInfo.innerHTML = `📦 Unutrašnji prostor za poklon (centralni čep): <strong>${giftDim}</strong>`;
   },
 
-  // Odabir stila ivica
-  selectStyle: function (styleName, el) {
-    this.selectedStyle = styleName;
-    document.querySelectorAll('.style-option').forEach((opt) => {
-      opt.classList.remove('selected');
+  // Kompletno rukovanje padajućim menijem za stil bočnih ivica
+  initSideDropdown: function () {
+    const btn = document.getElementById('sideDropdownBtn');
+    const list = document.getElementById('sideOptionsList');
+    const hiddenInput = document.getElementById('selectedSideStyle');
+    const content = document.getElementById('sideSelectedContent');
+    const self = this;
+
+    if (!btn || !list) return;
+
+    // Otvaranje / zatvaranje na klik dugmeta
+    btn.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      list.classList.toggle('open');
+    };
+
+    // Odabir opcije
+    const options = list.querySelectorAll('.custom-option');
+    options.forEach(function (opt) {
+      opt.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        options.forEach((o) => o.classList.remove('active'));
+        opt.classList.add('active');
+
+        const val = opt.getAttribute('data-value') || 'koverat';
+        const labelText = opt.querySelector('span') ? opt.querySelector('span').textContent.trim() : val;
+        const svgEl = opt.querySelector('svg');
+
+        self.selectedStyle = labelText;
+        if (hiddenInput) hiddenInput.value = val;
+
+        if (content && svgEl) {
+          content.innerHTML = `${svgEl.outerHTML}<span>${labelText}</span>`;
+        }
+
+        list.classList.remove('open');
+      };
     });
-    if (el) {
-      el.classList.add('selected');
-    }
+
+    // Zatvaranje ako se klikne bilo gde van menija
+    document.addEventListener('click', function (e) {
+      if (!btn.contains(e.target) && !list.contains(e.target)) {
+        list.classList.remove('open');
+      }
+    });
   },
 
   // Povezivanje događaja
@@ -169,14 +208,12 @@ window.bumBox = {
     const customSideInput = document.getElementById('bumCustomSideInput');
     const notes = document.getElementById('bumNotes');
 
-    // Obrada unosa za enterijer
     let interiorVal = interiorSelect ? interiorSelect.value : 'Standardni';
     if (interiorVal === 'custom') {
       const customText = customInteriorInput ? customInteriorInput.value.trim() : '';
       interiorVal = customText ? `Po sopstvenoj želji: ${customText}` : 'Po sopstvenoj želji';
     }
 
-    // Obrada punjenja stranica
     const fillings = [];
     if (this.currentPkg !== 'empty') {
       if (this.sideTheme === 'coffee') {
@@ -230,7 +267,7 @@ window.bumBox = {
       msg += `📝 Povod / opis želje: ${data.notes}\n`;
     }
 
-    const phone = '381644667485'; // Ovde upiši svoj WhatsApp broj
+    const phone = '381644667485';
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   }
