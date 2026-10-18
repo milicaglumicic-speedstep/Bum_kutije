@@ -191,6 +191,37 @@
     </form>
   </div>
 </div>
+<script>
+  function toggleSideMenu() {
+    const list = document.getElementById('sideOptionsList');
+    list.classList.toggle('open');
+  }
+
+  function pickSideStyle(val, labelText, element) {
+    // 1. Postavlja vrednost za slanje
+    document.getElementById('selectedSideStyle').value = val;
+
+    // 2. Kopira SVG i naziv u glavno polje menija
+    const svgHtml = element.querySelector('svg').outerHTML;
+    document.getElementById('sideSelectedContent').innerHTML = `${svgHtml}<span>${labelText}</span>`;
+
+    // 3. Označava izabranu opciju
+    document.querySelectorAll('.custom-option').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+
+    // 4. Zatvara listu
+    document.getElementById('sideOptionsList').classList.remove('open');
+  }
+
+  // Automatski zatvara meni ako se klikne negde sa strane
+  window.addEventListener('click', function(e) {
+    const selectBox = document.getElementById('sideDropdownBtn');
+    const list = document.getElementById('sideOptionsList');
+    if (selectBox && list && !selectBox.contains(e.target) && !list.contains(e.target)) {
+      list.classList.remove('open');
+    }
+  });
+</script>
 
 
 <script src="js/database.js"></script>
