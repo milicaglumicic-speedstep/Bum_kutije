@@ -3,21 +3,19 @@
    ============================================================ */
 :root {
   --bg-dark: #0a0711;
-  --bg-deep: #120b1e;
+  --bg-card: #150f24;
+  --card-border: rgba(223, 186, 104, 0.28);
   
-  /* Luksuzno šampanjac zlato */
+  /* Šampanjac zlato */
   --gold-primary: #dfba68;
   --gold-light: #f5e6b3;
   --gold-glow: rgba(223, 186, 104, 0.25);
-  --gold-border: rgba(223, 186, 104, 0.32);
   
-  /* Plišani ljubičasti tonovi */
-  --purple-velvet: #1e1330;
-  --purple-accent: #a855f7;
-  
-  /* Prefinjeni tekst (topli biser i svila) */
+  /* Tekstovi */
   --text-silk: #f4efe6;
   --text-muted: #b8af9f;
+  --silver: #cbd5e1;
+  --input-bg: #0e0a1a;
   
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-heading: 'Cinzel', serif;
@@ -42,7 +40,7 @@ body {
     linear-gradient(180deg, #0f0a1c 0%, #08050e 100%);
   background-attachment: fixed;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
 .container { 
@@ -51,7 +49,35 @@ body {
 }
 
 /* ==========================================
-   GLAVNO ZAGLAVLJE
+   BROJAČ U GORNJEM UGLU
+   ========================================== */
+.top-bar-counter {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(18, 11, 30, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  z-index: 50;
+}
+
+.top-bar-counter strong {
+  color: var(--gold-light);
+  font-family: 'Fira Code', monospace;
+  font-weight: 600;
+}
+
+/* ==========================================
+   ZAGLAVLJE
    ========================================== */
 .main-header { 
   text-align: center; 
@@ -66,8 +92,7 @@ body {
   background: linear-gradient(135deg, #fff7db 0%, var(--gold-light) 40%, var(--gold-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 12px;
-  text-shadow: 0 4px 20px rgba(223, 186, 104, 0.2);
+  margin-bottom: 10px;
 }
 
 .main-subtitle { 
@@ -75,59 +100,24 @@ body {
   font-style: italic;
   color: var(--text-muted); 
   font-size: 1.05rem; 
-  max-width: 540px; 
-  margin: 0 auto; 
-  letter-spacing: 0.3px;
 }
 
 /* ==========================================
-   BROJAČ U GORNJEM UGLU (Zlatni bedž)
-   ========================================== */
-.top-bar-counter {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(18, 11, 30, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  padding: 6px 14px;
-  border-radius: 30px;
-  font-size: 0.78rem;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-  z-index: 50;
-}
-
-.top-bar-counter strong {
-  color: var(--gold-light);
-  font-family: var(--font-sans);
-  font-weight: 600;
-}
-
-/* ==========================================
-   LUKSUZNI OPISNI TEKST (Gornji blok)
+   OPISNI TEKST NA VRHU
    ========================================== */
 .top-info-block {
-  margin: 45px auto 30px auto;
-  padding: 28px 24px;
+  margin: 30px auto;
+  padding: 26px 22px;
   background: linear-gradient(145deg, rgba(28, 18, 46, 0.75) 0%, rgba(14, 9, 24, 0.85) 100%);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(245, 230, 179, 0.15);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(245, 230, 179, 0.12);
   border-radius: 20px;
-  color: var(--text-silk);
-  text-align: left;
 }
 
 .top-title {
   font-family: var(--font-serif);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
   color: var(--gold-light);
   margin-bottom: 12px;
   border-bottom: 1px solid rgba(223, 186, 104, 0.2);
@@ -136,14 +126,13 @@ body {
 
 .top-lead {
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: #dfd8cb;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .top-lead strong {
   color: var(--gold-light);
-  font-weight: 600;
 }
 
 .occasions-grid {
@@ -152,48 +141,48 @@ body {
   gap: 14px;
 }
 
+@media (min-width: 650px) {
+  .occasions-grid { grid-template-columns: 1fr 1fr; }
+}
+
 .occasion-item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   font-size: 0.9rem;
-  line-height: 1.5;
-  padding: 6px 0;
-}
-
-.occasion-item .occ-icon {
-  font-size: 1.15rem;
-  line-height: 1.2;
 }
 
 .occasion-item strong {
   font-family: var(--font-serif);
   color: var(--gold-light);
-  font-size: 0.96rem;
-  letter-spacing: 0.3px;
 }
 
 .occasion-item p {
-  margin-top: 3px;
+  margin-top: 2px;
   color: var(--text-muted);
 }
 
 /* ==========================================
-   KARTICA ZA POKLON & VIDEO
+   KARTICA ZA POKLON & DUGME (Centrirano i fiksirano)
    ========================================== */
-.hub-card, .gift-card {
+.hub-grid {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.hub-card {
+  width: 100%;
+  max-width: 440px;
   background: linear-gradient(145deg, rgba(25, 16, 42, 0.85) 0%, rgba(15, 10, 26, 0.95) 100%);
-  border: 1px solid var(--gold-border);
+  border: 1px solid var(--card-border);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(245, 230, 179, 0.12);
   border-radius: 24px;
   padding: 30px 22px;
   text-align: center;
-  transition: all 0.35s ease;
-}
-
-.hub-card:hover, .gift-card:hover {
-  border-color: rgba(223, 186, 104, 0.6);
-  box-shadow: 0 20px 45px rgba(223, 186, 104, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .gift-media-wrap {
@@ -201,14 +190,13 @@ body {
   max-width: 260px;
   height: 220px;
   margin: 0 auto 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 18px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .box-gif-preview {
@@ -218,7 +206,7 @@ body {
   border-radius: 16px;
 }
 
-.card-content h3, .hub-card h2 {
+.hub-card h2 {
   font-family: var(--font-heading);
   font-size: 1.45rem;
   letter-spacing: 1.5px;
@@ -226,7 +214,7 @@ body {
   margin-bottom: 8px;
 }
 
-.card-content p, .hub-card-desc {
+.hub-card-desc {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 0.96rem;
@@ -234,17 +222,12 @@ body {
   margin-bottom: 22px;
 }
 
-/* ==========================================
-   LUKSUZNO DUGME (ZLATNO-SATENSKI EFEKAT)
-   ========================================== */
-.order-btn, .hub-btn, .submit-btn {
+.hub-btn, .order-btn, .submit-btn {
   display: inline-block;
   padding: 13px 28px;
   border-radius: 50px;
-  font-family: var(--font-sans);
   font-size: 0.92rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-decoration: none;
   cursor: pointer;
   background: linear-gradient(135deg, #dfba68 0%, #b88a38 100%);
@@ -254,16 +237,70 @@ body {
   transition: all 0.3s ease;
 }
 
-.order-btn:hover, .hub-btn:hover, .submit-btn:hover {
+.hub-btn:hover, .order-btn:hover, .submit-btn:hover {
   transform: translateY(-2px);
   background: linear-gradient(135deg, #ebd08c 0%, #c89a42 100%);
   box-shadow: 0 6px 24px rgba(223, 186, 104, 0.5);
   color: #000;
 }
 
-@media (min-width: 650px) {
-  .occasions-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
+/* ==========================================
+   STILOVI ZA STRANICU KONFIGURATORA
+   ========================================== */
+.back-nav {
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  color: var(--silver);
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.box-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 26px;
+}
+
+.form-group { margin-bottom: 20px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--gold-light); font-size: 0.9rem; }
+
+select, input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #dfba68 0%, #b88a38 100%);
+  color: #0c0814;
+  border-color: #f6e09e;
 }
