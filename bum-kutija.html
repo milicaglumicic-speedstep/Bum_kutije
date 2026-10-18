@@ -162,14 +162,18 @@
         <label for="bumCustomSideInput">Opiši željeno punjenje stranica:</label>
         <input type="text" id="bumCustomSideInput" placeholder="npr. kozmetika, vaučeri, mini porukice, sitnice...">
       </div>
-
+      <!-- Izbor slatkiša (dinamički se filtrira prema stilu ivica) -->
       <div class="form-group" id="bumSweetsGroup" style="display:none;">
-        <label>Izaberi slatkiše za stranice (do 4 po strani):</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
-          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
-          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
-          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
+        <label id="bumSweetsLabel">Izaberi slatkiše za stranice (do 4 po strani):</label>
+        <div class="checkbox-group" id="bumSweetsList">
+          <!-- Okrugli slatkiši / praline (za Koverat, X gredu, Postolje) -->
+          <label class="checkbox-item sweet-round"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
+          <label class="checkbox-item sweet-round"><input type="checkbox" value="raffaello" checked> Raffaello</label>
+          <label class="checkbox-item sweet-round"><input type="checkbox" value="lindor"> Lindt Lindor</label>
+          <label class="checkbox-item sweet-round"><input type="checkbox" value="mozart"> Mozart kugle</label>
+
+          <!-- Duguljasti slatkiši (isključivo za 2 grede) -->
+          <label class="checkbox-item sweet-bar" style="display:none;"><input type="checkbox" value="kinder_cokoladica"> Kinder čokoladice</label>
         </div>
       </div>
 
