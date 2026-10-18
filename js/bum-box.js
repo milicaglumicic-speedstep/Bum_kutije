@@ -1,4 +1,4 @@
-09.08.2026<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sr">
 <head>
   <meta charset="UTF-8">
@@ -17,7 +17,7 @@
   <div class="box-card">
     <header class="section-title-wrap">
       <h2>BUM KUTIJA</h2>
-      <p></p> Personalizuj svoj poklon<p></p>
+      <p>Personalizuj svoj poklon</p>
     </header>
 
     <div class="tabs" id="bumTabs">
@@ -40,8 +40,8 @@
         <label for="bumColorInput">Željena boja:</label>
         <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
       </div>
+
       <!-- Dekoracija enterijera kutije -->
-      <!-- Dekoracija enterijera kutije (Sada je padajući meni!) -->
       <div class="form-group">
         <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
         <select id="bumInteriorSelect">
@@ -54,38 +54,28 @@
         </select>
       </div>
 
-
       <!-- Stil bočnih ivica -->
       <div class="form-group">
-         <!-- Stil bočnih ivica -->
-   <div class="form-group">
-     <label>Stil bočnih ivica (za slatkiše):</label>
-     <div class="style-grid">
-       <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
-         <div class="style-preview">
-           <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-             <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-             <path d="M4 4L36 36M36 4L4 36" />
-             <circle cx="20" cy="20" r="3" fill="#c084fc" />
-           </svg>
-         </div>
-         <span class="style-text">Zvezda (koverat u centar)</span>
-       </div>
+        <label>Stil bočnih ivica (za slatkiše):</label>
+        <div class="style-grid">
+          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <path d="M4 4L36 36M36 4L4 36" />
+                <circle cx="20" cy="20" r="3" fill="#c084fc" />
+              </svg>
+            </div>
+            <span class="style-text">Zvezda (koverat u centar)</span>
+          </div>
 
-       <!-- NOVO: 2 Vertikalna stuba -->
-               <!-- NOVO: 2 Vertikalna stuba + 3 duguljaste čokoladice u sredini -->
-                 <!-- 2 Vertikalna stuba (Čokoladica | Stub | Čokoladica | Stub | Čokoladica) -->
+          <!-- 2 Vertikalna stuba -->
           <div class="style-option" onclick="window.bumBox.selectStyle('2 vertikalna stuba', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-                <!-- Okvir stranice -->
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-                
-                <!-- Dva tanka vertikalna stuba celom visinom -->
                 <line x1="15" y1="4" x2="15" y2="36" stroke-width="1.8" />
                 <line x1="25" y1="4" x2="25" y2="36" stroke-width="1.8" />
-                
-                <!-- 3 uspravne duguljaste čokoladice između i sa strana -->
                 <rect x="7" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
                 <rect x="17.5" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
                 <rect x="28" y="9" width="5" height="22" rx="1.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.6" />
@@ -94,40 +84,36 @@
             <span class="style-text">2 vertikalna stuba (3 čokoladice)</span>
           </div>
 
+          <!-- X greda -->
+          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
+                <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
+                <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">X greda (dijagonale)</span>
+          </div>
 
-       <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
-         <div class="style-preview">
-           <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
-             <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-             <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
-             <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
-             <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
-           </svg>
-         </div>
-         <span class="style-text">X greda (dijagonale)</span>
-       </div>
-
-       <!-- NOVO: Postolje (1, 2, 3 mesto) -->
-       <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
-         <div class="style-preview">
-           <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
-             <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
-             <!-- 2. mesto (levo, srednje) -->
-             <rect x="7" y="18" width="8" height="15" stroke="#c084fc" fill="rgba(192, 132, 252, 0.2)" />
-             <!-- 1. mesto (centar, najviše) -->
-             <rect x="16" y="11" width="8" height="22" stroke="#c084fc" fill="rgba(192, 132, 252, 0.3)" />
-             <!-- 3. mesto (desno, najniže) -->
-             <rect x="25" y="23" width="8" height="10" stroke="#c084fc" fill="rgba(192, 132, 252, 0.15)" />
-             <circle cx="11" cy="14" r="2" fill="#f59e0b" />
-             <circle cx="20" cy="7" r="2" fill="#f59e0b" />
-             <circle cx="29" cy="19" r="2" fill="#f59e0b" />
-           </svg>
-         </div>
-         <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
-       </div>
-     </div>
-   </div>
-
+          <!-- Postolje (1, 2, 3 mesto) -->
+          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
+            <div class="style-preview">
+              <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                <rect x="7" y="18" width="8" height="15" stroke="#c084fc" fill="rgba(192, 132, 252, 0.2)" />
+                <rect x="16" y="11" width="8" height="22" stroke="#c084fc" fill="rgba(192, 132, 252, 0.3)" />
+                <rect x="25" y="23" width="8" height="10" stroke="#c084fc" fill="rgba(192, 132, 252, 0.15)" />
+                <circle cx="11" cy="14" r="2" fill="#f59e0b" />
+                <circle cx="20" cy="7" r="2" fill="#f59e0b" />
+                <circle cx="29" cy="19" r="2" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="style-text">Postolje (1, 2. i 3. mesto)</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Mehanizam -->
       <div class="form-group">
@@ -139,8 +125,6 @@
         </select>
       </div>
 
-      
-
       <!-- Slatkiši za stranice -->
       <div class="form-group" id="bumSweetsGroup" style="display:none;">
         <label>Izaberi slatkiše za stranice:</label>
@@ -151,10 +135,11 @@
           <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
         </div>
       </div>
+
       <!-- Polje za opis i posvetu (Paket 4) -->
       <div class="form-group" id="customNotesGroup" style="display:none;">
         <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
-        <textarea id="bumNotes" rows="3" placeholder=" Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
+        <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
       </div>
 
       <!-- Prikaz cene -->
@@ -171,6 +156,6 @@
 <script src="js/database.js"></script>
 <script src="js/pricing-engine.js"></script>
 <script src="js/bum-box.js"></script>
-  <script src="chatbot.js"></script>
+<script src="chatbot.js"></script>
 </body>
 </html>
