@@ -102,10 +102,12 @@
           <option value="IT stikeri">💻 IT stikeri</option>
         </select>
       </div>
-        <label>Stil bočnih ivica:</label>
+    
+         <!-- Stil bočnih ivica -->
+      <div class="form-group">
+        <label>Stil bočnih ivica (za slatkiše):</label>
         <div class="style-grid">
-          <!-- 1. Zvezda -->
-          <div class="style-option selected" onclick="selectStyleOption('Zvezda', this)">
+          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -116,8 +118,8 @@
             <span class="style-text">Zvezda (koverat u centar)</span>
           </div>
 
-          <!-- 2. Vertikalna stuba -->
-          <div class="style-option" onclick="selectStyleOption('2 vertikalna stuba', this)">
+          <!-- 2 Vertikalna stuba -->
+          <div class="style-option" onclick="window.bumBox.selectStyle('2 vertikalna stuba', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -131,8 +133,8 @@
             <span class="style-text">2 vertikalna stuba (3 čokoladice)</span>
           </div>
 
-          <!-- 3. X greda -->
-          <div class="style-option" onclick="selectStyleOption('X greda', this)">
+          <!-- X greda -->
+          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -144,8 +146,8 @@
             <span class="style-text">X greda (dijagonale)</span>
           </div>
 
-                    <!-- Postolje (1, 2, 3 mesto) -->
-          <div class="style-option" onclick="window.bumBox && window.bumBox.selectStyle ? window.bumBox.selectStyle('Postolje', this) : null">
+          <!-- Postolje (1, 2, 3 mesto) -->
+          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -161,6 +163,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Mehanizam -->
       <div class="form-group">
