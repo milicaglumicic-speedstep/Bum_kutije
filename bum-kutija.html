@@ -57,11 +57,12 @@
       </div>
 
       <!-- Stil bočnih ivica (Pravi custom dropdown sa zaključanim SVG) -->
+          <!-- Stil bočnih ivica -->
       <div class="form-group form-group-relative">
         <label>Stil bočnih ivica:</label>
         <input type="hidden" id="selectedSideStyle" name="sideStyle" value="koverat">
 
-        <div class="custom-side-select" id="sideDropdownBtn" onclick="toggleSideMenu()">
+        <div class="custom-side-select" id="sideDropdownBtn">
           <div class="side-selected-content" id="sideSelectedContent">
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
@@ -74,8 +75,7 @@
         </div>
 
         <div class="custom-side-options" id="sideOptionsList">
-          <!-- Opcija 1: Koverat -->
-          <div class="custom-option active" onclick="pickSideStyle('koverat', 'Koverat (u centar)', this)">
+          <div class="custom-option active" data-value="koverat">
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
               <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
@@ -84,8 +84,7 @@
             <span>Koverat (u centar)</span>
           </div>
 
-          <!-- Opcija 2: 2 grede -->
-          <div class="custom-option" onclick="pickSideStyle('2-grede', '2 grede (3 slatkiša)', this)">
+          <div class="custom-option" data-value="2-grede">
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
               <rect x="18" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
@@ -97,8 +96,7 @@
             <span>2 grede (3 slatkiša)</span>
           </div>
 
-          <!-- Opcija 3: X greda -->
-          <div class="custom-option" onclick="pickSideStyle('x-greda', 'X greda (4 tačke)', this)">
+          <div class="custom-option" data-value="x-greda">
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
               <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
@@ -111,8 +109,7 @@
             <span>X greda (4 tačke)</span>
           </div>
 
-          <!-- Opcija 4: Postolje -->
-          <div class="custom-option" onclick="pickSideStyle('postolje', 'Postolje (3 nivoa)', this)">
+          <div class="custom-option" data-value="postolje">
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
               <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
@@ -127,6 +124,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Mehanizam -->
       <div class="form-group">
@@ -180,10 +178,7 @@
 </div>
 
 <script>
-  function toggleSideMenu() {
-    const list = document.getElementById('sideOptionsList');
-    if (list) list.classList.toggle('open');
-  }
+  
 
   function pickSideStyle(val, labelText, element) {
     document.getElementById('selectedSideStyle').value = val;
