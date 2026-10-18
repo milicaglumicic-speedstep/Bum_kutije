@@ -9,37 +9,41 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Sigurnosni stilovi u slucaju da css/main.css pravi prelamanje */
+    /* Popravka da se donje 2 kartice nikad ne saberu i da uvek imaju mesta za tekst */
     .style-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+      gap: 12px !important;
+      height: auto !important;
     }
     .style-option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 14px;
-      border: 1px solid #3b3054;
-      border-radius: 8px;
-      cursor: pointer;
-      min-height: 58px;
-      box-sizing: border-box;
-      transition: all 0.2s ease;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 12px 14px !important;
+      min-height: 64px !important;
+      height: auto !important;
+      border: 1px solid #3b3054 !important;
+      border-radius: 8px !important;
+      cursor: pointer !important;
+      box-sizing: border-box !important;
+      background: rgba(255, 255, 255, 0.03);
     }
     .style-option.selected {
-      border-color: #c084fc;
-      background: rgba(192, 132, 252, 0.1);
+      border-color: #c084fc !important;
+      background: rgba(192, 132, 252, 0.15) !important;
     }
     .style-preview {
-      width: 40px;
-      height: 40px;
-      flex-shrink: 0;
+      width: 40px !important;
+      height: 40px !important;
+      flex-shrink: 0 !important;
     }
     .style-text {
-      font-size: 0.95rem;
-      color: #e2e8f0;
-      line-height: 1.3;
+      display: block !important;
+      color: #fff !important;
+      font-size: 0.92rem !important;
+      line-height: 1.25 !important;
+      word-break: normal !important;
     }
     .gift-info-box {
       margin-top: 8px;
@@ -70,7 +74,7 @@
       <button type="button" class="tab-btn" data-pkg="custom_gift" onclick="switchPackage('custom_gift', this)">4. Personalizovani BUM poklon</button>
     </div>
 
-    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp ? window.bumBox.sendWhatsApp() : alert('Porudžbina je zabeležena!');">
+    <form id="bumForm" onsubmit="event.preventDefault(); (window.bumBox && window.bumBox.sendWhatsApp) ? window.bumBox.sendWhatsApp() : alert('Porudžbina je zabeležena!');">
       <!-- Veličina kutije -->
       <div class="form-group">
         <label for="bumSizeSelect">Veličina kutije:</label>
@@ -103,11 +107,11 @@
         </select>
       </div>
     
-         <!-- Stil bočnih ivica -->
+      <!-- Stil bočnih ivica -->
       <div class="form-group">
         <label>Stil bočnih ivica (za slatkiše):</label>
         <div class="style-grid">
-          <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+          <div class="style-option selected" onclick="pickStyle('Zvezda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -119,7 +123,7 @@
           </div>
 
           <!-- 2 Vertikalna stuba -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('2 vertikalna stuba', this)">
+          <div class="style-option" onclick="pickStyle('2 vertikalna stuba', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -134,7 +138,7 @@
           </div>
 
           <!-- X greda -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+          <div class="style-option" onclick="pickStyle('X greda', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -147,7 +151,7 @@
           </div>
 
           <!-- Postolje (1, 2, 3 mesto) -->
-          <div class="style-option" onclick="window.bumBox.selectStyle('Postolje 1-2-3', this)">
+          <div class="style-option" onclick="pickStyle('Postolje 1-2-3', this)">
             <div class="style-preview">
               <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
                 <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
@@ -164,7 +168,6 @@
         </div>
       </div>
 
-
       <!-- Mehanizam -->
       <div class="form-group">
         <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
@@ -174,7 +177,6 @@
           <option value="combo">Kombo (Kocke + Leptirovi)</option>
         </select>
       </div>
-
 
       <!-- Izbor teme stranica (Slatkiši ili Kafa) -->
       <div class="form-group" id="sideThemeGroup" style="display:none;">
@@ -224,7 +226,6 @@
 </div>
 
 <script>
-  // Prebacivanje tabova i prikaz opcija za stranice
   function switchPackage(pkg, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
@@ -254,7 +255,6 @@
     }
   }
 
-  // Prebacivanje između Slatkiša i Kafe
   function toggleSideTheme(theme) {
     const sweets = document.getElementById('bumSweetsGroup');
     const coffee = document.getElementById('bumCoffeeGroup');
@@ -265,4 +265,34 @@
       sweets.style.display = 'block';
       coffee.style.display = 'none';
     }
-    if (window.bumBox && window.bumBox.switch
+    if (window.bumBox && window.bumBox.switchSideTheme) {
+      window.bumBox.switchSideTheme(theme);
+    }
+  }
+
+  function pickStyle(styleName, el) {
+    document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+    if (el) el.classList.add('selected');
+    if (window.bumBox && window.bumBox.selectStyle) {
+      window.bumBox.selectStyle(styleName, el);
+    }
+  }
+
+  function updateDimensions(val) {
+    const info = document.getElementById('bumGiftDimInfo');
+    if (!info) return;
+    if (val === '15x15x15') info.innerHTML = '📦 Unutrašnji prostor za poklon (centralni čep): <strong>10 × 10 × 12 cm</strong>';
+    if (val === '18x18x18') info.innerHTML = '📦 Unutrašnji prostor za poklon (centralni čep): <strong>12 × 12 × 14 cm</strong>';
+    if (val === '20x20x20') info.innerHTML = '📦 Unutrašnji prostor za poklon (centralni čep): <strong>14 × 14 × 16 cm</strong>';
+    if (window.bumBox && window.bumBox.updateSizeInfo) {
+      window.bumBox.updateSizeInfo(val);
+    }
+  }
+</script>
+
+<script src="js/database.js"></script>
+<script src="js/pricing-engine.js"></script>
+<script src="js/bum-box.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
