@@ -5,7 +5,7 @@
 
 window.bumBox = {
   currentPkg: 'empty',
-  selectedStyle: 'Koverat (do 4 slatkiša)',
+  selectedStyle: 'Koverat (do 3 slatkiša)',
   sideTheme: 'sweets',
 
   init: function () {
@@ -15,7 +15,6 @@ window.bumBox = {
     this.bindEvents();
   },
 
-  // Inicijalizacija tabova na vrhu
   initTabs: function () {
     const tabs = document.querySelectorAll('#bumTabs .tab-btn');
     tabs.forEach((tab) => {
@@ -29,7 +28,6 @@ window.bumBox = {
     });
   },
 
-  // Prikaz i skrivanje sekcija prema izabranom paketu
   selectPackage: function (pkg) {
     this.currentPkg = pkg;
 
@@ -38,7 +36,7 @@ window.bumBox = {
     const coffeeGroup = document.getElementById('bumCoffeeGroup');
     const customSideGroup = document.getElementById('bumCustomSideGroup');
     const notesGroup = document.getElementById('customNotesGroup');
-    const customSizeInput = document.getElementById('bumCustomSizeInput');
+    const customGiftWrap = document.getElementById('bumCustomGiftWrap');
 
     if (pkg === 'empty') {
       if (sideThemeGroup) sideThemeGroup.style.display = 'none';
@@ -54,17 +52,14 @@ window.bumBox = {
       this.switchSideTheme(themeSelect ? themeSelect.value : this.sideTheme);
     }
 
-    // Ponovno punjenje veličina zavisno od izabranog paketa
     this.populateSizes();
 
-    // Sakrij polje za sopstvene dimenzije ako nismo na custom opciji
     const sizeSelect = document.getElementById('bumSizeSelect');
-    if (customSizeInput && sizeSelect && sizeSelect.value !== 'custom_size') {
-      customSizeInput.style.display = 'none';
+    if (customGiftWrap && sizeSelect && sizeSelect.value !== 'custom_size') {
+      customGiftWrap.style.display = 'none';
     }
   },
 
-  // Prikaz polja za unos sopstvenog motiva enterijera
   toggleCustomInterior: function (val) {
     const customInput = document.getElementById('bumCustomInteriorInput');
     if (!customInput) return;
@@ -77,7 +72,6 @@ window.bumBox = {
     }
   },
 
-  // Prebacivanje teme stranica
   switchSideTheme: function (theme) {
     this.sideTheme = theme;
     const sweets = document.getElementById('bumSweetsGroup');
@@ -103,12 +97,11 @@ window.bumBox = {
     }
   },
 
-  // Popunjavanje izbornika veličina (10cm, 15cm, 18cm i Custom opcija)
   populateSizes: function () {
     const sizeSelect = document.getElementById('bumSizeSelect');
     if (!sizeSelect) return;
 
-    const sizes = [
+    const sizes = (window.DB && window.DB.bumSizes) || [
       { id: '10x10x10', label: '10 × 10 × 10 cm (Mala)', giftDim: '6 × 6 × 8 cm' },
       { id: '15x15x15', label: '15 × 15 × 15 cm (Standardna)', giftDim: '10 × 10 × 12 cm' },
       { id: '18x18x18', label: '18 × 18 × 18 cm (Velika)', giftDim: '12 × 12 × 15 cm' }
@@ -125,7 +118,6 @@ window.bumBox = {
       sizeSelect.appendChild(opt);
     });
 
-    // Ako je izabran 4. paket (Personalizovani BUM poklon), omogućavamo unos dimenzija po želji
     if (this.currentPkg === 'custom_gift') {
       const optCustom = document.createElement('option');
       optCustom.value = 'custom_size';
@@ -137,14 +129,12 @@ window.bumBox = {
     this.updateSizeInfo(sizeSelect.value);
   },
 
-    // Ažuriranje unutrašnjih dimenzija i polja za dimenzije poklona
   updateSizeInfo: function (val) {
     const dimInfo = document.getElementById('bumGiftDimInfo');
     const customGiftWrap = document.getElementById('bumCustomGiftWrap');
     const customGiftInput = document.getElementById('bumCustomGiftInput');
 
     if (val === 'custom_size') {
-      // Skrivamo standardni tekst kartice, a prikazujemo polje za unos dimenzija poklona
       if (dimInfo) dimInfo.style.display = 'none';
       if (customGiftWrap) {
         customGiftWrap.style.display = 'block';
@@ -153,7 +143,6 @@ window.bumBox = {
       return;
     }
 
-    // Za standardne veličine prikazujemo info karticu i skrivamo custom polje
     if (customGiftWrap) customGiftWrap.style.display = 'none';
     if (dimInfo) dimInfo.style.display = 'block';
 
@@ -166,8 +155,6 @@ window.bumBox = {
     }
   },
 
-
-  // Padajući meni za stil bočnih ivica sa SVG sličicama
   initSideDropdown: function () {
     const btn = document.getElementById('sideDropdownBtn');
     const list = document.getElementById('sideOptionsList');
@@ -214,7 +201,6 @@ window.bumBox = {
     });
   },
 
-  // Povezivanje događaja
   bindEvents: function () {
     const sizeSelect = document.getElementById('bumSizeSelect');
     if (sizeSelect) {
@@ -231,35 +217,28 @@ window.bumBox = {
     }
   },
 
-  // Prikupljanje unosa iz forme
   collectFormData: function () {
     const colorInput = document.getElementById('bumColorInput');
     const sizeSelect = document.getElementById('bumSizeSelect');
-    const customSizeInput = document.getElementById('bumCustomSizeInput');
+    const customGiftInput = document.getElementById('bumCustomGiftInput');
     const interiorSelect = document.getElementById('bumInteriorSelect');
     const customInteriorInput = document.getElementById('bumCustomInteriorInput');
     const mechanismSelect = document.getElementById('bumMechanismSelect');
     const customSideInput = document.getElementById('bumCustomSideInput');
     const notes = document.getElementById('bumNotes');
 
-    // Obrada veličine (standardna ili ručno uneta)
-        // Obrada veličine i dimenzija poklona
-    const customGiftInput = document.getElementById('bumCustomGiftInput');
     let sizeVal = sizeSelect ? sizeSelect.value : '15x15x15';
     if (sizeVal === 'custom_size') {
-      const giftDimVal = customGiftInput ? customGiftInput.value.trim() : '';
-      sizeVal = giftDimVal ? `Kutija po meri poklona (${giftDimVal})` : 'Kutija po meri poklona (dimenzije nisu navedene)';
+      const giftDim = customGiftInput ? customGiftInput.value.trim() : '';
+      sizeVal = giftDim ? `Kutija po meri poklona (${giftDim})` : 'Kutija po meri poklona (dimenzije nisu unete)';
     }
 
-
-    // Obrada enterijera
     let interiorVal = interiorSelect ? interiorSelect.value : 'Standardni';
     if (interiorVal === 'custom') {
       const customText = customInteriorInput ? customInteriorInput.value.trim() : '';
       interiorVal = customText ? `Po sopstvenoj želji: ${customText}` : 'Po sopstvenoj želji';
     }
 
-    // Obrada punjenja stranica
     const fillings = [];
     if (this.currentPkg !== 'empty') {
       if (this.sideTheme === 'coffee') {
@@ -288,7 +267,6 @@ window.bumBox = {
     };
   },
 
-  // Slanje narudžbe na WhatsApp
   sendWhatsApp: function () {
     const data = this.collectFormData();
     const pkgLabels = {
