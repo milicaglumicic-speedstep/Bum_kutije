@@ -102,4 +102,112 @@
             <svg viewBox="0 0 100 100" class="dropdown-svg">
               <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
               <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-              <line x1="92" y1="8" x2="8"
+              <line x1="92" y1="8" x2="8" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="50" cy="24" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+              <circle cx="50" cy="76" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+              <circle cx="24" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+              <circle cx="76" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
+            </svg>
+            <span>X greda (4 tačke)</span>
+          </div>
+
+          <!-- Opcija 4: Postolje -->
+          <div class="custom-option" onclick="pickSideStyle('postolje', 'Postolje (3 nivoa)', this)">
+            <svg viewBox="0 0 100 100" class="dropdown-svg">
+              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
+              <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
+              <rect x="18" y="44" width="20" height="38" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+              <text x="28" y="68" font-size="12" text-anchor="middle" fill="#1b1429" font-weight="bold">2</text>
+              <rect x="40" y="28" width="20" height="54" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+              <text x="50" y="58" font-size="13" text-anchor="middle" fill="#1b1429" font-weight="bold">1</text>
+              <rect x="62" y="54" width="20" height="28" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
+              <text x="72" y="74" font-size="11" text-anchor="middle" fill="#1b1429" font-weight="bold">3</text>
+            </svg>
+            <span>Postolje (3 nivoa)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mehanizam -->
+      <div class="form-group">
+        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
+        <select id="bumMechanismSelect">
+          <option value="cubes" selected>Iskačuće pop-up kocke</option>
+        </select>
+      </div>
+
+      <!-- Punjenje stranica -->
+      <div class="form-group" id="sideThemeGroup" style="display:none;">
+        <label for="bumSideThemeSelect">Punjenje stranica (izaberi temu):</label>
+        <select id="bumSideThemeSelect" onchange="window.bumBox && window.bumBox.switchSideTheme(this.value)">
+          <option value="sweets" selected>🍫 Slatke strane (čokoladice i praline)</option>
+          <option value="coffee">☕ Kafa strane (Nespresso / Dolce Gusto)</option>
+          <option value="custom_sides">✨ Po sopstvenoj želji (unesi ispod)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="bumCustomSideGroup" style="display:none;">
+        <label for="bumCustomSideInput">Opiši željeno punjenje stranica:</label>
+        <input type="text" id="bumCustomSideInput" placeholder="npr. kozmetika, vaučeri, mini porukice, sitnice...">
+      </div>
+
+      <div class="form-group" id="bumSweetsGroup" style="display:none;">
+        <label>Izaberi slatkiše za stranice (do 4 po strani):</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
+          <label class="checkbox-item"><input type="checkbox" value="raffaello" checked> Raffaello</label>
+          <label class="checkbox-item"><input type="checkbox" value="lindor"> Lindt Lindor</label>
+          <label class="checkbox-item"><input type="checkbox" value="mozart"> Mozart kugle</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="bumCoffeeGroup" style="display:none;">
+        <label>Izaberi kapsule za kafu:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" value="nespresso" checked> Nespresso kapsule</label>
+          <label class="checkbox-item"><input type="checkbox" value="dolce_gusto"> Dolce Gusto kapsule</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="customNotesGroup" style="display:none;">
+        <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
+        <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" style="margin-top: 25px;">Naruči BUM kutiju na WhatsApp 💬</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleSideMenu() {
+    const list = document.getElementById('sideOptionsList');
+    if (list) list.classList.toggle('open');
+  }
+
+  function pickSideStyle(val, labelText, element) {
+    document.getElementById('selectedSideStyle').value = val;
+    const svgHtml = element.querySelector('svg').outerHTML;
+    document.getElementById('sideSelectedContent').innerHTML = `${svgHtml}<span>${labelText}</span>`;
+    
+    document.querySelectorAll('.custom-option').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+    
+    document.getElementById('sideOptionsList').classList.remove('open');
+  }
+
+  window.addEventListener('click', function(e) {
+    const selectBox = document.getElementById('sideDropdownBtn');
+    const list = document.getElementById('sideOptionsList');
+    if (selectBox && list && !selectBox.contains(e.target) && !list.contains(e.target)) {
+      list.classList.remove('open');
+    }
+  });
+</script>
+
+<script src="js/database.js"></script>
+<script src="js/pricing-engine.js"></script>
+<script src="js/bum-box.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
