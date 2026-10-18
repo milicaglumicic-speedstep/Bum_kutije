@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-  <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
+  <a href="index.html" class="back-nav">← Nazad na početnu stranu</a>
 
   <div class="box-card">
     <header class="section-title-wrap">
@@ -33,7 +33,7 @@
         <label for="bumSizeSelect">Veličina kutije:</label>
         <select id="bumSizeSelect"></select>
         <!-- Polje za unos dimenzija po želji kad se izabere opcija 4 / ručni unos -->
-        <input type="text" id="bumCustomSizeInput" style="display:none; margin-top:8px;" placeholder="Unesi željene dimenzije (npr. 22 × 22 × 20 cm)">
+        <input type="text" id="bumCustomSizeInput" style="display:none; margin-top:8px;" placeholder="Unesi željene dimenzije">
         <div id="bumGiftDimInfo" class="gift-info-box"></div>
       </div>
 
@@ -71,7 +71,7 @@
               <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
               <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
             </svg>
-            <span>Koverat (do 3 slatkiša)</span>
+            <span>Koverat (do 4 slatkiša)</span>
           </div>
           <span class="dropdown-chevron">▾</span>
         </div>
@@ -83,7 +83,7 @@
               <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
               <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
             </svg>
-            <span>Koverat (do 3 slatkiša)</span>
+            <span>Koverat (do 4 slatkiša)</span>
           </div>
 
           <div class="custom-option" data-value="2-grede">
