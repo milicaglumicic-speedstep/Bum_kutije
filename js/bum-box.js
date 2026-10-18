@@ -97,10 +97,37 @@ window.bumBox = {
     }
   },
 
-  // Popunjavanje veličina (Paketi 1, 2 i 4 omogućavaju unos dimenzija po želji)
+  // Popunjavanje veličina ili gramaže (za paket 3 nudi 100g i 200g, za pakete 1, 2 i 4 standardne + custom dimenzije)
   populateSizes: function () {
     const sizeSelect = document.getElementById('bumSizeSelect');
+    const sizeLabel = document.querySelector('label[for="bumSizeSelect"]');
     if (!sizeSelect) return;
+
+    sizeSelect.innerHTML = '';
+
+    // PAKET 3: Isključivo punjenje sa slatkišima od 100g i 200g
+    if (this.currentPkg === 'only_sweets') {
+      if (sizeLabel) sizeLabel.textContent = 'Količina slatkiša / punjenje:';
+
+      const sweetOptions = [
+        { id: '100g', label: '🍬 Punjenje oko 100 g slatkiša' },
+        { id: '200g', label: '🍫 Bogato punjenje oko 200 g slatkiša' }
+      ];
+
+      sweetOptions.forEach((optData, idx) => {
+        const opt = document.createElement('option');
+        opt.value = optData.id;
+        opt.textContent = optData.label;
+        if (idx === 0) opt.selected = true;
+        sizeSelect.appendChild(opt);
+      });
+
+      this.updateSizeInfo(sizeSelect.value);
+      return;
+    }
+
+    // PAKETI 1, 2 i 4: Standardne veličine kutija
+    if (sizeLabel) sizeLabel.textContent = 'Veličina kutije:';
 
     const sizes = (window.DB && window.DB.bumSizes) || [
       { id: '10x10x10', label: '10 × 10 × 10 cm (Mala)', giftDim: '6 × 6 × 8 cm' },
@@ -109,7 +136,6 @@ window.bumBox = {
     ];
 
     const currentVal = sizeSelect.value || '15x15x15';
-    sizeSelect.innerHTML = '';
 
     sizes.forEach((s) => {
       const opt = document.createElement('option');
@@ -137,6 +163,21 @@ window.bumBox = {
     const customGiftWrap = document.getElementById('bumCustomGiftWrap');
     const customGiftInput = document.getElementById('bumCustomGiftInput');
 
+    // Za paket 3 (100g i 200g slatkiša)
+    if (this.currentPkg === 'only_sweets') {
+      if (customGiftWrap) customGiftWrap.style.display = 'none';
+      if (dimInfo) {
+        dimInfo.style.display = 'block';
+        if (val === '100g') {
+          dimInfo.innerHTML = `🍬 Odabrano standardno punjenje: <strong>oko 100 g</strong> biranih slatkiša.`;
+        } else {
+          dimInfo.innerHTML = `🍫 Odabrano bogato punjenje: <strong>oko 200 g</strong> biranih slatkiša.`;
+        }
+      }
+      return;
+    }
+
+    // Za unos dimenzija po želji (paketi 1, 2 i 4)
     if (val === 'custom_size') {
       if (dimInfo) dimInfo.style.display = 'none';
       if (customGiftWrap) {
@@ -231,7 +272,10 @@ window.bumBox = {
     const notes = document.getElementById('bumNotes');
 
     let sizeVal = sizeSelect ? sizeSelect.value : '15x15x15';
-    if (sizeVal === 'custom_size') {
+
+    if (this.currentPkg === 'only_sweets') {
+      sizeVal = sizeVal === '200g' ? 'Bogato punjenje (~200 g slatkiša)' : 'Standardno punjenje (~100 g slatkiša)';
+    } else if (sizeVal === 'custom_size') {
       const giftDim = customGiftInput ? customGiftInput.value.trim() : '';
       sizeVal = giftDim ? `Kutija po meri poklona (${giftDim})` : 'Kutija po meri poklona (dimenzije nisu unete)';
     }
@@ -281,7 +325,13 @@ window.bumBox = {
 
     let msg = `Pozdrav! Želim poručiti BUM kutiju:\n\n`;
     msg += `📦 Paket: ${pkgLabels[data.package] || data.package}\n`;
-    msg += `📏 Veličina: ${data.size}\n`;
+    
+    if (data.package === 'only_sweets') {
+      msg += `🍬 Punjenje: ${data.size}\n`;
+    } else {
+      msg += `📏 Veličina: ${data.size}\n`;
+    }
+
     msg += `🎨 Boja: ${data.color || 'Standardna'}\n`;
     msg += `✨ Dekoracija enterijera: ${data.interior}\n`;
     msg += `📐 Stil ivica: ${data.style}\n`;
