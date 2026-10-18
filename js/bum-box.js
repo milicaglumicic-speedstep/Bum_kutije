@@ -5,6 +5,7 @@
 
 window.bumBox = {
   currentPkg: 'empty',
+  selectedStyleKey: 'koverat',
   selectedStyle: 'Koverat (do 3 slatkiša)',
   sideTheme: 'sweets',
 
@@ -13,6 +14,7 @@ window.bumBox = {
     this.populateSizes();
     this.initSideDropdown();
     this.bindEvents();
+    this.filterSweetsByStyle(this.selectedStyleKey);
   },
 
   initTabs: function () {
@@ -37,6 +39,7 @@ window.bumBox = {
     const customSideGroup = document.getElementById('bumCustomSideGroup');
     const notesGroup = document.getElementById('customNotesGroup');
     const customGiftWrap = document.getElementById('bumCustomGiftWrap');
+    const sweetsLabel = document.getElementById('bumSweetsLabel');
 
     if (pkg === 'empty') {
       if (sideThemeGroup) sideThemeGroup.style.display = 'none';
@@ -50,6 +53,15 @@ window.bumBox = {
       
       const themeSelect = document.getElementById('bumSideThemeSelect');
       this.switchSideTheme(themeSelect ? themeSelect.value : this.sideTheme);
+    }
+
+    // Ažuriranje teksta za slatkiše (posebno za Paket 3)
+    if (sweetsLabel) {
+      if (pkg === 'only_sweets') {
+        sweetsLabel.textContent = 'Izaberi slatkiše za strane i punjenje:';
+      } else {
+        sweetsLabel.textContent = 'Izaberi slatkiše za stranice (do 4 po strani):';
+      }
     }
 
     this.populateSizes();
@@ -97,7 +109,42 @@ window.bumBox = {
     }
   },
 
-  // Popunjavanje veličina ili gramaže (za paket 3 nudi 100g i 200g, za pakete 1, 2 i 4 standardne + custom dimenzije)
+  // Filtriranje slatkiša prema izabranom stilu bočnih ivica
+  filterSweetsByStyle: function (styleKey) {
+    const roundSweets = document.querySelectorAll('.sweet-round');
+    const barSweets = document.querySelectorAll('.sweet-bar');
+
+    if (styleKey === '2-grede') {
+      // Za 2 grede idu SAMO Kinder čokoladice
+      roundSweets.forEach((el) => {
+        el.style.display = 'none';
+        const chk = el.querySelector('input[type="checkbox"]');
+        if (chk) chk.checked = false;
+      });
+      barSweets.forEach((el) => {
+        el.style.display = 'flex';
+        const chk = el.querySelector('input[type="checkbox"]');
+        if (chk) chk.checked = true;
+      });
+    } else {
+      // Za ostale stilove idu okrugle praline (Ferrero, Raffaello...)
+      roundSweets.forEach((el) => {
+        el.style.display = 'flex';
+      });
+      barSweets.forEach((el) => {
+        el.style.display = 'none';
+        const chk = el.querySelector('input[type="checkbox"]');
+        if (chk) chk.checked = false;
+      });
+
+      // Podrazumevano selektuj Ferrero i Raffaello ako ništa nije označeno
+      const ferrero = document.querySelector('input[value="ferrero"]');
+      const raffaello = document.querySelector('input[value="raffaello"]');
+      if (ferrero && !ferrero.checked) ferrero.checked = true;
+      if (raffaello && !raffaello.checked) raffaello.checked = true;
+    }
+  },
+
   populateSizes: function () {
     const sizeSelect = document.getElementById('bumSizeSelect');
     const sizeLabel = document.querySelector('label[for="bumSizeSelect"]');
@@ -105,7 +152,7 @@ window.bumBox = {
 
     sizeSelect.innerHTML = '';
 
-    // PAKET 3: Isključivo punjenje sa slatkišima od 100g i 200g
+    // PAKET 3: Punjenje od 100g i 200g
     if (this.currentPkg === 'only_sweets') {
       if (sizeLabel) sizeLabel.textContent = 'Količina slatkiša / punjenje:';
 
@@ -145,7 +192,6 @@ window.bumBox = {
       sizeSelect.appendChild(opt);
     });
 
-    // Omogućeno za pakete: 1 (empty), 2 (sweets_gift) i 4 (custom_gift)
     const allowsCustomSize = ['empty', 'sweets_gift', 'custom_gift'].includes(this.currentPkg);
     if (allowsCustomSize) {
       const optCustom = document.createElement('option');
@@ -163,7 +209,6 @@ window.bumBox = {
     const customGiftWrap = document.getElementById('bumCustomGiftWrap');
     const customGiftInput = document.getElementById('bumCustomGiftInput');
 
-    // Za paket 3 (100g i 200g slatkiša)
     if (this.currentPkg === 'only_sweets') {
       if (customGiftWrap) customGiftWrap.style.display = 'none';
       if (dimInfo) {
@@ -177,7 +222,6 @@ window.bumBox = {
       return;
     }
 
-    // Za unos dimenzija po želji (paketi 1, 2 i 4)
     if (val === 'custom_size') {
       if (dimInfo) dimInfo.style.display = 'none';
       if (customGiftWrap) {
@@ -227,12 +271,16 @@ window.bumBox = {
         const labelText = opt.querySelector('span') ? opt.querySelector('span').textContent.trim() : val;
         const svgEl = opt.querySelector('svg');
 
+        self.selectedStyleKey = val;
         self.selectedStyle = labelText;
         if (hiddenInput) hiddenInput.value = val;
 
         if (content && svgEl) {
           content.innerHTML = `${svgEl.outerHTML}<span>${labelText}</span>`;
         }
+
+        // Automatski promeni ponuđene slatkiše zavisno od stila (2 grede ili ostali)
+        self.filterSweetsByStyle(val);
 
         list.classList.remove('open');
       };
@@ -296,7 +344,7 @@ window.bumBox = {
         const customSideText = customSideInput ? customSideInput.value.trim() : '';
         fillings.push(customSideText ? `Po sopstvenoj želji: ${customSideText}` : 'Po sopstvenoj želji');
       } else {
-        document.querySelectorAll('#bumSweetsGroup input[type="checkbox"]:checked').forEach((chk) => {
+        document.querySelectorAll('#bumSweetsList input[type="checkbox"]:checked').forEach((chk) => {
           fillings.push(chk.parentElement.textContent.trim());
         });
       }
@@ -338,7 +386,7 @@ window.bumBox = {
     msg += `⚙️ Mehanizam: ${data.mechanism === 'cubes' ? 'Iskačuće pop-up kocke' : data.mechanism}\n`;
 
     if (data.fillings.length > 0) {
-      msg += `🍬 Punjenje stranica: ${data.fillings.join(', ')}\n`;
+      msg += `🍬 Punjenje/slatkiši: ${data.fillings.join(', ')}\n`;
     }
     if (data.notes) {
       msg += `📝 Povod / opis želje: ${data.notes}\n`;
