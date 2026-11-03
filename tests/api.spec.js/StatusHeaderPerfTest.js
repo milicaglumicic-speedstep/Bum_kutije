@@ -1,18 +1,30 @@
 const { test, expect } = require('@playwright/test');
 
-test('API Health Check i provjera statusnog koda', async ({ request }) => {
-  const startTime = Date.now();
-  // Gađamo tvoj produkcijski URL ili JSON datoteku s konfiguracijom
-  const response = await request.get('https://tvoj-username.github.io/Bum_kutije/');
-  const duration = Date.now() - startTime;
+const BASE_URL = 'https://milicaglumicic-speedstep.github.io/Bum_kutije/';
 
-  // 1. Provjera je li server vratio status 200 OK
-  expect(response.status()).toBe(200);
-  expect(response.ok()).toBeTruthy();
+test.describe('Bum Kutije - API & Network Performance Suite', () => {
 
-  // 2. Provjera zaglavlja (Headers)
-  expect(response.headers()['content-type']).toContain('text/html');
+  // =========================================================================
+  // TEST 1: Čisti API Health Check & Performance (Status, Headers, SLA)
+  // =========================================================================
+  test('1. API Health Check: Provjera statusa, zaglavlja i performansi odziva', async ({ request }) => {
+    const startTime = Date.now();
+    
+    // Šaljemo direktan HTTP GET zahtjev bez renderovanja browsera
+    const response = await request.get(`${BASE_URL}bum-kutija.html`);
+    const duration = Date.now() - startTime;
 
-  // 3. Provjera performansi (odziv mora biti brži od 800ms)
-  expect(duration).toBeLessThan(800);
-});
+    // 1. Validacija statusnog koda
+    expect(response.status()).toBe(200);
+    expect(response.ok()).toBeTruthy();
+
+    // 2. Provjera Content-Type zaglavlja
+    const contentType = response.headers()['content-type'];
+    expect(contentType).toBeDefined();
+    expect(contentType).toContain('text/html');
+
+    // 3. Performance SLA: Odgovor statičke stranice/API-ja mora biti ispod 800ms
+    expect(duration).toBeLessThan(800);
+  });
+
+  
