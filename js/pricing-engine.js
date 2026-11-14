@@ -8,67 +8,30 @@ window.PricingEngine = {
 
   calculateBumBox({
     size,
-    colorCount,
-    mechanism,
     sidesType,
-    sidesSweets,
+    sideSweet,
     underCapType,
-    underCapSweets,
-    underCapCosmetics
+    underCapSweet
   }) {
-    // 1. Cena materijala kutije: 700 RSD za 4 kutije = 175 RSD po kutiji
-    let materialCost = window.DB.materials.box_material_per_box_rsd;
-    if (colorCount === 2) {
-      materialCost += window.DB.materials.two_color_surcharge_rsd;
-    }
+    // 1. Osnovna cena kutije bez punjenja strana i čepa = 2000 RSD
+    let total = window.DB.materials.base_empty_bum_box_price_rsd;
 
-    // 2. Mehanizam (Pop-up kocke, Leptirovi, Combo)
-    if (mechanism === 'cubes') {
-      materialCost += 6 * window.DB.materials.popup_cube_materials_rsd;
-    } else if (mechanism === 'butterflies') {
-      materialCost += 6 * window.DB.materials.butterfly_aliexpress_rsd;
-    } else if (mechanism === 'combo') {
-      materialCost += (4 * window.DB.materials.popup_cube_materials_rsd) + (4 * window.DB.materials.butterfly_aliexpress_rsd);
-    }
-
-    // 3. Punjenje stranica (Slatkiši ili 2D ukrasi)
-    let sidesCost = 0;
-    if (sidesType === 'sweets') {
-      const sweetCount = (size === '11x8x10') ? 8 : 16; // 2 po stranici za manju, 4 po stranici za veću/custom
-      let avgSweet = 45;
-      if (sidesSweets && sidesSweets.length > 0) {
-        avgSweet = sidesSweets.reduce((sum, key) => sum + this.getSweetUnitCost(key), 0) / sidesSweets.length;
-      }
-      sidesCost = sweetCount * avgSweet;
+    // 2. Punjenje stranica
+    if (sidesType === 'sweets' && sideSweet) {
+      const sweetCount = (size === '11x8x10') ? 8 : 16;
+      total += sweetCount * this.getSweetUnitCost(sideSweet);
     } else if (sidesType === 'decor_2d') {
-      sidesCost = window.DB.materials.decor_2d_sides_rsd;
+      total += window.DB.materials.decor_2d_sides_rsd;
     }
 
-    // 4. Punjenje ispod čepa
-    let underCapCost = 0;
-    if (underCapType === 'sweets') {
+    // 3. Punjenje ispod čepa
+    if (underCapType === 'sweets' && underCapSweet) {
       const capSweetCount = (size === '11x8x10') ? 10 : 18;
-      let avgCapSweet = 45;
-      if (underCapSweets && underCapSweets.length > 0) {
-        avgCapSweet = underCapSweets.reduce((sum, key) => sum + this.getSweetUnitCost(key), 0) / underCapSweets.length;
-      }
-      underCapCost = capSweetCount * avgCapSweet;
+      total += capSweetCount * this.getSweetUnitCost(underCapSweet);
     } else if (underCapType === 'cosmetics') {
-      if (underCapCosmetics && underCapCosmetics.length > 0) {
-        underCapCost = underCapCosmetics.reduce((sum, key) => {
-          return sum + (window.DB.cosmetics_database[key]?.price_rsd || 0);
-        }, 0);
-      }
-    } else if (underCapType === 'custom_gift') {
-      // Korisnik stavlja svoj poklon ili se dogovara naknadno
-      underCapCost = 0;
+      total += window.DB.cosmetics_combo.price_rsd; // 1900 RSD kombo
     }
 
-    // 5. Rad + sigurnosni bafer
-    const hours = window.DB.labor.bum_box_assembly_hours[size] || 1.8;
-    const labor = hours * window.DB.labor.hourly_rate_rsd;
-
-    let total = (materialCost + sidesCost + underCapCost + labor) * (1 + (window.DB.labor.safety_buffer_percent / 100));
     return Math.round(total / 50) * 50;
   },
 
