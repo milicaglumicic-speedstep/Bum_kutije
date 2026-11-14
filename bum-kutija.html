@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,183 +15,213 @@
   <a href="index.html" class="back-nav">← Nazad na početni izbor</a>
 
   <div class="box-card">
-    <header class="section-title-wrap" style="text-align: center; margin-bottom: 22px;">
-      <h2>BUM KUTIJA</h2>
-      
-      <!-- Instagram link direktno iznad teksta 'Personalizuj svoj poklon' -->
-      <div style="margin: 8px 0 10px 0;">
-        <a href="https://instagram.com/bum.kutija" target="_blank" rel="noopener" class="insta-live-link">
-          📸 Pogledaj video snimke i reakcije na Instagramu ↗
-        </a>
-      </div>
-
-      <p class="subtitle">Personalizuj svoj poklon</p>
+    <header class="section-title-wrap">
+      <h2>BUM KUTIJA KONFIGURATOR</h2>
+      <p class="subtitle">Prilagodi dimenzije, boje, punjenje stranica, poklon ispod čepa i mehanizam iznenađenja.</p>
     </header>
 
-    <div class="tabs" id="bumTabs">
-      <button type="button" class="tab-btn active" data-pkg="empty">1. Prazna BUM kutija</button>
-      <button type="button" class="tab-btn" data-pkg="sweets_gift">2. BUM kutija sa punjenim stranama (slatkiši / kafa)</button>
-      <button type="button" class="tab-btn" data-pkg="only_sweets">3. BUM kutija punjena slatkišima / kafom</button>
-      <button type="button" class="tab-btn" data-pkg="custom_gift">4. Personalizovani BUM poklon</button>
-    </div>
-
-    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox && window.bumBox.sendWhatsApp();">
-      <!-- Veličina kutije -->
+    <form id="bumForm" onsubmit="event.preventDefault(); window.bumBox.sendWhatsApp();">
+      
+      <!-- 1. Veličina kutije -->
       <div class="form-group">
-        <label for="bumSizeSelect">Veličina kutije:</label>
-        <select id="bumSizeSelect"></select>
-        
-        <!-- Standardni info o prostoru za poklon -->
+        <label for="bumSizeSelect">1. Izaberi veličinu kutije:</label>
+        <select id="bumSizeSelect">
+          <option value="11x8x10">Standardna — 11 × 8 × 10v cm</option>
+          <option value="15x15x12">Veća — 15 × 15 × 12v cm</option>
+          <option value="custom">Custom (unesi D × Š × V)</option>
+        </select>
+
+        <!-- Polja za Custom dimenzije -->
+        <div id="customDimSection" style="display:none; margin-top: 12px; background: rgba(147, 51, 234, 0.08); padding: 14px; border-radius: 10px; border: 1px solid var(--card-border);">
+          <label style="margin-bottom: 8px; color: var(--accent-light);">Unesi željene dimenzije kutije (u cm):</label>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div>
+              <label for="customD" style="font-size:0.8rem;">Dužina (D)</label>
+              <input type="number" id="customD" value="12" min="6" max="30" step="0.5">
+            </div>
+            <div>
+              <label for="customS" style="font-size:0.8rem;">Širina (Š)</label>
+              <input type="number" id="customS" value="12" min="6" max="30" step="0.5">
+            </div>
+            <div>
+              <label for="customV" style="font-size:0.8rem;">Visina (V)</label>
+              <input type="number" id="customV" value="10" min="6" max="30" step="0.5">
+            </div>
+          </div>
+        </div>
+
         <div id="bumGiftDimInfo" class="gift-info-box"></div>
-
-        <!-- Polje za unos dimenzija POKLONA (prikazuje se samo za 4. paket / po želji) -->
-        <div id="bumCustomGiftWrap" style="display: none; margin-top: 10px;">
-          <label for="bumCustomGiftInput" style="font-size: 0.85rem; color: var(--gold-light);">🎁 Unesi dimenzije tvog poklona (širina × dužina × visina):</label>
-          <input type="text" id="bumCustomGiftInput" placeholder="npr. parfem 6 × 6 × 14 cm ili flaša 8 × 8 × 25 cm">
-        </div>
       </div>
 
-      <!-- Željena boja -->
+      <!-- 2. Boja kutije (1 ili 2 boje) -->
       <div class="form-group">
-        <label for="bumColorInput">Željena boja:</label>
-        <input type="text" id="bumColorInput" placeholder="npr. crna, crvena, ljubičasta, plava...">
-      </div>
-
-      <!-- Dekoracija enterijera kutije -->
-      <div class="form-group">
-        <label for="bumInteriorSelect">Dekoracija enterijera kutije (izaberi stil/motiv):</label>
-        <select id="bumInteriorSelect" onchange="window.bumBox && window.bumBox.toggleCustomInterior(this.value)">
-          <option value="Standardni" selected>✨ Standardni / bez dodataka</option>
-          <option value="Pisani tekst">✍️ Pisani tekst</option>
-          <option value="Štampani tekst">🖨️ Štampani tekst</option>
-          <option value="Zvezdice">⭐ Zvezdice</option>
-          <option value="Srca">❤️ Srca</option>
-          <option value="IT stikeri">💻 IT stikeri</option>
-          <option value="custom">✏️ Po sopstvenoj želji (unesi ispod)</option>
-        </select>
-        <input type="text" id="bumCustomInteriorInput" style="display:none; margin-top:8px;" placeholder="Opiši željeni motiv enterijera (npr. zvezdano nebo, strip, cveće...)">
-      </div>
-
-      <!-- Stil bočnih ivica -->
-      <div class="form-group form-group-relative">
-        <label>Stil bočnih ivica:</label>
-        <input type="hidden" id="selectedSideStyle" name="sideStyle" value="koverat">
-
-        <div class="custom-side-select" id="sideDropdownBtn">
-          <div class="side-selected-content" id="sideSelectedContent">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-              <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-            </svg>
-            <span>Koverat (do 3 slatkiša)</span>
+        <label>2. Broj boja kutije:</label>
+        <div class="radio-card-group" style="margin-bottom: 12px;">
+          <div class="radio-card selected" id="colorCount1Card" onclick="window.bumBox.setColorCount(1)">
+            <div style="font-weight:600; color:#fff;">🎨 Jedna boja</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Cela kutija i detalji u istoj boji.</div>
           </div>
-          <span class="dropdown-chevron">▾</span>
+          <div class="radio-card" id="colorCount2Card" onclick="window.bumBox.setColorCount(2)">
+            <div style="font-weight:600; color:#fff;">🎨✨ Dve boje (Kombinovano)</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Kombinacija osnovne i kontrastne boje.</div>
+          </div>
         </div>
 
-        <div class="custom-side-options" id="sideOptionsList">
-          <div class="custom-option active" data-value="koverat">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="5" y1="5" x2="95" y2="95" stroke="#c084fc" stroke-width="6"/>
-              <line x1="95" y1="5" x2="5" y2="95" stroke="#c084fc" stroke-width="6"/>
-            </svg>
-            <span>Koverat (do 3 slatkiša)</span>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;" id="colorInputsWrap">
+          <div>
+            <label for="bumColor1Input" id="bumColor1Label">Željena boja kutije:</label>
+            <input type="text" id="bumColor1Input" placeholder="npr. zlatna, bela, crna, crvena, puder roza...">
           </div>
-
-          <div class="custom-option" data-value="2-grede">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <rect x="18" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <rect x="42" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <rect x="66" y="16" width="16" height="68" rx="6" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
-              <line x1="36" y1="5" x2="36" y2="95" stroke="#c084fc" stroke-width="5"/>
-              <line x1="64" y1="5" x2="64" y2="95" stroke="#c084fc" stroke-width="5"/>
-            </svg>
-            <span>2 grede (3 slatkiša)</span>
-          </div>
-
-          <div class="custom-option" data-value="x-greda">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="8" y1="8" x2="92" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-              <line x1="92" y1="8" x2="8" y2="92" stroke="#c084fc" stroke-width="7" stroke-linecap="round"/>
-              <circle cx="50" cy="24" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="50" cy="76" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="24" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-              <circle cx="76" cy="50" r="6" fill="#f5e6b3" stroke="#dfba68" stroke-width="2"/>
-            </svg>
-            <span>X greda (4 slatkiša)</span>
-          </div>
-
-          <div class="custom-option" data-value="postolje">
-            <svg viewBox="0 0 100 100" class="dropdown-svg">
-              <rect width="90" height="90" x="5" y="5" rx="14" fill="#1b1429" stroke="#dfba68" stroke-width="4"/>
-              <line x1="12" y1="82" x2="88" y2="82" stroke="#c084fc" stroke-width="4"/>
-              <rect x="18" y="44" width="20" height="38" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-              <text x="28" y="68" font-size="12" text-anchor="middle" fill="#1b1429" font-weight="bold">2</text>
-              <rect x="40" y="28" width="20" height="54" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-              <text x="50" y="58" font-size="13" text-anchor="middle" fill="#1b1429" font-weight="bold">1</text>
-              <rect x="62" y="54" width="20" height="28" rx="4" fill="#dfba68" stroke="#f5e6b3" stroke-width="2"/>
-              <text x="72" y="74" font-size="11" text-anchor="middle" fill="#1b1429" font-weight="bold">3</text>
-            </svg>
-            <span>Postolje (3 slatkiša na vrh)</span>
+          <div id="bumColor2Wrap" style="display:none;">
+            <label for="bumColor2Input">Druga boja (čep i unutrašnji detalji):</label>
+            <input type="text" id="bumColor2Input" placeholder="npr. bela, zlatna, srebrna...">
           </div>
         </div>
       </div>
 
-      <!-- Mehanizam -->
+      <!-- 3. Mehanizam iznenađenja -->
       <div class="form-group">
-        <label for="bumMechanismSelect">Unutrašnji mehanizam (sa konfetama):</label>
+        <label for="bumMechanismSelect">3. Unutrašnji mehanizam iznenađenja:</label>
         <select id="bumMechanismSelect">
-          <option value="cubes" selected>Iskačuće pop-up kocke</option>
+          <option value="cubes">Iskačuće Pop-Up kocke</option>
+          <option value="butterflies">Iskačući leteći leptirovi</option>
+          <option value="combo">Combo (Pop-Up kocke + Leptirovi)</option>
         </select>
       </div>
 
-      <!-- Punjenje stranica -->
-      <div class="form-group" id="sideThemeGroup" style="display:none;">
-        <label for="bumSideThemeSelect">Punjenje stranica (izaberi temu):</label>
-        <select id="bumSideThemeSelect" onchange="window.bumBox && window.bumBox.switchSideTheme(this.value)">
-          <option value="sweets" selected>🍫 Slatke strane (čokoladice i praline)</option>
-          <option value="coffee">☕ Kafa strane (Nespresso / Dolce Gusto)</option>
-          <option value="custom_sides">✨ Po sopstvenoj želji (unesi ispod)</option>
+      <!-- 4. Punjenje stranica -->
+      <div class="form-group">
+        <label>4. Punjenje unutrašnjih stranica kutije:</label>
+        <div class="radio-card-group" style="margin-bottom: 14px;">
+          <div class="radio-card selected" id="sidesOptSweets" onclick="window.bumBox.setSidesType('sweets')">
+            <div style="font-weight:600; color:#fff;">🍫 Slatkiši na stranicama</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Čokoladice i praline pričvršćene na 4 zida.</div>
+          </div>
+          <div class="radio-card" id="sidesOptDecor" onclick="window.bumBox.setSidesType('decor_2d')">
+            <div style="font-weight:600; color:#fff;">🖼️ Ukrasi / 2D predmeti</div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">Fotografije, porukice, 2D ukrasi ili ravni predmeti.</div>
+          </div>
+        </div>
+
+        <!-- Opcije ako su izabrani SLATKIŠI na stranicama -->
+        <div id="sidesSweetsSection">
+          <label>Izaberi slatkiše za stranice:</label>
+          <div class="checkbox-group" id="bumSidesSweetsGroup" style="margin-bottom: 16px;">
+            <label class="checkbox-item"><input type="checkbox" value="kinder_cokoladica" checked> Kinder čokolada</label>
+            <label class="checkbox-item"><input type="checkbox" value="kinder_bueno" checked> Kinder Bueno</label>
+            <label class="checkbox-item"><input type="checkbox" value="ferrero"> Ferrero Rocher</label>
+            <label class="checkbox-item"><input type="checkbox" value="raffaello"> Raffaello</label>
+            <label class="checkbox-item"><input type="checkbox" value="giotto"> Giotto</label>
+          </div>
+
+          <label>Stil bočnih ivica (držača za slatkiše):</label>
+          <div class="style-grid">
+            <div class="style-option selected" onclick="window.bumBox.selectStyle('Zvezda', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <path d="M4 4L36 36M36 4L4 36" />
+                  <circle cx="20" cy="20" r="3" fill="#c084fc" />
+                </svg>
+              </div>
+              <span class="style-text">Zvezda (koverat u centar)</span>
+            </div>
+
+            <div class="style-option" onclick="window.bumBox.selectStyle('Šestougaonik', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="1.8">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <polygon points="20,6 33,13 33,27 20,34 7,27 7,13" />
+                  <line x1="20" y1="20" x2="20" y2="6" /><line x1="20" y1="20" x2="33" y2="13" /><line x1="20" y1="20" x2="33" y2="27" /><line x1="20" y1="20" x2="20" y2="34" /><line x1="20" y1="20" x2="7" y2="27" /><line x1="20" y1="20" x2="7" y2="13" />
+                  <circle cx="20" cy="20" r="2.5" fill="#c084fc" />
+                </svg>
+              </div>
+              <span class="style-text">Šestougaonik (6 trouglova)</span>
+            </div>
+
+            <div class="style-option" onclick="window.bumBox.selectStyle('X greda', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <line x1="6" y1="6" x2="34" y2="34" /><line x1="34" y1="6" x2="6" y2="34" />
+                  <circle cx="20" cy="9" r="2.5" fill="#f59e0b" /><circle cx="31" cy="20" r="2.5" fill="#f59e0b" />
+                  <circle cx="20" cy="31" r="2.5" fill="#f59e0b" /><circle cx="9" cy="20" r="2.5" fill="#f59e0b" />
+                </svg>
+              </div>
+              <span class="style-text">X greda (dijagonale)</span>
+            </div>
+
+            <div class="style-option" onclick="window.bumBox.selectStyle('Stepenik', this)">
+              <div class="style-preview">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#c084fc" stroke-width="2">
+                  <rect x="4" y="4" width="32" height="32" rx="3" stroke="#6b7280" />
+                  <path d="M8 32H15V24H23V16H31V8" />
+                  <circle cx="11.5" cy="27" r="2.2" fill="#f59e0b" /><circle cx="19" cy="19.5" r="2.2" fill="#f59e0b" /><circle cx="27" cy="12" r="2.2" fill="#f59e0b" />
+                </svg>
+              </div>
+              <span class="style-text">Stepenik (cik-cak kaskada)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opcije ako su izabrani UKRASI / 2D PREDMETI na stranicama -->
+        <div id="sidesDecorSection" style="display:none;">
+          <label for="sidesDecorInput">Opiši ukrase / 2D predmete za stranice:</label>
+          <input type="text" id="sidesDecorInput" placeholder="npr. 4 fotografije, kartice sa porukama, drveni 2D ukrasi, vaučer...">
+        </div>
+      </div>
+
+      <!-- 5. Punjenje ispod čepa -->
+      <div class="form-group">
+        <label for="underCapSelect">5. Punjenje ispod čepa (centralni poklon):</label>
+        <select id="underCapSelect">
+          <option value="sweets">🍬 Slatkiši (miks izabranih čokoladica)</option>
+          <option value="cosmetics">🌿 Prirodna kozmetika (sapun, stik, labelo)</option>
+          <option value="custom_gift">🎁 Personalizovani unos (sopstveni poklon ili želja)</option>
         </select>
-      </div>
 
-      <div class="form-group" id="bumCustomSideGroup" style="display:none;">
-        <label for="bumCustomSideInput">Opiši željeno punjenje stranica:</label>
-        <input type="text" id="bumCustomSideInput" placeholder="npr. kozmetika, vaučeri, mini porukice, sitnice...">
-      </div>
-      <!-- Izbor slatkiša (dinamički se filtrira prema stilu ivica) -->
-      <div class="form-group" id="bumSweetsGroup" style="display:none;">
-        <label id="bumSweetsLabel">Izaberi slatkiše za stranice (do 4 po strani):</label>
-        <div class="checkbox-group" id="bumSweetsList">
-          <!-- Okrugli slatkiši / praline (za Koverat, X gredu, Postolje) -->
-          <label class="checkbox-item sweet-round"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
-          <label class="checkbox-item sweet-round"><input type="checkbox" value="raffaello" checked> Raffaello</label>
-          <label class="checkbox-item sweet-round"><input type="checkbox" value="lindor"> Lindt Lindor</label>
-          <label class="checkbox-item sweet-round"><input type="checkbox" value="mozart"> Mozart kugle</label>
+        <!-- Sekcija A: Slatkiši ispod čepa -->
+        <div id="underCapSweetsSection" style="margin-top: 12px;">
+          <label>Izaberi slatkiše ispod čepa:</label>
+          <div class="checkbox-group" id="bumUnderCapSweetsGroup">
+            <label class="checkbox-item"><input type="checkbox" value="kinder_cokoladica" checked> Kinder čokolada</label>
+            <label class="checkbox-item"><input type="checkbox" value="kinder_bueno" checked> Kinder Bueno</label>
+            <label class="checkbox-item"><input type="checkbox" value="ferrero" checked> Ferrero Rocher</label>
+            <label class="checkbox-item"><input type="checkbox" value="raffaello"> Raffaello</label>
+            <label class="checkbox-item"><input type="checkbox" value="giotto"> Giotto</label>
+          </div>
+        </div>
 
-          <!-- Duguljasti slatkiši (isključivo za 2 grede) -->
-          <label class="checkbox-item sweet-bar" style="display:none;"><input type="checkbox" value="kinder_cokoladica"> Kinder čokoladice</label>
+        <!-- Sekcija B: Prirodna kozmetika ispod čepa -->
+        <div id="underCapCosmeticsSection" style="display:none; margin-top: 12px;">
+          <label>Izaberi proizvode prirodne kozmetike:</label>
+          <div class="checkbox-group" id="bumCosmeticsGroup">
+            <label class="checkbox-item"><input type="checkbox" value="sapun" checked> Prirodni ručno rađeni sapun</label>
+            <label class="checkbox-item"><input type="checkbox" value="stik" checked> Prirodni dezodorans u stiku</label>
+            <label class="checkbox-item"><input type="checkbox" value="labelo" checked> Prirodni balzam za usne (labelo)</label>
+          </div>
+        </div>
+
+        <!-- Sekcija C: Personalizovani unos ispod čepa -->
+        <div id="underCapCustomSection" style="display:none; margin-top: 12px;">
+          <label for="underCapCustomNotes">Opiši šta ide ispod čepa (dimenzije ili opis poklona):</label>
+          <textarea id="underCapCustomNotes" rows="3" placeholder="npr. Stavljam svoj parfem / sat, ili želim da vi ubacite određeni poklon..."></textarea>
         </div>
       </div>
 
-      <div class="form-group" id="bumCoffeeGroup" style="display:none;">
-        <label>Izaberi kapsule za kafu:</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" value="nespresso" checked> Nespresso kapsule</label>
-          <label class="checkbox-item"><input type="checkbox" value="dolce_gusto"> Dolce Gusto kapsule</label>
-        </div>
+      <!-- Dodatna napomena -->
+      <div class="form-group">
+        <label for="bumNotes">Dodatna napomena ili posveta (opciono):</label>
+        <textarea id="bumNotes" rows="2" placeholder="Posebne želje, tekst posvete, rok izrade..."></textarea>
       </div>
 
-      <div class="form-group" id="customNotesGroup" style="display:none;">
-        <label for="bumNotes">Opisi povod poklanjanja i temu kutije:</label>
-        <textarea id="bumNotes" rows="3" placeholder="Poklon za 40ti rodjendan, Odlazak IT kolege, Baby shower, Baby reveal..."></textarea>
+      <!-- Prikaz cene -->
+      <div class="price-box">
+        <div class="price-title">Kalkulisana cena BUM kutije</div>
+        <div class="price-val" id="bumPriceDisplay">0 RSD</div>
       </div>
 
-      <!-- Dugme za naručivanje -->
-      <button type="submit" class="submit-btn" style="margin-top: 12px;">Naruči BUM kutiju na WhatsApp 💬</button>
+      <button type="submit" class="submit-btn">Naruči BUM kutiju na WhatsApp 💬</button>
     </form>
   </div>
 </div>
@@ -199,6 +229,5 @@
 <script src="js/database.js"></script>
 <script src="js/pricing-engine.js"></script>
 <script src="js/bum-box.js"></script>
-<script src="chatbot.js"></script>
 </body>
 </html>
