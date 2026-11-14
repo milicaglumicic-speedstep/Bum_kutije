@@ -2,8 +2,8 @@ window.DB = {
   materials: {
     box_material_pack_4_rsd: 700,
     box_material_per_box_rsd: 175, // 700 RSD za 4 kutije
-    two_color_surcharge_rsd: 0,    // Doplata za 2 boje (0 ako je uključeno u cenu)
-    decor_2d_sides_rsd: 250,       // Cena za 2D ukrase / fotografije na stranicama
+    base_empty_bum_box_price_rsd: 2000, // Osnovna cena kutije bez punjenja strana i čepa
+    decor_2d_sides_rsd: 250,
     butterfly_aliexpress_rsd: 90,
     popup_cube_materials_rsd: 35,
     punch_cake_base_per_tier: 650
@@ -23,18 +23,12 @@ window.DB = {
     euroblokic: { name: 'Euroblokić', price_per_kg: 1300, weight_g: 15 },
     najlepse_zeljice: { name: 'Najlepše željice (mini)', price_per_kg: 1900, weight_g: 15 }
   },
-  cosmetics_database: {
-    sapun: { name: 'Prirodni sapun', price_rsd: 350 },
-    stik: { name: 'Prirodni dezodorans stik', price_rsd: 550 },
-    labelo: { name: 'Prirodno labelo', price_rsd: 250 }
+  cosmetics_combo: {
+    name: 'Kombo prirodne kozmetike (sapun, stik, labelo)',
+    price_rsd: 1900
   },
   labor: {
     hourly_rate_rsd: 600,
-    bum_box_assembly_hours: {
-      '11x8x10': 1.5,
-      '15x15x12': 2.0,
-      'custom': 2.2
-    },
     punch_cake_labor_per_tier: 700,
     safety_buffer_percent: 15
   }
